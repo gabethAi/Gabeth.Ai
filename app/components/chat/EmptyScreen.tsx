@@ -1,6 +1,4 @@
-import { Button, Card, Paper } from "@mantine/core";
-import React from "react";
-import SuggestionCard from "../ui/SuggestionCard";
+import { Button } from "@mantine/core";
 import { UseChatHelpers } from "ai/react";
 
 const suggestions = [
