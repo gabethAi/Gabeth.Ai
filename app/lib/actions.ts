@@ -1,9 +1,4 @@
-// Import Prisma Client and instantiate it
-import { PrismaClient } from "@prisma/client";
-
-const globalForPrisma = global;
-
-export const prisma = new PrismaClient();
+import prisma from "../prisma/db";
 
 // Get a single chat by its ID
 export async function getChat(chatId: string) {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 import "@mantine/core/styles.css";
@@ -32,6 +33,7 @@ export default function RootLayout({
           <Notifications />
           {children}
         </MantineProvider>
+        <Analytics />
       </body>
     </html>
   );

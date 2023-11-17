@@ -2,8 +2,12 @@ import { Button, Card, Divider, TextInput } from "@mantine/core";
 import React from "react";
 import Logo from "../shared/Logo";
 import Link from "next/link";
+import { getChat } from "@/app/lib/actions";
 
-function RightSideForm() {
+async function RightSideForm() {
+  const chat = await getChat("ub5bvU76jAQAxGx9d");
+
+  console.log(chat, "chat");
   return (
     <div className='flex flex-col items-center justify-center h-full mx-auto'>
       <Card shadow='lg' radius={"md"} p={"xl"}>
