@@ -4,23 +4,21 @@ import Link from "next/link";
 import { registerUser } from "@/app/lib/actions";
 
 function RightSideForm() {
-  // registerUser()
   async function signUp(formData: FormData) {
     "use server";
-
-    // mutate data
-    // revalidate cache
     const email = formData.get("email");
     const password = formData.get("password");
 
-    console.log(email, password);
+    try {
+      const newUser = await registerUser({
+        email: email as string,
+        password: password as string,
+      });
 
-    const newUser = await registerUser({
-      email: email as string,
-      password: password as string,
-    });
-
-    console.log(newUser, "new user");
+      console.log(newUser, "new user");
+    } catch (error) {
+      console.log(error, "error");
+    }
   }
 
   return (

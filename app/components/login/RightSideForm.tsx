@@ -2,19 +2,15 @@ import { Button, Card, Divider, TextInput } from "@mantine/core";
 import React from "react";
 import Logo from "../shared/Logo";
 import Link from "next/link";
-import { getChat, registerUser } from "@/app/lib/actions";
 
 async function RightSideForm() {
-  // const chat = await getChat(123444);
-
-  // console.log(chat, "chat");
-
-  // registerUser()
   async function create(formData: FormData) {
     "use server";
 
     // mutate data
     // revalidate cache
+    const email = formData.get("email");
+    const password = formData.get("password");
 
     console.log(formData, "form data");
   }

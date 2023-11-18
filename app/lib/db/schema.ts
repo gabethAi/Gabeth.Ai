@@ -1,5 +1,3 @@
-import { drizzle } from "drizzle-orm/vercel-postgres";
-import { sql } from "@vercel/postgres";
 import {
   integer,
   pgTable,
@@ -9,11 +7,8 @@ import {
   uniqueIndex,
 } from "drizzle-orm/pg-core";
 
-// Use this object to send drizzle queries to your DB
-export const db = drizzle(sql);
-
-export const User = pgTable(
-  "User",
+export const users = pgTable(
+  "users",
   {
     id: serial("id").primaryKey(),
     email: text("email").notNull(),
@@ -28,17 +23,19 @@ export const User = pgTable(
   }
 );
 
-export const Conversation = pgTable("Conversation", {
+export type User = typeof users.$inferSelect; // return type when queried
+
+export const conversations = pgTable("conversations", {
   id: serial("id").primaryKey(),
   userId: integer("userId")
-    .references(() => User.id)
+    .references(() => users.id)
     .notNull(),
 });
 
-export const Message = pgTable("Message", {
+export const messages = pgTable("messages", {
   id: serial("id").primaryKey(),
   conversationId: integer("conversationId")
-    .references(() => Conversation.id)
+    .references(() => conversations.id)
     .notNull(),
   type: text("type").notNull(),
   text: text("text").notNull(),
@@ -47,10 +44,10 @@ export const Message = pgTable("Message", {
   feedback: text("feedback"),
 });
 
-export const Reaction = pgTable("Reaction", {
+export const reactions = pgTable("reactions", {
   id: serial("id").primaryKey(),
   messageId: integer("messageId")
-    .references(() => Message.id)
+    .references(() => messages.id)
     .notNull(),
   type: text("type").notNull(),
   count: integer("count").default(0).notNull(),
