@@ -12,7 +12,8 @@ function ChatScreen() {
             <ChatScrollAnchor trackVisibility={isLoading} /> */}
         </>
       ) : (
-        <EmptyScreen />
+        <div></div>
+        // <EmptyScreen />
       )}
     </div>
   );

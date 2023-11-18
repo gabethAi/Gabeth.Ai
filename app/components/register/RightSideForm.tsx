@@ -1,13 +1,27 @@
-"use client";
-import { Button, Card, Divider, TextInput, ActionIcon } from "@mantine/core";
-import React from "react";
+import { Button, Card, Divider, PasswordInput, TextInput } from "@mantine/core";
 import Logo from "../shared/Logo";
 import Link from "next/link";
-
-import { useToggle } from "@mantine/hooks";
+import { registerUser } from "@/app/lib/actions";
 
 function RightSideForm() {
-  const [type, toggle] = useToggle(["password", "text"]);
+  // registerUser()
+  async function signUp(formData: FormData) {
+    "use server";
+
+    // mutate data
+    // revalidate cache
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    console.log(email, password);
+
+    const newUser = await registerUser({
+      email: email as string,
+      password: password as string,
+    });
+
+    console.log(newUser, "new user");
+  }
 
   return (
     <div className='flex flex-col items-center justify-center h-full mx-auto max-w-md xl:max-w-lg'>
@@ -22,41 +36,21 @@ function RightSideForm() {
           <p className='text-sm'>Please fill in your information to sign up</p>
         </div>
 
-        <form action='' className='flex flex-col space-y-5'>
-          <TextInput label='Email' placeholder='user@example.com' />
-
+        <form action={signUp} className='flex flex-col space-y-5'>
           <TextInput
-            type={type}
+            label='Email'
+            name='email'
+            placeholder='user@example.com'
+          />
+
+          <PasswordInput
             label='Password'
-            placeholder='Password'
-            rightSection={
-              <ActionIcon variant='transparent' onClick={() => toggle()}>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='24'
-                  height='25'
-                  viewBox='0 0 24 25'
-                  fill='none'>
-                  <path
-                    d='M2.0355 13.0446C1.96642 12.8373 1.96635 12.6129 2.03531 12.4056C3.42368 8.23189 7.36074 5.22217 12.0008 5.22217C16.6386 5.22217 20.5742 8.22909 21.9643 12.3998C22.0334 12.607 22.0334 12.8314 21.9645 13.0387C20.5761 17.2124 16.639 20.2222 11.999 20.2222C7.36115 20.2222 3.42559 17.2152 2.0355 13.0446Z'
-                    stroke='#818181'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                  />
-                  <path
-                    d='M15 12.7222C15 14.379 13.6568 15.7222 12 15.7222C10.3431 15.7222 8.99995 14.379 8.99995 12.7222C8.99995 11.0653 10.3431 9.72217 12 9.72217C13.6568 9.72217 15 11.0653 15 12.7222Z'
-                    stroke='#818181'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                  />
-                </svg>
-              </ActionIcon>
-            }
+            name='password'
+            placeholder='password'
           />
 
           <Button
+            type='submit'
             rightSection={
               <svg
                 width='25'

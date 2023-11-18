@@ -2,12 +2,22 @@ import { Button, Card, Divider, TextInput } from "@mantine/core";
 import React from "react";
 import Logo from "../shared/Logo";
 import Link from "next/link";
-import { getChat } from "@/app/lib/actions";
+import { getChat, registerUser } from "@/app/lib/actions";
 
 async function RightSideForm() {
-  const chat = await getChat("ub5bvU76jAQAxGx9d");
+  // const chat = await getChat(123444);
 
-  console.log(chat, "chat");
+  // console.log(chat, "chat");
+
+  // registerUser()
+  async function create(formData: FormData) {
+    "use server";
+
+    // mutate data
+    // revalidate cache
+
+    console.log(formData, "form data");
+  }
   return (
     <div className='flex flex-col items-center justify-center h-full mx-auto'>
       <Card shadow='lg' radius={"md"} p={"xl"}>
@@ -24,11 +34,16 @@ async function RightSideForm() {
             </p>
           </div>
 
-          <form action='' className='flex flex-col space-y-5'>
-            <TextInput label='Email' placeholder='user@example.com' />
+          <form action={create} className='flex flex-col space-y-5'>
+            <TextInput
+              label='Email'
+              name='email'
+              placeholder='user@example.com'
+            />
 
             <TextInput
               label='Password'
+              name='password'
               placeholder='Password'
               rightSection={
                 <svg
@@ -56,6 +71,7 @@ async function RightSideForm() {
             />
 
             <Button
+              type='submit'
               rightSection={
                 <svg
                   width='25'

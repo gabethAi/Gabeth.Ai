@@ -1,7 +1,9 @@
-import prisma from "../prisma/db";
+"use server";
+import prisma from "../../prisma/db";
+import { User, db } from "./drizzle";
 
 // Get a single chat by its ID
-export async function getChat(chatId: string) {
+export async function getChat(chatId: number) {
   return await prisma.conversation.findUnique({
     where: { id: chatId },
     include: {
@@ -12,15 +14,15 @@ export async function getChat(chatId: string) {
 }
 
 // Get multiple chats for a user by their userID
-export async function getChats(userId: string) {
-  return await prisma.conversation.findMany({
-    where: { userId: userId },
-    include: {
-      messages: true,
-      user: true,
-    },
-  });
-}
+// export async function getChats(userId: string) {
+//   return await prisma.conversation.findMany({
+//     where: { userId: userId },
+//     include: {
+//       messages: true,
+//       user: true,
+//     },
+//   });
+// }
 
 // Get a user by their email
 export async function getUser(email: string) {
@@ -32,20 +34,22 @@ export async function getUser(email: string) {
 // function to register a new user
 export async function registerUser({
   email,
-  username,
   password,
 }: {
   email: string;
-  username: string;
   password: string;
 }) {
-  return await prisma.user.create({
-    data: {
+  const user = await db
+    .insert(User)
+    .values({
       email: email,
-      username: username,
-      hashedPassword: password,
-    },
-  });
+      hashedpassword: password,
+    })
+    .execute();
+
+  console.log(user, "user");
+
+  return user;
 }
 
 // function to authenticate user login
@@ -59,24 +63,24 @@ export async function loginUser({
   return await prisma.user.findFirst({
     where: {
       email: email,
-      hashedPassword: password,
+      hashedpassword: password,
     },
   });
 }
 
 // Clears all chats for a user
-export async function clearChats(userId: string) {
-  return await prisma.conversation.deleteMany({
-    where: { userId: userId },
-  });
-}
+// export async function clearChats(userId: string) {
+//   return await prisma.conversation.deleteMany({
+//     where: { userId: userId },
+//   });
+// }
 
 // Removes a specific chat by its ID
-export async function removeChat(chatId: string) {
-  return await prisma.conversation.delete({
-    where: { id: chatId },
-  });
-}
+// export async function removeChat(chatId: string) {
+//   return await prisma.conversation.delete({
+//     where: { id: chatId },
+//   });
+// }
 
 // async function main() {
 //   console.log("starting");

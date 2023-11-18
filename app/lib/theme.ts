@@ -1,6 +1,12 @@
 "use client";
 
-import { createTheme, Button, TextInput, ActionIcon } from "@mantine/core";
+import {
+  createTheme,
+  Button,
+  TextInput,
+  PasswordInput,
+  ActionIcon,
+} from "@mantine/core";
 
 export const theme = createTheme({
   fontFamily: "Open Sans, sans-serif",
@@ -12,6 +18,11 @@ export const theme = createTheme({
       },
     }),
     TextInput: TextInput.extend({
+      defaultProps: {
+        size: "md",
+      },
+    }),
+    PasswordInput: PasswordInput.extend({
       defaultProps: {
         size: "md",
       },
