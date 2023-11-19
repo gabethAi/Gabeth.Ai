@@ -2,6 +2,7 @@
 import { QueryResult } from "@vercel/postgres";
 import { User, users } from "./db/schema";
 import { db } from "./db/drizzle";
+import { eq } from "drizzle-orm";
 
 // Get a single chat by its ID
 // export async function getChat(chatId: number) {
@@ -47,20 +48,28 @@ export async function registerUser({
 }
 
 // function to authenticate user login
-// export async function loginUser({
-//   email,
-//   password,
-// }: {
-//   email: string;
-//   password: string;
-// }) {
-//   return await prisma.user.findFirst({
-//     where: {
-//       email: email,
-//       hashedpassword: password,
-//     },
-//   });
-// }
+export async function loginUser({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}): Promise<QueryResult<User> | null> {
+  const user = await db.query.users.findFirst({
+    where: eq(users.email, email),
+  });
+
+  console.log("user: ", user);
+  if (user) {
+    // Add your own password checking logic here
+    if (user.hashedpassword === password) {
+      // return user;
+    }
+  }
+
+  // Return null if user credentials are not valid
+  return null;
+}
 
 // Clears all chats for a user
 // export async function clearChats(userId: string) {

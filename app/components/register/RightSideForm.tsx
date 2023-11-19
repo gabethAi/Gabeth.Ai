@@ -2,6 +2,7 @@ import { Button, Card, Divider, PasswordInput, TextInput } from "@mantine/core";
 import Logo from "../shared/Logo";
 import Link from "next/link";
 import { registerUser } from "@/app/lib/actions";
+import { redirect } from "next/navigation";
 
 function RightSideForm() {
   async function signUp(formData: FormData) {
@@ -16,8 +17,13 @@ function RightSideForm() {
       });
 
       console.log(newUser, "new user");
-    } catch (error) {
+    } catch (error: any) {
       console.log(error, "error");
+
+      if (error.code === "23505") {
+        console.log("email already exists");
+        redirect("/auth/login");
+      }
     }
   }
 
