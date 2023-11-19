@@ -1,8 +1,5 @@
-"use client";
-import React from "react";
 import logoLight from "@/app/assets/icons/logo-light.svg";
 import logoDark from "@/app/assets/icons/logo-dark.svg";
-import { useComputedColorScheme } from "@mantine/core";
 import Image from "next/image";
 
 interface Props {
@@ -10,19 +7,26 @@ interface Props {
 }
 
 function Logo({ size }: Props) {
-  const computedColorScheme = useComputedColorScheme("light", {
-    getInitialValueInEffect: true,
-  });
-
-  const logoSrc = computedColorScheme === "dark" ? logoDark : logoLight;
-
   return (
-    <Image
-      src={logoSrc}
-      alt='Gabeth.Ai Logo'
-      width={size ? size : 100}
-      height={size ? size : 100}
-    />
+    <>
+      {/* logo on dark mode */}
+      <Image
+        src={logoDark}
+        className='hidden dark:block'
+        alt='Gabeth.Ai Logo'
+        width={size ? size : 100}
+        height={size ? size : 100}
+      />
+
+      {/* logo on light mode */}
+      <Image
+        className='block dark:hidden'
+        src={logoLight}
+        alt='Gabeth.Ai Logo'
+        width={size ? size : 100}
+        height={size ? size : 100}
+      />
+    </>
   );
 }
 
