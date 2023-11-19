@@ -1,0 +1,4 @@
+{
+  "schema": "./app/lib/db/schema.ts",
+  "out": "./drizzle"
+}
