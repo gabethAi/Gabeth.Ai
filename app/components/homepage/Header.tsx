@@ -25,7 +25,7 @@ function DesktopHeader() {
         <Logo />
         <div className='flex items-center gap-x-4'>
           <ThemeToggler />
-          <Link href={"/register"}>
+          <Link href={"/auth/register"}>
             <Button variant=''>Get Started</Button>
           </Link>
         </div>
