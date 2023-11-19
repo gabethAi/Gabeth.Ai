@@ -73,7 +73,9 @@ export async function loginUser({
 }
 
 export async function logoutUser() {
-  return await signOut();
+  return await signOut({
+    redirectTo: "/auth/login",
+  });
 }
 
 // Clears all chats for a user

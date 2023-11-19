@@ -89,8 +89,8 @@ function WhyUsCard({ title, description, imageSrc }: Props) {
               width='319.647'
               height='319.647'
               filterUnits='userSpaceOnUse'
-              color-interpolation-filters='sRGB'>
-              <feFlood flood-opacity='0' result='BackgroundImageFix' />
+              colorInterpolationFilters='sRGB'>
+              <feFlood floodOpacity='0' result='BackgroundImageFix' />
               <feBlend
                 mode='normal'
                 in='SourceGraphic'

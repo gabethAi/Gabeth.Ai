@@ -218,8 +218,8 @@ function EmptyScreen({ setInput }: Pick<UseChatHelpers, "setInput">) {
               width='103.087'
               height='103.087'
               filterUnits='userSpaceOnUse'
-              color-interpolation-filters='sRGB'>
-              <feFlood flood-opacity='0' result='BackgroundImageFix' />
+              colorInterpolationFilters='sRGB'>
+              <feFlood floodOpacity='0' result='BackgroundImageFix' />
               <feBlend
                 mode='normal'
                 in='SourceGraphic'
@@ -238,8 +238,8 @@ function EmptyScreen({ setInput }: Pick<UseChatHelpers, "setInput">) {
               width='117.61'
               height='117.61'
               filterUnits='userSpaceOnUse'
-              color-interpolation-filters='sRGB'>
-              <feFlood flood-opacity='0' result='BackgroundImageFix' />
+              colorInterpolationFilters='sRGB'>
+              <feFlood floodOpacity='0' result='BackgroundImageFix' />
               <feBlend
                 mode='normal'
                 in='SourceGraphic'

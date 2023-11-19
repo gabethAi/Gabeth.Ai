@@ -17,6 +17,7 @@ import UpgradeButton from "./UpgradeButton";
 import ChatList from "../chat/ChatList";
 import ProfileCard from "./ProfileCard";
 import useThemeToggler from "@/app/lib/hooks/useThemeToggler";
+import { SignOut } from "./AuthComponent";
 
 const variants = {
   open: { opacity: 1, x: 0 },
@@ -216,6 +217,7 @@ export function DesktopSideBar() {
             </div>
 
             <div className='row-span-4'>
+              <SignOut />
               <div className='flex items-center justify-between'>
                 <h6>Conversations</h6>
                 <Button color={"red"} size='xs'>

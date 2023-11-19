@@ -1,3 +1,4 @@
+import { logoutUser } from "@/app/lib/actions";
 import { signIn, signOut } from "@/app/lib/auth";
 import { Button } from "@mantine/core";
 
@@ -21,10 +22,12 @@ export function SignOut(props: React.ComponentPropsWithRef<typeof Button>) {
   return (
     <form
       action={async () => {
-        await signOut();
+        // "use server";
+        console.log("signing out");
+        await logoutUser();
       }}
       className=''>
-      <Button variant='transparent' size='xs' {...props}>
+      <Button variant='transparent' type='submit' size='xs' {...props}>
         Sign Out
       </Button>
     </form>

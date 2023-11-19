@@ -229,8 +229,8 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
                 width='32.2142'
                 height='32.2147'
                 filterUnits='userSpaceOnUse'
-                color-interpolation-filters='sRGB'>
-                <feFlood flood-opacity='0' result='BackgroundImageFix' />
+                colorInterpolationFilters='sRGB'>
+                <feFlood floodOpacity='0' result='BackgroundImageFix' />
                 <feBlend
                   mode='normal'
                   in='SourceGraphic'
@@ -249,8 +249,8 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
                 width='36.7533'
                 height='36.7533'
                 filterUnits='userSpaceOnUse'
-                color-interpolation-filters='sRGB'>
-                <feFlood flood-opacity='0' result='BackgroundImageFix' />
+                colorInterpolationFilters='sRGB'>
+                <feFlood floodOpacity='0' result='BackgroundImageFix' />
                 <feBlend
                   mode='normal'
                   in='SourceGraphic'
