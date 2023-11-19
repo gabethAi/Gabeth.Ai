@@ -3,10 +3,26 @@ import Logo from "../shared/Logo";
 import Link from "next/link";
 import { registerUser } from "@/app/lib/actions";
 import { redirect } from "next/navigation";
+import { auth } from "@/app/lib/auth";
 
-function RightSideForm() {
+/**
+ * Renders the right side form for user registration.
+ */
+
+async function RightSideForm() {
+  const session = await auth();
+
+  const path = session?.user ? "/chat" : "/auth/login";
+
   async function signUp(formData: FormData) {
     "use server";
+
+    /**
+     * Sign up a user with the provided form data.
+     *
+     * @param formData - The form data containing the email and password.
+     */
+
     const email = formData.get("email");
     const password = formData.get("password");
 

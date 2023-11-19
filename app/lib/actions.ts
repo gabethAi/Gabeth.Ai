@@ -3,6 +3,7 @@ import { QueryResult } from "@vercel/postgres";
 import { User, users } from "./db/schema";
 import { db } from "./db/drizzle";
 import { eq } from "drizzle-orm";
+import { signOut } from "./auth";
 
 // Get a single chat by its ID
 // export async function getChat(chatId: number) {
@@ -69,6 +70,10 @@ export async function loginUser({
 
   // Return null if user credentials are not valid
   return null;
+}
+
+export async function logoutUser() {
+  return await signOut();
 }
 
 // Clears all chats for a user

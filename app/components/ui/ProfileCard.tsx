@@ -1,13 +1,17 @@
-"use client";
+// "use client";
+import { auth, signOut } from "@/app/lib/auth";
 import useThemeToggler from "@/app/lib/hooks/useThemeToggler";
 import { ActionIcon, Avatar } from "@mantine/core";
 import React from "react";
+import { SignOut } from "./AuthComponent";
 
-function ProfileCard() {
-  const { theme } = useThemeToggler();
+async function ProfileCard() {
+  const session = await auth();
+  const user = session?.user;
+  // const { theme } = useThemeToggler();
   return (
     <div className='flex items-center'>
-      <ActionIcon>
+      {/* <ActionIcon>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           width='24'
@@ -27,13 +31,14 @@ function ProfileCard() {
             fill={theme === "dark" ? "white" : "#0A0A0A"}
           />
         </svg>
-      </ActionIcon>
+      </ActionIcon> */}
 
+      <SignOut />
       <div className='flex items-center space-x-3'>
-        <Avatar />
+        <Avatar src={user?.image} />
         <div>
-          <h6 className='font-semibold text-sm'>Eno-obong Akpan</h6>
-          <p className='text-xs'>eno.a@ai.ui</p>
+          <h6 className='font-semibold text-sm'>{user?.name}</h6>
+          <p className='text-xs'>{user?.email}</p>
         </div>
       </div>
     </div>
