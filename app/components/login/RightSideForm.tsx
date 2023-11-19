@@ -174,7 +174,7 @@ async function RightSideForm() {
 
             <div className='flex justify-center items-center space-x-2 text-sm pt-2'>
               <p>Don’t have an account?</p>
-              <Link href={"/register"}> Sign Up</Link>
+              <Link href={"/auth/register"}> Sign Up</Link>
             </div>
           </div>
         </div>

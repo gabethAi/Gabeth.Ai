@@ -170,7 +170,7 @@ function RightSideForm() {
           </p>
           <div className='flex justify-center items-center space-x-2 text-sm'>
             <p>Already have an account?</p>
-            <Link href={"/login"}> Sign In</Link>
+            <Link href={"/auth/login"}> Sign In</Link>
           </div>
         </div>
       </Card>
