@@ -15,6 +15,7 @@ export const theme = createTheme({
     Button: Button.extend({
       defaultProps: {
         size: "md",
+        variant: "outline",
       },
     }),
     TextInput: TextInput.extend({
