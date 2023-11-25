@@ -8,6 +8,8 @@ import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { theme } from "./lib/theme";
 
+import ReactQueryProvider from "@/app/context/QueryClientProvider";
+
 import { GeistSans } from "geist/font";
 
 export const metadata: Metadata = {
@@ -31,8 +33,9 @@ export default function RootLayout({
       <body>
         <MantineProvider theme={theme} defaultColorScheme='auto'>
           <Notifications />
-          {children}
+          <ReactQueryProvider>{children}</ReactQueryProvider>
         </MantineProvider>
+
         <Analytics />
       </body>
     </html>
