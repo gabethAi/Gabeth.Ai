@@ -2,16 +2,18 @@ import { signIn } from "@/app/lib/auth";
 import { Button } from "@mantine/core";
 import React from "react";
 
-function GoogleSignInButton() {
+interface Props {
+  readonly redirectTo?: string;
+}
+
+function GoogleSignInButton({ redirectTo = "/chat" }: Props) {
   return (
     <form
       action={async () => {
         "use server";
-        const url = await signIn("google");
-
-        console.log(url, "url");
-        // TODO: fix in next-auth
-        // redirect(url.replace("signin", "api/auth/signin"));
+        await signIn("google", {
+          redirectTo: redirectTo,
+        });
       }}>
       <Button
         fullWidth
