@@ -1,25 +1,23 @@
 import { Metadata } from "next";
-import React from "react";
 import LeftSideIllustration from "../../components/login/LeftSideIllustration";
 import RightSideForm from "../../components/login/RightSideForm";
-import { auth } from "@/app/lib/auth";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Gabeth.Ai | Login",
   description: " Login to Gabeth.Ai to get started.",
 };
 
-async function Login() {
-  const session = await auth();
+interface Props {
+  readonly searchParams: { [key: string]: string | string[] | undefined };
+}
 
-  if (session?.user) {
-    redirect("/chat");
-  }
+async function Login({ searchParams }: Props): Promise<JSX.Element> {
+  const path = searchParams.next ? searchParams.next : "/chat";
+
   return (
     <div className='grid grid-cols-1 lg:grid-cols-2 min-h-screen'>
       <LeftSideIllustration />
-      <RightSideForm />
+      <RightSideForm path={path as string} />
     </div>
   );
 }
