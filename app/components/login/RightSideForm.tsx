@@ -5,7 +5,11 @@ import Link from "next/link";
 import { signIn, auth } from "@/app/lib/auth";
 import GoogleSignInButton from "../ui/GoogleSignInButton";
 
-async function RightSideForm() {
+interface Props {
+  readonly path?: string;
+}
+
+async function RightSideForm({ path }: Props): Promise<JSX.Element> {
   async function signInUser(formData: FormData) {
     "use server";
 
@@ -14,10 +18,8 @@ async function RightSideForm() {
     const email = formData.get("email");
     const password = formData.get("password");
 
-    // console.log(formData, "form data");
-
     const result = await signIn("Credentials", {
-      redirect: false,
+      redirectTo: path,
       email: email,
       password: password,
     });
@@ -25,9 +27,9 @@ async function RightSideForm() {
     console.log(result, "result");
   }
   return (
-    <div className='flex flex-col items-center justify-center h-full mx-auto'>
+    <div className='flex flex-col items-center justify-center h-full mx-auto px-4'>
       <Card shadow='lg' radius={"md"} p={"xl"}>
-        <div className='min-w-[420px]'>
+        <div className='sm:min-w-[420px]'>
           <div className='flex flex-col justify-center items-center gap-y-2 py-4'>
             <Link href={"/"} className='pl-28'>
               <Logo size={200} />
@@ -65,23 +67,23 @@ async function RightSideForm() {
                   <path
                     d='M12.5 22.7222C18.0228 22.7222 22.5 18.245 22.5 12.7222C22.5 7.19932 18.0228 2.72217 12.5 2.72217C6.97715 2.72217 2.5 7.19932 2.5 12.7222C2.5 18.245 6.97715 22.7222 12.5 22.7222Z'
                     stroke='#DDDDDD'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
                   />
                   <path
                     d='M9 12.7222H15'
                     stroke='#DDDDDD'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
                   />
                   <path
                     d='M13 15.7222L16 12.7222L13 9.72217'
                     stroke='#DDDDDD'
-                    stroke-width='1.5'
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
                   />
                 </svg>
               }>
@@ -92,7 +94,7 @@ async function RightSideForm() {
           <Divider label='or' labelPosition='center' my={"lg"} />
 
           <div className='flex flex-col space-y-4'>
-            <GoogleSignInButton />
+            <GoogleSignInButton redirectTo={path} />
             <Button
               rightSection={
                 <svg

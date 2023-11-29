@@ -2,14 +2,26 @@
 import { Button, TextInput } from "@mantine/core";
 import React from "react";
 import { BiSend } from "react-icons/bi";
-import { UseChatHelpers, useChat } from "ai/react";
+import { UseChatHelpers } from "ai/react";
 import { useRouter } from "next/navigation";
 import { useEnterSubmit } from "@/app/lib/hooks/useEnterSubmit";
 
 export interface PromptProps
   extends Pick<UseChatHelpers, "input" | "handleInputChange" | "handleSubmit"> {
-  isLoading: boolean;
+  readonly isLoading: boolean;
 }
+
+/**
+ * Renders a form for user prompts.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.input - The input value.
+ * @param {boolean} props.isLoading - Indicates if the form is in a loading state.
+ * @param {Function} props.handleSubmit - The function to handle form submission.
+ * @param {Function} props.handleInputChange - The function to handle input change.
+ * @returns {JSX.Element} The rendered form component.
+ */
 
 function PromptForm({
   input,
@@ -33,13 +45,20 @@ function PromptForm({
         ref={inputRef}
         size='lg'
         value={input}
+        variant='default'
         onKeyDown={() => onKeyDown}
         onChange={handleInputChange}
         placeholder='Ask me anything...'
         rightSection={
-          <Button loading={isLoading} fullWidth size='md' type='submit'>
+          <Button
+            variant='transparent'
+            loading={isLoading}
+            size='sm'
+            type='submit'>
             <BiSend />
           </Button>
+
+          // <BiSend />
         }
       />
     </form>

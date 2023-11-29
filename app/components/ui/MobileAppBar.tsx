@@ -3,7 +3,7 @@
 import { ActionIcon, Divider, Drawer } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { BiMenu, BiPlus } from "react-icons/bi";
-import { MobileSideBar } from "./SideBar";
+// import { MobileSideBar } from "./SideBar";
 
 function MobileAppBar() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -21,7 +21,7 @@ function MobileAppBar() {
         <Divider />
       </header>
 
-      <MobileSideBar open={opened} onClose={close} />
+      {/* <MobileSideBar open={opened} onClose={close} /> */}
     </>
   );
 }

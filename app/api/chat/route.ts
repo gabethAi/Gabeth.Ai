@@ -1,8 +1,10 @@
 import OpenAI from "openai";
-import { OpenAIStream, StreamingTextResponse } from "ai";
-import { nanoid } from "@/app/lib/utils";
+import { OpenAIStream, StreamingTextResponse, nanoid } from "ai";
 import { kv } from "@vercel/kv";
 import { getUser } from "@/app/lib/actions";
+import { redirect } from "next/navigation";
+import { getChat } from "@/app/utils/actions";
+import { revalidatePath } from "next/cache";
 
 export const runtime = "edge";
 
@@ -16,6 +18,9 @@ export async function POST(req: Request) {
   const user = await getUser();
 
   const userId = user?.email;
+  const id = json.id || nanoid(10);
+  const title = json.messages[0].content.substring(0, 100);
+  const createdAt = Date.now();
 
   if (!userId) {
     return new Response("Unauthorized", {
@@ -29,14 +34,18 @@ export async function POST(req: Request) {
     stream: true,
     messages: messages,
     temperature: 0.7,
+    max_tokens: 500,
+    top_p: 1,
+    frequency_penalty: 1,
+    presence_penalty: 1,
   });
 
   // Convert the response into a friendly text-stream
   const stream = OpenAIStream(response, {
-    async onCompletion(completion) {
-      const title = json.messages[0].content.substring(0, 100);
-      const id = json.id ?? nanoid();
-      const createdAt = Date.now();
+    async onCompletion(completion) {},
+    async onFinal(completion) {
+      const chat = await getChat(id, userId);
+
       const path = `/chat/${id}`;
       const payload = {
         id,
@@ -58,6 +67,14 @@ export async function POST(req: Request) {
         score: createdAt,
         member: `chat:${id}`,
       });
+
+      if (!chat) {
+        console.log("chat not found");
+        revalidatePath(`/chat`);
+        // const response = await fetch(`/api/revalidate?path=/chat`);
+
+        // console.log(response, "response");
+      }
     },
   });
 
