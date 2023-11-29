@@ -1,72 +1,44 @@
 "use client";
 import { Message } from "ai";
-import { useChat } from "ai/react";
 import React from "react";
-import ChatPanel from "./ChatPanel";
-import EmptyScreen from "./EmptyScreen";
 import ChatList from "./ChatList";
 
-import { notifications } from "@mantine/notifications";
 import ChatScrollAnchor from "./ChatScrollAnchor";
+import { ScrollArea } from "@mantine/core";
+import { cn } from "@/app/lib/utils";
+import useChatManager from "@/app/lib/hooks/useChatManager";
 
 export interface ChatProps extends React.ComponentProps<"div"> {
   readonly initialMessages?: Message[];
   readonly id?: string;
 }
 
+/**
+ * Renders the chat wrapper component.
+ *
+ * @param id - The ID of the chat.
+ * @param initialMessages - The initial messages to display in the chat.
+ * @param className - The CSS class name for the chat wrapper.
+ * @returns The rendered chat wrapper component.
+ */
+
 function ChatWrapper({ id, initialMessages, className }: ChatProps) {
-  const {
-    messages,
-    append,
-    reload,
-    stop,
-    isLoading,
-    input,
-    setInput,
-    handleInputChange,
-    handleSubmit,
-  } = useChat({
-    api: "/api/chat",
-    onResponse(response) {
-      if (response.status === 401) {
-        notifications.show({
-          color: "red",
-          title: "An error occurred",
-          message: response.statusText,
-        });
-      }
-    },
-    onFinish(message) {
-      console.log(message, "message from onFinish");
-    },
-    onError(error) {
-      console.log(error, "error");
-    },
+  const { messages, isLoading } = useChatManager({
+    id: id ?? "",
+    initialMessages: initialMessages,
   });
 
-  return (
-    <>
-      {messages.length ? (
-        <div>
-          <ChatList messages={messages} />
-          <ChatScrollAnchor trackVisibility={isLoading} />
-        </div>
-      ) : (
-        <EmptyScreen setInput={setInput} />
-      )}
+  if (!messages) {
+    return null;
+  }
 
-      <ChatPanel
-        id={id}
-        isLoading={isLoading}
-        stop={stop}
-        append={append}
-        reload={reload}
-        messages={messages}
-        input={input}
-        handleInputChange={handleInputChange}
-        handleSubmit={handleSubmit}
-      />
-    </>
+  return (
+    <div className={cn("pt-4 md:pt-10 pb-10", className)}>
+      <ScrollArea h={"75dvh"}>
+        <ChatList messages={messages} />
+        <ChatScrollAnchor trackVisibility={isLoading} />
+      </ScrollArea>
+    </div>
   );
 }
 

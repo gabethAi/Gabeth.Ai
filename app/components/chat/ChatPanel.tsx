@@ -3,71 +3,64 @@
 import PromptForm from "../ui/PromptForm";
 import BottomBar from "../ui/BottomBar";
 import { Button } from "@mantine/core";
-import { UseChatHelpers } from "ai/react";
 import { BiRefresh, BiStop } from "react-icons/bi";
+import useChatManager from "@/app/lib/hooks/useChatManager";
+import { Message } from "ai";
 
-export interface ChatPanelProps
-  extends Pick<
-    UseChatHelpers,
-    | "append"
-    | "isLoading"
-    | "reload"
-    | "messages"
-    | "stop"
-    | "input"
-    | "handleInputChange"
-    | "handleSubmit"
-  > {
+export interface ChatPanelProps {
   id?: string;
+  initialMessages?: Message[];
+  onFinish?: (message: Message) => void;
 }
 
-function ChatPanel({
-  id,
-  isLoading,
-  stop,
-  append,
-  reload,
-  input,
-  handleInputChange,
-  handleSubmit,
-  messages,
-}: ChatPanelProps) {
+function ChatPanel({ id, initialMessages, onFinish }: ChatPanelProps) {
+  const {
+    isLoading,
+    messages,
+    reload,
+    stop,
+    handleSubmit,
+    input,
+    handleInputChange,
+  } = useChatManager({
+    id: id || "",
+    initialMessages: initialMessages,
+    onFinish: onFinish,
+  });
   return (
-    <div className='bg-[#F2F2F2] dark:bg-[#1D1D1D] h-screen'>
-      <div className='fixed inset-x-0 bottom-0 bg-gradient-to-b from-muted/10 from-10% to-muted/30 to-50%'>
-        {/* <ButtonScrollToBottom /> */}
-        <div className='mx-auto sm:max-w-2xl sm:px-4'>
-          <div className='flex h-10 items-center justify-center'>
-            {isLoading ? (
+    <div className='p-2'>
+      <div className='mx-auto sm:max-w-2xl sm:px-4'>
+        <div className='flex h-10 items-center justify-end'>
+          {isLoading ? (
+            <Button
+              variant='light'
+              onClick={() => stop()}
+              className='bg-background'>
+              <BiStop className='mr-2' />
+              Stop generating
+            </Button>
+          ) : (
+            messages?.length > 0 && (
               <Button
-                variant='outline'
-                onClick={() => stop()}
+                variant='light'
+                onClick={() => reload()}
                 className='bg-background'>
-                <BiStop className='mr-2' />
-                Stop generating
+                <BiRefresh className='mr-2' />
+                Regenerate response
               </Button>
-            ) : (
-              messages?.length > 0 && (
-                <Button
-                  variant='outline'
-                  onClick={() => reload()}
-                  className='bg-background'>
-                  <BiRefresh className='mr-2' />
-                  Regenerate response
-                </Button>
-              )
-            )}
-          </div>
-          <div className='space-y-4 border-t bg-background px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4'>
-            <PromptForm
-              handleSubmit={handleSubmit}
-              input={input}
-              handleInputChange={handleInputChange}
-              isLoading={isLoading}
-            />
+            )
+          )}
+        </div>
+        <div className='space-y-4 px-4 py-2 md:py-4'>
+          <PromptForm
+            handleSubmit={handleSubmit}
+            input={input}
+            handleInputChange={handleInputChange}
+            isLoading={isLoading}
+          />
 
+          <div className='hidden sm:block'>
             <BottomBar />
-            {/* <FooterText className="hidden sm:block" /> */}
           </div>
         </div>
       </div>
