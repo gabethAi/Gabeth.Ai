@@ -36,36 +36,24 @@ export const conversations = pgTable("conversations", {
   userId: integer("userId")
     .references(() => users.id)
     .notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
-
-// export const messages = pgTable("messages", {
-//   // id: text("id").primaryKey(),
-//   // conversationId: integer("conversationId")
-//   //   .references(() => conversations.id)
-//   //   .notNull(),
-//   type: text("type").notNull(),
-//   text: text("text").notNull(),
-//   timestamp: timestamp("timestamp").defaultNow().notNull(),
-//   // reactions: integer("reactions"),
-//   // feedback: text("feedback"),
-// });
 
 export const messages = pgTable("messages", {
   id: serial("id").primaryKey(),
   conversationId: integer("conversationId")
     .references(() => conversations.id)
     .notNull(),
-  sender: text("sender").notNull(), // 'user' or 'ai'
-  type: text("type").notNull(),
-  text: text("text").notNull(),
-  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  role: text("role").notNull(), // 'user' or 'assistant'
+  content: text("content").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
 export const reactions = pgTable("reactions", {
   id: serial("id").primaryKey(),
-  // messageId: integer("messageId")
-  //   .references(() => messages.id)
-  //   .notNull(),
+  messageId: integer("messageId")
+    .references(() => messages.id)
+    .notNull(),
   type: text("type").notNull(),
   count: integer("count").default(0).notNull(),
 });

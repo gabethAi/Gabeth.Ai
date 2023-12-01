@@ -1,4 +1,5 @@
 import * as schema from "./schema";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 import { sql } from "@vercel/postgres";
 
@@ -6,3 +7,10 @@ import { sql } from "@vercel/postgres";
 export const db = drizzle(sql, {
   schema,
 });
+
+const migrateDb = async () => {
+  console.log("Migrating DB...");
+  await migrate(db, { migrationsFolder: "drizzle" });
+};
+
+migrateDb();
