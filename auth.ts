@@ -3,13 +3,16 @@ import NextAuth from "next-auth";
 // import Apple from "next-auth/providers/apple"
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 import type { NextAuthConfig } from "next-auth";
-import { db } from "./lib/db/drizzle";
 
 export const config = {
-  // adapter: DrizzleAdapter(db),
+  adapter: PrismaAdapter(prisma),
   providers: [
     // Apple,
     GitHub,
@@ -34,7 +37,7 @@ export const config = {
     },
 
     signIn({ user, account, profile, email, credentials }) {
-      console.log("signIn", { user, account, profile, email, credentials });
+      // console.log("signIn", { user, account, profile, email, credentials });
       return true;
     },
   },
