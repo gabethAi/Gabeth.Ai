@@ -6,6 +6,10 @@ import { eq } from "drizzle-orm";
 import { auth, signOut } from "./auth";
 import { Message } from "ai";
 
+import { v4 as uuidv4 } from "uuid";
+
+const id = uuidv4();
+
 /**
  * Retrieves the user information.
  * @returns {Promise<User>} A promise that resolves to the user object.
@@ -63,10 +67,14 @@ export async function registerUser({
   email: string;
   password: string;
 }): Promise<QueryResult<User>> {
-  return db.insert(users).values({
+  const result = db.insert(users).values({
     email: email,
     hashedpassword: password,
   });
+
+  // console.log(result, "result from registerUser");
+
+  return result;
 }
 
 // function to authenticate user login
@@ -113,31 +121,31 @@ export async function logoutUser() {
 //   });
 // }
 
-export async function saveMessageToConversation({
-  conversationId,
-  sender,
-  type,
-  text,
-}: {
-  conversationId: number;
-  sender: string;
-  type: string;
-  text: string;
-}) {
-  try {
-    const newMessage = await db.insert(messages).values({
-      conversationId: conversationId,
-      sender: sender,
-      type: type,
-      text: text,
-    });
-    console.log(newMessage, "newMessage");
+// export async function saveMessageToConversation({
+//   conversationId,
+//   sender,
+//   type,
+//   text,
+// }: {
+//   conversationId: number;
+//   sender: string;
+//   type: string;
+//   text: string;
+// }) {
+//   try {
+//     const newMessage = await db.insert(messages).values({
+//       conversationId: conversationId,
+//       sender: sender,
+//       type: type,
+//       text: text,
+//     });
+//     console.log(newMessage, "newMessage");
 
-    return newMessage;
-  } catch (error) {
-    console.error("Error saving message:", error);
-  }
-}
+//     return newMessage;
+//   } catch (error) {
+//     console.error("Error saving message:", error);
+//   }
+// }
 
 async function saveConversation(message: Message) {
   try {

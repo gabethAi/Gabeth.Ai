@@ -13,4 +13,4 @@ const migrateDb = async () => {
   await migrate(db, { migrationsFolder: "drizzle" });
 };
 
-migrateDb();
+// migrateDb();

@@ -1,12 +1,12 @@
 {
   "version": "5",
-  "dialect": "pg",
+  "dialect": "mysql",
   "entries": [
     {
       "idx": 0,
       "version": "5",
-      "when": 1700428079925,
-      "tag": "0000_premium_kronos",
+      "when": 1701398667704,
+      "tag": "0000_glossy_sleeper",
       "breakpoints": true
     }
   ]

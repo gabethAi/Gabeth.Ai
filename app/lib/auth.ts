@@ -42,6 +42,7 @@ export const {
   },
   callbacks: {
     async signIn({ account, profile, user, credentials }) {
+      console.log(account, profile, user, credentials, "signIn");
       // console.log(user, credentials, "user from signIn");
       if (account?.provider === "google" && profile?.email_verified === true) {
         // Create a user object
