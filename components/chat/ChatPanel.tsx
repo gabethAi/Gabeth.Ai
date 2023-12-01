@@ -4,7 +4,7 @@ import PromptForm from "../ui/PromptForm";
 import BottomBar from "../ui/BottomBar";
 import { Button } from "@mantine/core";
 import { BiRefresh, BiStop } from "react-icons/bi";
-import useChatManager from "@/app/lib/hooks/useChatManager";
+import useChatManager from "@/lib/hooks/useChatManager";
 import { Message } from "ai";
 
 export interface ChatPanelProps {

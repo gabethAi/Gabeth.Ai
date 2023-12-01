@@ -1,6 +1,6 @@
 import { Avatar } from "@mantine/core";
 import { SignOut } from "./AuthComponent";
-import { User } from "@/app/lib/types";
+import { User } from "@/lib/types";
 
 import { PiSignOut } from "react-icons/pi";
 

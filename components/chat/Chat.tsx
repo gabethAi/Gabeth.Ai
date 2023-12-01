@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import ChatWrapper from "./ChatWrapper";
 import ChatPanel from "./ChatPanel";
-import useChatManager from "@/app/lib/hooks/useChatManager";
+import useChatManager from "@/lib/hooks/useChatManager";
 import EmptyScreen from "./EmptyScreen";
 
 /**

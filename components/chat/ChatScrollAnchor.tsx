@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import { useIntersection } from "@mantine/hooks";
-import { useAtBottom } from "@/app/lib/hooks/UseAtBottom";
+import { useAtBottom } from "@/lib/hooks/UseAtBottom";
 
 interface ChatScrollAnchorProps {
   trackVisibility?: boolean;

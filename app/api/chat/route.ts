@@ -1,9 +1,9 @@
 import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse, nanoid } from "ai";
 import { kv } from "@vercel/kv";
-import { getUser } from "@/app/lib/actions";
+import { getUser } from "@/lib/actions";
 import { redirect } from "next/navigation";
-import { getChat } from "@/app/utils/actions";
+import { getChat } from "@/utils/actions";
 import { revalidatePath } from "next/cache";
 
 export const runtime = "edge";

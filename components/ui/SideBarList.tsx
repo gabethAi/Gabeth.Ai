@@ -1,7 +1,7 @@
-import { removeChat, shareChat } from "@/app/utils/actions";
+import { removeChat, shareChat } from "@/utils/actions";
 import SideBarItem from "./SideBarItem";
 import SideBarActions from "./SideBarActions";
-import { Chat } from "@/app/lib/types";
+import { Chat } from "@/lib/types";
 import { ScrollArea } from "@mantine/core";
 
 export async function SidebarList({ chats }: { chats: Chat[] }) {

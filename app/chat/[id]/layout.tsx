@@ -1,6 +1,6 @@
-import ChatPanel from "@/app/components/chat/ChatPanel";
-import { getUser } from "@/app/lib/actions";
-import { getChat } from "@/app/utils/actions";
+import ChatPanel from "@/components/chat/ChatPanel";
+import { getUser } from "@/lib/actions";
+import { getChat } from "@/utils/actions";
 import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import React from "react";

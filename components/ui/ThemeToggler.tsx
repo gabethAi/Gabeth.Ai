@@ -1,6 +1,6 @@
 "use client";
 
-import useThemeToggler from "@/app/lib/hooks/useThemeToggler";
+import useThemeToggler from "@/lib/hooks/useThemeToggler";
 import { ActionIcon, Button, Tooltip } from "@mantine/core";
 import { BiMoon, BiSun } from "react-icons/bi";
 

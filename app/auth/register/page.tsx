@@ -1,8 +1,8 @@
-import RightSideForm from "../../components/register/RightSideForm";
-import LeftSideIllustration from "../../components/register/LeftSideIllustration";
+import RightSideForm from "../../../components/register/RightSideForm";
+import LeftSideIllustration from "../../../components/register/LeftSideIllustration";
 import { Metadata } from "next";
-import { auth, signOut } from "@/app/lib/auth";
-import { logoutUser } from "@/app/lib/actions";
+import { auth, signOut } from "@/lib/auth";
+import { logoutUser } from "@/lib/actions";
 
 export const metadata: Metadata = {
   title: "Gabeth.Ai | Register",

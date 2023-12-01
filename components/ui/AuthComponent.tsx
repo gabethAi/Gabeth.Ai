@@ -1,5 +1,5 @@
-import { logoutUser } from "@/app/lib/actions";
-import { signIn, signOut } from "@/app/lib/auth";
+import { logoutUser } from "@/lib/actions";
+import { signIn, signOut } from "@/lib/auth";
 import { Button } from "@mantine/core";
 
 interface AuthComponentProps {

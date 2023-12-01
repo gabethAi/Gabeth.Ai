@@ -2,7 +2,7 @@ import { Button, Card, Divider, PasswordInput, TextInput } from "@mantine/core";
 import React from "react";
 import Logo from "../shared/Logo";
 import Link from "next/link";
-import { signIn, auth } from "@/app/lib/auth";
+import { signIn, auth } from "@/lib/auth";
 import GoogleSignInButton from "../ui/GoogleSignInButton";
 
 interface Props {

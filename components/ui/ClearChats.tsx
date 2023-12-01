@@ -1,4 +1,4 @@
-import { clearChats } from "@/app/utils/actions";
+import { clearChats } from "@/utils/actions";
 import { Button } from "@mantine/core";
 import React from "react";
 

@@ -6,9 +6,9 @@ import "@mantine/core/styles.css";
 
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
-import { theme } from "./lib/theme";
+import { theme } from "../lib/theme";
 
-import ReactQueryProvider from "@/app/context/QueryClientProvider";
+import ReactQueryProvider from "@/context/QueryClientProvider";
 
 import { GeistSans } from "geist/font";
 

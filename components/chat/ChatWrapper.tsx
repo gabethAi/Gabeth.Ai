@@ -5,8 +5,8 @@ import ChatList from "./ChatList";
 
 import ChatScrollAnchor from "./ChatScrollAnchor";
 import { ScrollArea } from "@mantine/core";
-import { cn } from "@/app/lib/utils";
-import useChatManager from "@/app/lib/hooks/useChatManager";
+import { cn } from "@/lib/utils";
+import useChatManager from "@/lib/hooks/useChatManager";
 
 export interface ChatProps extends React.ComponentProps<"div"> {
   readonly initialMessages?: Message[];

@@ -2,9 +2,9 @@ import { Button, Card, Divider, PasswordInput, TextInput } from "@mantine/core";
 import Logo from "../shared/Logo";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { auth } from "@/app/lib/auth";
+import { auth } from "@/lib/auth";
 import GoogleSignInButton from "../ui/GoogleSignInButton";
-import { registerUser } from "@/app/lib/actions";
+import { registerUser } from "@/lib/actions";
 
 /**
  * Renders the right side form for user registration.

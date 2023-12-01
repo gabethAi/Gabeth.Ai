@@ -1,5 +1,5 @@
 "use client";
-import { Chat, ServerActionResult } from "@/app/lib/types";
+import { Chat, ServerActionResult } from "@/lib/types";
 import React from "react";
 import { Popover, Text, Button, ActionIcon } from "@mantine/core";
 

@@ -1,4 +1,4 @@
-import { getUser } from "@/app/lib/actions";
+import { getUser } from "@/lib/actions";
 import { kv } from "@vercel/kv";
 import { NextResponse } from "next/server";
 

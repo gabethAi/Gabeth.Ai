@@ -1,6 +1,6 @@
-import ChatWrapper from "@/app/components/chat/ChatWrapper";
-import { getUser } from "@/app/lib/actions";
-import { getChat } from "@/app/utils/actions";
+import ChatWrapper from "@/components/chat/ChatWrapper";
+import { getUser } from "@/lib/actions";
+import { getChat } from "@/utils/actions";
 import { ScrollArea } from "@mantine/core";
 import { ChatPageProps } from "./layout";
 import { notFound } from "next/navigation";

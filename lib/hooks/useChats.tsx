@@ -1,5 +1,5 @@
 "use client";
-import { getChats } from "@/app/utils/actions";
+import { getChats } from "@/utils/actions";
 import { useQuery } from "@tanstack/react-query";
 import { getUser } from "../actions";
 

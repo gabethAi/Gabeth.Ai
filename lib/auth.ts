@@ -1,12 +1,6 @@
 import NextAuth, { type DefaultSession } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { NextResponse } from "next/server";
-import { db } from "./db/drizzle";
-import { redirect } from "next/navigation";
 import { kv } from "@vercel/kv";
-import { getUser } from "./actions";
 import { fetchUser } from "../utils/actions";
 
 declare module "next-auth" {
@@ -75,7 +69,7 @@ export const {
     },
 
     jwt({ token, profile }) {
-      // console.log("token", token);
+      console.log("token", token);
       // console.log("profile", profile);
       if (profile) {
         token.id = profile.id;
@@ -85,6 +79,21 @@ export const {
     },
     authorized({ request, auth }) {
       return !!auth?.user; // this ensures there is a logged in user for -every- request
+    },
+    session(params) {
+      console.log(params, "session");
+      return params.session;
+    },
+  },
+  logger: {
+    debug(message) {
+      // console.log(message, "debug");
+    },
+    warn(message) {
+      console.log(message, "warn");
+    },
+    error(message) {
+      console.log(message, "error");
     },
   },
 });

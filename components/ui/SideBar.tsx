@@ -16,16 +16,16 @@ import { motion } from "framer-motion";
 import { useDisclosure } from "@mantine/hooks";
 import UpgradeButton from "./UpgradeButton";
 import ProfileCard from "./ProfileCard";
-import useThemeToggler from "@/app/lib/hooks/useThemeToggler";
+import useThemeToggler from "@/lib/hooks/useThemeToggler";
 import { SignOut } from "./AuthComponent";
 import ClientComponent from "../shared/ClientComponent";
-import { getChats } from "@/app/utils/actions";
-import { getUser } from "@/app/lib/actions";
+import { getChats } from "@/utils/actions";
+import { getUser } from "@/lib/actions";
 
 import { kv } from "@vercel/kv";
-import { Chat, User } from "@/app/lib/types";
+import { Chat, User } from "@/lib/types";
 import { SidebarList } from "./SideBarList";
-import useChats from "@/app/lib/hooks/useChats";
+import useChats from "@/lib/hooks/useChats";
 
 import { MdOutlineLiveHelp } from "react-icons/md";
 import { FiHelpCircle } from "react-icons/fi";

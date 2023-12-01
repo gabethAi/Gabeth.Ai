@@ -1,6 +1,6 @@
 "use client";
-import { Chat } from "@/app/lib/types";
-import { cn } from "@/app/lib/utils";
+import { Chat } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { NavLink } from "@mantine/core";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

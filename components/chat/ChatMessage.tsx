@@ -3,13 +3,13 @@ import { Message } from "ai";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/lib/utils";
 import { MemoizedReactMarkdown } from "../ui/MemoizedReactMarkdown";
 import CodeBlock from "../ui/CodeBlock";
 import { ChatMessageActions } from "./ChatMessageActions";
 import { Avatar } from "@mantine/core";
-import { getUser } from "@/app/lib/actions";
-import useUser from "@/app/lib/hooks/useUser";
+import { getUser } from "@/lib/actions";
+import useUser from "@/lib/hooks/useUser";
 // import { IconOpenAI, IconUser } from '@/components/ui/icons'
 // import { ChatMessageActions } from '@/components/chat-message-actions'
 

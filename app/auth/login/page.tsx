@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import LeftSideIllustration from "../../components/login/LeftSideIllustration";
-import RightSideForm from "../../components/login/RightSideForm";
+import LeftSideIllustration from "../../../components/login/LeftSideIllustration";
+import RightSideForm from "../../../components/login/RightSideForm";
 
 export const metadata: Metadata = {
   title: "Gabeth.Ai | Login",

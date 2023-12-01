@@ -1,7 +1,7 @@
 import { Divider } from "@mantine/core";
 import { SidebarList } from "../ui/SideBarList";
-import { getUser } from "@/app/lib/actions";
-import { getChats } from "@/app/utils/actions";
+import { getUser } from "@/lib/actions";
+import { getChats } from "@/utils/actions";
 import ClearChats from "../ui/ClearChats";
 
 async function ConversationList() {

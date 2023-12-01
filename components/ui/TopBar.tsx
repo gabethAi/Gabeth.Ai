@@ -1,6 +1,6 @@
 "use client";
 import { Badge, Button, Tooltip } from "@mantine/core";
-import useThemeToggler from "@/app/lib/hooks/useThemeToggler";
+import useThemeToggler from "@/lib/hooks/useThemeToggler";
 import { BiMoon, BiSun } from "react-icons/bi";
 
 function TopBar() {

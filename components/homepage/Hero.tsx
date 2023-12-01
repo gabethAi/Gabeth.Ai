@@ -1,6 +1,6 @@
 import React from "react";
 
-import Button from "@/app/components/shared/Button";
+import Button from "@/components/shared/Button";
 import Image from "next/image";
 
 import heroImage from "@/app/assets/images/hero-ai.png";

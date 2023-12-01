@@ -4,7 +4,7 @@ import React from "react";
 import { BiSend } from "react-icons/bi";
 import { UseChatHelpers } from "ai/react";
 import { useRouter } from "next/navigation";
-import { useEnterSubmit } from "@/app/lib/hooks/useEnterSubmit";
+import { useEnterSubmit } from "@/lib/hooks/useEnterSubmit";
 
 export interface PromptProps
   extends Pick<UseChatHelpers, "input" | "handleInputChange" | "handleSubmit"> {

@@ -1,7 +1,7 @@
 "use client";
 
-import { useCopyToClipboard } from "@/app/lib/hooks/UseCopytoClipboard";
-import { cn } from "@/app/lib/utils";
+import { useCopyToClipboard } from "@/lib/hooks/UseCopytoClipboard";
+import { cn } from "@/lib/utils";
 import { Button, CheckIcon } from "@mantine/core";
 import { type Message } from "ai";
 import { BiCopy } from "react-icons/bi";
