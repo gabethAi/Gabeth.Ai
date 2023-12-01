@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { auth } from "./lib/auth";
+import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
 export default auth(async (req) => {

@@ -2,7 +2,7 @@ import MobileAppBar from "../../components/ui/MobileAppBar";
 import { DesktopSideBar } from "../../components/ui/SideBar";
 import ThemeToggler from "../../components/ui/ThemeToggler";
 import ShareChat from "../../components/ui/ShareChat";
-import { auth } from "../../lib/auth";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 export default async function Layout({

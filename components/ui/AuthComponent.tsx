@@ -1,37 +1,51 @@
-import { logoutUser } from "@/lib/actions";
-import { signIn, signOut } from "@/lib/auth";
+import { signIn, signOut } from "@/auth";
 import { Button } from "@mantine/core";
 
-interface AuthComponentProps {
-  children: React.ReactNode;
-  props?: React.ComponentPropsWithRef<typeof Button>;
+interface Props {
+  readonly provider?: string;
+  readonly children?: React.ReactNode;
+  readonly props?: React.ComponentPropsWithRef<typeof Button>;
+  readonly rightSection?: React.ReactNode;
+  readonly redirectTo?: string;
 }
 
 export function SignIn({
   provider,
-  ...props
-}: { provider?: string } & React.ComponentPropsWithRef<typeof Button>) {
-  return (
-    <form
-      action={async () => {
-        const url = await signIn(provider, { redirect: false });
-        // TODO: fix in next-auth
-        // redirect(url.replace("signin", "api/auth/signin"));
-      }}>
-      <Button {...props}>Sign In</Button>
-    </form>
-  );
-}
-
-export function SignOut({ props, children }: AuthComponentProps) {
+  children,
+  props,
+  rightSection,
+  redirectTo = "/chat",
+}: Props) {
   return (
     <form
       action={async () => {
         "use server";
-        await logoutUser();
+        await signIn(provider, {
+          redirectTo: redirectTo,
+        });
+      }}>
+      <Button type='submit' fullWidth rightSection={rightSection} {...props}>
+        {children ?? "Sign In"}
+      </Button>
+    </form>
+  );
+}
+
+export function SignOut({
+  children,
+  props,
+}: {
+  readonly children?: React.ReactNode;
+  readonly props?: React.ComponentPropsWithRef<typeof Button>;
+}) {
+  return (
+    <form
+      action={async () => {
+        "use server";
+        await signOut();
       }}
-      className=''>
-      <Button variant='transparent' type='submit' {...props}>
+      className='w-full'>
+      <Button variant='transparent' type='submit' fullWidth {...props}>
         {children ?? "Sign Out"}
       </Button>
     </form>

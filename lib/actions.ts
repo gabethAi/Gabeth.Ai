@@ -3,7 +3,7 @@ import { QueryResult } from "@vercel/postgres";
 import { User, conversations, messages, users } from "./db/schema";
 import { db } from "./db/drizzle";
 import { eq } from "drizzle-orm";
-import { auth, signOut } from "./auth";
+import { auth, signOut } from "@/auth";
 import { Message } from "ai";
 
 import { v4 as uuidv4 } from "uuid";
