@@ -1,16 +1,14 @@
 import * as schema from "./schema";
-import { migrate } from "drizzle-orm/postgres-js/migrator";
-import { drizzle } from "drizzle-orm/vercel-postgres";
-import { sql } from "@vercel/postgres";
+import { drizzle } from "drizzle-orm/planetscale-serverless";
+import { connect } from "@planetscale/database";
 
-// Use this object to send drizzle queries to your DB
-export const db = drizzle(sql, {
-  schema,
+// create the connection
+export const connection = connect({
+  host: process.env["DATABASE_HOST"],
+  username: process.env["DATABASE_USERNAME"],
+  password: process.env["DATABASE_PASSWORD"],
 });
 
-const migrateDb = async () => {
-  console.log("Migrating DB...");
-  await migrate(db, { migrationsFolder: "drizzle" });
-};
-
-// migrateDb();
+export const db = drizzle(connection, {
+  schema: schema,
+});

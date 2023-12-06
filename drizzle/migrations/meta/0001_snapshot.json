@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "8d165782-fb67-45c5-820b-450c6d3e53c8",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "a8a8b1b3-1ade-4c6b-9b7a-027c807498f2",
+  "prevId": "8d165782-fb67-45c5-820b-450c6d3e53c8",
   "tables": {
     "account": {
       "name": "account",
@@ -136,6 +136,27 @@
           "notNull": true,
           "autoincrement": false,
           "default": "(now())"
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "sharePath": {
+          "name": "sharePath",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},

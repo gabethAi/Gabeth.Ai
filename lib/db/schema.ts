@@ -1,98 +1,111 @@
 import {
-  integer,
-  pgTable,
-  primaryKey,
-  serial,
-  text,
+  int,
   timestamp,
-  uniqueIndex,
-} from "drizzle-orm/pg-core";
+  mysqlTable,
+  primaryKey,
+  varchar,
+  longtext,
+} from "drizzle-orm/mysql-core";
 
 import type { AdapterAccount } from "@auth/core/adapters";
 
-export const users = pgTable(
-  "users",
-  {
-    id: serial("id").primaryKey().unique(),
-    name: text("name"),
-    email: text("email").notNull(),
-    emailVerified: timestamp("emailVerified", { mode: "date" }),
-    image: text("image"),
-    createdat: timestamp("createdat").defaultNow().notNull(),
-    username: text("username"),
-    hashedpassword: text("hashedpassword").notNull(),
-  },
-  (users) => {
-    return {
-      uniqueEmail: uniqueIndex("unique_email").on(users.email),
-    };
-  }
-);
+export const users = mysqlTable("user", {
+  id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  name: varchar("name", { length: 255 }),
+  email: varchar("email", { length: 255 }).notNull(),
+  emailVerified: timestamp("emailVerified", {
+    mode: "date",
+    fsp: 3,
+  }).defaultNow(),
+  image: varchar("image", { length: 255 }),
+  createdat: timestamp("createdat", { mode: "date", fsp: 3 })
+    .defaultNow()
+    .notNull(),
+  username: varchar("username", { length: 255 }),
+  hashedpassword: varchar("hashedpassword", { length: 255 }),
+});
 
 export type User = typeof users.$inferSelect; // return type when queried
 
-export const conversations = pgTable("conversations", {
-  id: serial("id").primaryKey(),
-  userId: integer("userId")
+export const conversations = mysqlTable("conversation", {
+  id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  userId: int("userId")
     .references(() => users.id)
     .notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  path: varchar("path", { length: 255 }).notNull(),
+  sharePath: varchar("sharePath", { length: 255 }).notNull(),
 });
 
-export const messages = pgTable("messages", {
-  id: serial("id").primaryKey(),
-  conversationId: integer("conversationId")
+export const messages = mysqlTable("message", {
+  id: varchar("id", { length: 255 }).notNull().primaryKey(),
+  conversationId: int("conversationId")
     .references(() => conversations.id)
     .notNull(),
-  role: text("role").notNull(), // 'user' or 'assistant'
-  content: text("content").notNull(),
+  role: varchar("role", { length: 120 }).notNull(), // 'user' or 'assistant'
+  content: longtext("content").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
-export const reactions = pgTable("reactions", {
-  id: serial("id").primaryKey(),
-  messageId: integer("messageId")
+export const reactions = mysqlTable("reaction", {
+  id: int("id").autoincrement().primaryKey(),
+  messageId: int("messageId")
     .references(() => messages.id)
     .notNull(),
-  type: text("type").notNull(),
-  count: integer("count").default(0).notNull(),
+  type: varchar("type", {
+    length: 255,
+  }).notNull(),
+  count: int("count").default(0).notNull(),
 });
 
-export const accounts = pgTable(
+export const accounts = mysqlTable(
   "account",
   {
-    userId: text("userId")
+    userId: varchar("userId", { length: 255 })
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    type: text("type").$type<AdapterAccount["type"]>().notNull(),
-    provider: text("provider").notNull(),
-    providerAccountId: text("providerAccountId").notNull(),
-    refresh_token: text("refresh_token"),
-    access_token: text("access_token"),
-    expires_at: integer("expires_at"),
-    token_type: text("token_type"),
-    scope: text("scope"),
-    id_token: text("id_token"),
-    session_state: text("session_state"),
+    type: varchar("type", { length: 255 })
+      .$type<AdapterAccount["type"]>()
+      .notNull(),
+    provider: varchar("provider", { length: 255 }).notNull(),
+    providerAccountId: varchar("providerAccountId", { length: 255 }).notNull(),
+    refresh_token: varchar("refresh_token", { length: 255 }),
+    access_token: varchar("access_token", { length: 255 }),
+    expires_at: int("expires_at"),
+    token_type: varchar("token_type", { length: 255 }),
+    scope: varchar("scope", { length: 255 }),
+    id_token: varchar("id_token", { length: 2048 }),
+    session_state: varchar("session_state", { length: 255 }),
   },
   (account) => ({
     compoundKey: primaryKey(account.provider, account.providerAccountId),
   })
 );
 
-export const sessions = pgTable("session", {
-  sessionToken: text("sessionToken").notNull().primaryKey(),
-  userId: text("userId")
+export const sessions = mysqlTable("session", {
+  sessionToken: varchar("sessionToken", {
+    length: 255,
+  })
+    .notNull()
+    .primaryKey(),
+  userId: varchar("userId", {
+    length: 255,
+  })
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });
 
-export const verificationTokens = pgTable(
+export const verificationTokens = mysqlTable(
   "verificationToken",
   {
-    identifier: text("identifier").notNull(),
-    token: text("token").notNull(),
+    identifier: varchar("identifier", {
+      length: 255,
+    }).notNull(),
+    token: varchar("token", {
+      length: 255,
+    }).notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
   (vt) => ({
