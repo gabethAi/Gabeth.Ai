@@ -1,12 +1,12 @@
 import { Divider } from "@mantine/core";
 import { SidebarList } from "../ui/SideBarList";
-import { getUser } from "@/lib/actions";
-import { getChats } from "@/utils/actions";
+import { getChatsByUserId, getUser } from "@/lib/actions";
 import ClearChats from "../ui/ClearChats";
 
 async function ConversationList() {
   const user = await getUser();
-  const chats = await getChats(user.email);
+
+  const chats = await getChatsByUserId(user?.email as string);
 
   return (
     <div>

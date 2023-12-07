@@ -43,22 +43,20 @@ function DeleteChat({ chat }: { readonly chat: Chat }) {
                 />
               </svg>
 
-              <h2>Delete chat History</h2>
+              <h2 className='text-base font-medium'>Delete chat History</h2>
             </div>
           ),
           centered: true,
           labels: {
-            confirm: "Delete account",
-            cancel: "No don't delete it",
+            confirm: "Delete",
+            cancel: "Cancel",
           },
           confirmProps: { color: "red" },
           children: (
-            <div>
-              <p className='text-sm font-medium'>
-                Are you sure you want to delete this chat history? You will not
-                be able to access it anymore once it is deleted
-              </p>
-            </div>
+            <p className='text-sm font-medium leading-relaxed'>
+              Are you sure you want to delete this chat history? You will not be
+              able to access it anymore once it is deleted
+            </p>
           ),
           onConfirm: async () => {
             await removeChat({
