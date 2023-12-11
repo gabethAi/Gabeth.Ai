@@ -1,34 +1,16 @@
 // "use server";
 
-import {
-  ActionIcon,
-  Button,
-  Divider,
-  Drawer,
-  Loader,
-  ScrollArea,
-  Stack,
-} from "@mantine/core";
+import { ActionIcon, Button, Divider, Loader, Stack } from "@mantine/core";
 import Link from "next/link";
 
-import React, { Suspense } from "react";
-import { motion } from "framer-motion";
-import { useDisclosure } from "@mantine/hooks";
+import { Suspense } from "react";
 import UpgradeButton from "./UpgradeButton";
 import ProfileCard from "./ProfileCard";
-import useThemeToggler from "@/lib/hooks/useThemeToggler";
-import { SignOut } from "./AuthComponent";
-import ClientComponent from "../shared/ClientComponent";
-import { getChats } from "@/utils/actions";
 import { getUser } from "@/lib/actions";
 
-import { kv } from "@vercel/kv";
-import { Chat, User } from "@/lib/types";
-import { SidebarList } from "./SideBarList";
-import useChats from "@/lib/hooks/useChats";
+import { User } from "@/lib/types";
 
 import { MdOutlineLiveHelp } from "react-icons/md";
-import { FiHelpCircle } from "react-icons/fi";
 import ConversationList from "../chat/ConversationList";
 
 const variants = {

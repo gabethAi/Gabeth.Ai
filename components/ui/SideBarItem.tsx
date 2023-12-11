@@ -1,11 +1,12 @@
 "use client";
-import { Chat } from "@/lib/types";
+
 import { cn } from "@/lib/utils";
 import { NavLink } from "@mantine/core";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import ActiveNavLink from "./ActiveNavLink";
+import { Chat } from "@/lib/db/schema";
 
 interface SidebarItemProps {
   chat: Chat;
