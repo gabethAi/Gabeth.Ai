@@ -37,6 +37,8 @@ export async function POST(req: Request) {
     async onFinal(completion) {
       const path = `/chat/${chatId}`;
 
+      console.log(completion, "completion");
+
       try {
         const savedChat = await getChatById(chatId);
 

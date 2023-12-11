@@ -13,12 +13,6 @@ export interface ChatPageProps {
 export async function generateMetadata({
   params,
 }: ChatPageProps): Promise<Metadata> {
-  const user = await getUser();
-
-  if (!user) {
-    return {};
-  }
-
   const chat = await getChatById(params.id);
   return {
     title: chat?.title.toString().slice(0, 50) ?? "Chat",
