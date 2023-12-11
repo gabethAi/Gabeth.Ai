@@ -7,7 +7,7 @@ import {
   saveChatToDb,
 } from "@/lib/actions";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
