@@ -1,4 +1,4 @@
-// import { signIn } from "@/lib/auth";
+import { signIn } from "@/auth";
 import { Button } from "@mantine/core";
 import React from "react";
 
@@ -11,12 +11,9 @@ function GoogleSignInButton({ redirectTo = "/chat" }: Props) {
     <form
       action={async () => {
         "use server";
-        // const result = await signIn("google");
-
-        // console.log(result, "result");
-        // await signIn("google", {
-        //   redirectTo: redirectTo,
-        // });
+        await signIn("google", {
+          redirectTo: redirectTo,
+        });
       }}>
       <Button
         fullWidth

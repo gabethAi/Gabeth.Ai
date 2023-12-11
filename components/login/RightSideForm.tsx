@@ -5,13 +5,14 @@ import Link from "next/link";
 // import { signIn, auth } from "@/lib/auth";
 import GoogleSignInButton from "../ui/GoogleSignInButton";
 import { SignIn } from "../ui/AuthComponent";
-import { auth } from "@/auth";
+import { auth, signIn } from "@/auth";
 
 interface Props {
   readonly path?: string;
 }
 
 async function RightSideForm({ path }: Props): Promise<JSX.Element> {
+  console.log(path, "path");
   // const session = await auth();
   // if (!session?.user) return <SignIn provider="google" />;
 
@@ -23,13 +24,17 @@ async function RightSideForm({ path }: Props): Promise<JSX.Element> {
     const email = formData.get("email");
     const password = formData.get("password");
 
-    // const result = await signIn("Credentials", {
-    //   redirectTo: path,
-    //   email: email,
-    //   password: password,
-    // });
+    try {
+      const user = await signIn("credentials", {
+        redirectTo: path,
+        email: email,
+        password: password,
+      });
 
-    // console.log(result, "result");
+      console.log(user, "user");
+    } catch (error: any) {
+      console.log(error.message, "error");
+    }
   }
   return (
     <div className='flex flex-col items-center justify-center h-full mx-auto px-4'>

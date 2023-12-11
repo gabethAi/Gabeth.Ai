@@ -273,7 +273,9 @@ function EmptyScreen({ setInput }: Pick<UseChatHelpers, "setInput">) {
           {suggestions.map((suggestion, index) => (
             <Card
               key={suggestion.message}
-              onClick={() => setInput(suggestion.message)}>
+              onClick={() => (
+                console.log(suggestion.message), setInput(suggestion.message)
+              )}>
               {/* <IconArrowRight className="mr-2 text-muted-foreground" /> */}
 
               <div className='flex flex-col items-center justify-center gap-y-4'>

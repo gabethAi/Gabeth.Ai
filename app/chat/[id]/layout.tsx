@@ -1,11 +1,11 @@
 import ChatPanel from "@/components/chat/ChatPanel";
-import { getUser } from "@/lib/actions";
-import { getChat } from "@/utils/actions";
+import { getChatById, getMessagesByChatId, getUser } from "@/lib/actions";
+import { Message } from "ai";
 import { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import React from "react";
 export interface ChatPageProps {
-  params: {
+  readonly params: {
     id: string;
   };
 }
@@ -19,7 +19,7 @@ export async function generateMetadata({
     return {};
   }
 
-  const chat = await getChat(params.id, user.id);
+  const chat = await getChatById(params.id);
   return {
     title: chat?.title.toString().slice(0, 50) ?? "Chat",
   };
@@ -41,22 +41,19 @@ async function Layout({
     redirect(`/auth/login?next=/chat`);
   }
 
-  const chat = await getChat(params.id, user.id);
+  const chat = await getChatById(params.id);
+  const chatMessages = await getMessagesByChatId(params.id);
 
-  if (!chat) {
-    notFound();
-  }
-
-  if (chat?.userId !== user.email) {
-    notFound();
-  }
+  // if (chat?.userId !== user.email) {
+  //   notFound();
+  // }
 
   return (
     <main className='relative h-full'>
       {children}
 
       <div className='z-10 absolute bottom-0 inset-x-0'>
-        <ChatPanel id={chat?.id} initialMessages={chat?.messages} />
+        <ChatPanel id={chat?.id} initialMessages={chatMessages as Message[]} />
       </div>
     </main>
   );

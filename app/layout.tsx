@@ -11,6 +11,7 @@ import { theme } from "../lib/theme";
 import ReactQueryProvider from "@/context/QueryClientProvider";
 
 import { GeistSans } from "geist/font";
+import ModalProvider from "@/context/ModalProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -33,7 +34,9 @@ export default function RootLayout({
       <body>
         <MantineProvider theme={theme} defaultColorScheme='auto'>
           <Notifications />
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <ReactQueryProvider>
+            <ModalProvider>{children}</ModalProvider>
+          </ReactQueryProvider>
         </MantineProvider>
 
         <Analytics />

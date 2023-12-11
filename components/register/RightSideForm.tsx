@@ -2,9 +2,10 @@ import { Button, Card, Divider, PasswordInput, TextInput } from "@mantine/core";
 import Logo from "../shared/Logo";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
+import { auth } from "@/auth";
 import GoogleSignInButton from "../ui/GoogleSignInButton";
 import { registerUser } from "@/lib/actions";
+// import PrismaAdapter, { prisma } from "@/prisma";
 
 /**
  * Renders the right side form for user registration.
@@ -28,10 +29,6 @@ async function RightSideForm() {
     const password = formData.get("password");
 
     try {
-      // const newUser = await registerUser({
-      //   email: email as string,
-      //   password: password as string,
-      // });
       const newUser = await registerUser({
         email: email as string,
         password: password as string,

@@ -1,8 +1,7 @@
 import RightSideForm from "../../../components/register/RightSideForm";
 import LeftSideIllustration from "../../../components/register/LeftSideIllustration";
 import { Metadata } from "next";
-import { auth, signOut } from "@/lib/auth";
-import { logoutUser } from "@/lib/actions";
+import { auth } from "@/auth";
 
 export const metadata: Metadata = {
   title: "Gabeth.Ai | Register",
@@ -11,10 +10,6 @@ export const metadata: Metadata = {
 
 async function Register() {
   const session = await auth();
-
-  if (session?.user) {
-    // logoutUser();
-  }
 
   return (
     <div className='grid grid-cols-1 lg:grid-cols-2 min-h-screen'>
