@@ -7,7 +7,7 @@ import {
   saveChatToDb,
 } from "@/lib/actions";
 
-// export const runtime = "edge";
+export const runtime = "edge";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -16,17 +16,8 @@ const openai = new OpenAI({
 export async function POST(req: Request) {
   const json = await req.json();
   const { messages, previewToken } = json;
-  const user = await getUser();
-
-  const userId = user?.email;
   const chatId = json.id || nanoid(10);
   const title = json.messages[0].content.substring(0, 100);
-
-  if (!userId) {
-    return new Response("Unauthorized", {
-      status: 401,
-    });
-  }
 
   // Request the OpenAI API for the response based on the prompt
   const response = await openai.chat.completions.create({
