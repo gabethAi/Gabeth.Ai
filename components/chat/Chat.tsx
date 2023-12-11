@@ -4,6 +4,7 @@ import ChatWrapper from "./ChatWrapper";
 import ChatPanel from "./ChatPanel";
 import useChatManager from "@/lib/hooks/useChatManager";
 import EmptyScreen from "./EmptyScreen";
+import { useEffect } from "react";
 
 /**
  * Component for rendering a chat.

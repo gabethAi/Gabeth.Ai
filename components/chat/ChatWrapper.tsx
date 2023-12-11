@@ -28,6 +28,8 @@ function ChatWrapper({ id, initialMessages, className }: ChatProps) {
     initialMessages: initialMessages,
   });
 
+  console.log(messages, "messages");
+
   if (!messages) {
     return null;
   }
