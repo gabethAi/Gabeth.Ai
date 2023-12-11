@@ -5,6 +5,7 @@ import {
   primaryKey,
   varchar,
   longtext,
+
 } from "drizzle-orm/mysql-core";
 
 import type { AdapterAccount } from "@auth/core/adapters";
@@ -27,9 +28,9 @@ export const users = mysqlTable("user", {
 
 export type User = typeof users.$inferSelect; // return type when queried
 
-export const conversations = mysqlTable("conversation", {
+export const chats = mysqlTable("chat", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
-  userId: int("userId")
+  userId: varchar("userId", { length: 255 })
     .references(() => users.id)
     .notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -38,10 +39,12 @@ export const conversations = mysqlTable("conversation", {
   sharePath: varchar("sharePath", { length: 255 }).notNull(),
 });
 
+export type Chat = typeof chats.$inferSelect; // return type when queried
+
 export const messages = mysqlTable("message", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
-  conversationId: int("conversationId")
-    .references(() => conversations.id)
+  chatId: varchar("chatId", { length: 255 })
+    .references(() => chats.id)
     .notNull(),
   role: varchar("role", { length: 120 }).notNull(), // 'user' or 'assistant'
   content: longtext("content").notNull(),
@@ -50,7 +53,7 @@ export const messages = mysqlTable("message", {
 
 export const reactions = mysqlTable("reaction", {
   id: int("id").autoincrement().primaryKey(),
-  messageId: int("messageId")
+  messageId: varchar("messageId", { length: 255 })
     .references(() => messages.id)
     .notNull(),
   type: varchar("type", {
