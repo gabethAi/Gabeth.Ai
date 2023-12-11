@@ -1,10 +1,11 @@
 import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse, nanoid } from "ai";
-import { kv } from "@vercel/kv";
-import { getUser } from "@/lib/actions";
-import { redirect } from "next/navigation";
-import { getChat } from "@/utils/actions";
-import { revalidatePath } from "next/cache";
+import {
+  getChatById,
+  getUser,
+  addMessageToDb,
+  saveChatToDb,
+} from "@/lib/actions";
 
 export const runtime = "edge";
 
@@ -18,9 +19,8 @@ export async function POST(req: Request) {
   const user = await getUser();
 
   const userId = user?.email;
-  const id = json.id || nanoid(10);
+  const chatId = json.id || nanoid(10);
   const title = json.messages[0].content.substring(0, 100);
-  const createdAt = Date.now();
 
   if (!userId) {
     return new Response("Unauthorized", {
@@ -44,36 +44,53 @@ export async function POST(req: Request) {
   const stream = OpenAIStream(response, {
     async onCompletion(completion) {},
     async onFinal(completion) {
-      const chat = await getChat(id, userId);
+      const path = `/chat/${chatId}`;
 
-      const path = `/chat/${id}`;
-      const payload = {
-        id,
-        title,
-        userId: user?.email,
-        createdAt,
-        path,
-        messages: [
-          ...messages,
+      try {
+        const savedChat = await getChatById(chatId);
+
+        /**
+         * Saves the chat to the database if it doesn't already exist.
+         * @param chatId - The ID of the chat.
+         * @param title - The title of the chat.
+         * @param path - The path of the chat.
+         */
+        if (!savedChat) {
+          await saveChatToDb({
+            id: chatId,
+            title,
+            createdAt: new Date(),
+            path: path,
+          });
+        }
+
+        // get the last message from the messages array
+        const lastMessage = messages[messages.length - 1];
+
+        const messagesToInsert = [
           {
-            content: completion,
-            role: "assistant",
+            id: nanoid(10),
+            chatId: chatId,
+            role: lastMessage.role,
+            content: lastMessage.content,
+            createdAt: new Date(),
           },
-        ],
-      };
+          {
+            id: nanoid(10),
+            chatId: chatId,
+            role: "assistant",
+            content: completion,
+            createdAt: new Date(Date.now() + 1000),
+          },
+        ];
 
-      await kv.hmset(`chat:${id}`, payload);
-      await kv.zadd(`user:chat:${user?.email}`, {
-        score: createdAt,
-        member: `chat:${id}`,
-      });
-
-      if (!chat) {
-        console.log("chat not found");
-        revalidatePath(`/chat`);
-        // const response = await fetch(`/api/revalidate?path=/chat`);
-
-        // console.log(response, "response");
+        for (const message of messagesToInsert) {
+          // save each message to the database
+          await addMessageToDb(message);
+        }
+      } catch (error) {
+        console.error("Error saving chat:", error);
+        // throw error;
       }
     },
   });
