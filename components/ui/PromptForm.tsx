@@ -57,8 +57,6 @@ function PromptForm({
             type='submit'>
             <BiSend />
           </Button>
-
-          // <BiSend />
         }
       />
     </form>

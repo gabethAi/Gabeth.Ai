@@ -7,7 +7,7 @@ export default {
   out: "./drizzle/migrations",
   driver: "mysql2",
   dbCredentials: {
-    host: process.env["DATABASE_HOST"] as string,
+    host: "aws.connect.psdb.cloud",
     user: process.env["DATABASE_USERNAME"] as string,
     password: process.env["DATABASE_PASSWORD"],
     database: process.env["DATABASE_NAME"] as string,

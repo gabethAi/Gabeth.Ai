@@ -64,6 +64,7 @@ function DeleteChat({ chat }: { readonly chat: Chat }) {
               path: chat.path,
             });
           },
+          closeOnConfirm: true,
 
           onCancel: () => console.log("Cancel"),
         });
