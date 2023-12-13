@@ -12,6 +12,7 @@ import { User } from "@/lib/types";
 
 import { MdOutlineLiveHelp } from "react-icons/md";
 import ConversationList from "../chat/ConversationList";
+import { cn } from "@/lib/utils";
 
 const variants = {
   open: { opacity: 1, x: 0 },
@@ -50,7 +51,7 @@ interface MobileSideBar {
 //   );
 // }
 
-export async function DesktopSideBar() {
+export async function DesktopSideBar({ className }: { className?: string }) {
   const user = await getUser();
 
   // console.log(user, "user");
@@ -85,7 +86,10 @@ export async function DesktopSideBar() {
   return (
     <div
       // animate={opened ? "open" : "collapsed"}
-      className='relative h-screen dark:bg-black grid grid-cols-7'>
+      className={cn(
+        "relative dark:bg-black h-full grid grid-cols-7",
+        className
+      )}>
       <div className='col-span-2 border-r dark:border-[#373a40] flex flex-col justify-between py-8'>
         <Stack gap={"xl"} align='center'>
           <ActionIcon variant='default'>
@@ -103,7 +107,7 @@ export async function DesktopSideBar() {
 
           <Divider />
 
-          <Link href={"/"}>
+          <Link href={"/chat"}>
             <svg
               className='stroke-black dark:stroke-white'
               width='24'
@@ -166,9 +170,9 @@ export async function DesktopSideBar() {
         </Stack>
       </div>
 
-      <div className='col-span-5 flex flex-col p-5 gap-y-8 divide-y '>
-        <div className='grid grid-rows-6 h-full'>
-          <div className='row-span-1'>
+      <div className='col-span-5 flex flex-col p-5 relative'>
+        <div className='flex flex-col gap-y-6'>
+          <div className=''>
             <div className=''>
               <h1 className='font-semibold text-2xl'>Gabeth.AI</h1>
             </div>
@@ -179,18 +183,11 @@ export async function DesktopSideBar() {
             </Link>
           </div>
 
-          <div className='row-span-4'>
-            <Suspense
-              fallback={
-                <div className='flex justify-center items-center h-full'>
-                  <Loader />
-                </div>
-              }>
-              <ConversationList />
-            </Suspense>
+          <div className=''>
+            <ConversationList />
           </div>
 
-          <div className='row-span-1 '>
+          <div className='absolute bottom-4 inset-x-5'>
             <Divider my={"md"} />
             <Stack gap={"lg"} align='flex-start'>
               <UpgradeButton />

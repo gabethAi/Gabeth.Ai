@@ -33,12 +33,10 @@ function ChatWrapper({ id, initialMessages, className }: ChatProps) {
   }
 
   return (
-    <div className={cn("pt-4 md:pt-10 pb-10", className)}>
-      <ScrollArea h={"75dvh"}>
-        <ChatList messages={messages} />
-        <ChatScrollAnchor trackVisibility={isLoading} />
-      </ScrollArea>
-    </div>
+    <ScrollArea h={"80dvh"} className={cn("pt-4 md:pt-10 pb-10", className)}>
+      <ChatList messages={messages} />
+      <ChatScrollAnchor trackVisibility={isLoading} />
+    </ScrollArea>
   );
 }
 

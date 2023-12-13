@@ -1,12 +1,13 @@
 import { Divider } from "@mantine/core";
 import { Message } from "ai";
 import { ChatMessage } from "./ChatMessage";
+import { getUser } from "@/lib/actions";
 
 export interface ChatList {
   readonly messages: Message[];
 }
 
-function ChatList({ messages }: ChatList) {
+async function ChatList({ messages }: ChatList) {
   return (
     <div className=''>
       <div className='max-w-2xl mx-auto px-4 py-4'>

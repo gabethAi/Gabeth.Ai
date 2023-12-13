@@ -17,27 +17,24 @@ export default async function Layout({
   }
 
   return (
-    <main className=''>
+    <main className='flex flex-col lg:flex-row relative h-[100dvh] '>
       {/* AppBar For Mobile */}
       <div className='block lg:hidden'>
         <MobileAppBar />
       </div>
 
       {/* SideBar For Desktop */}
+      <div className='hidden lg:block basis-1/3 2xl:basis-1/4'>
+        <DesktopSideBar className='' />
+      </div>
 
-      <div className='grid grid-cols-1 lg:grid-cols-8 xl:grid-cols-10 relative '>
-        <div className='hidden lg:block lg:col-span-3  dark:bg-black'>
-          <DesktopSideBar />
+      <div className='lg:col-span-5 grow relative'>
+        <div className='hidden fixed right-8 lg:right-14 top-20 lg:top-8 z-50 md:flex items-center space-x-4 lg:space-x-6'>
+          <ShareChat />
+          <ThemeToggler>Switch Theme </ThemeToggler>
         </div>
 
-        <div className='lg:col-span-5 xl:col-span-7 relative min-h-[90dvh]'>
-          <div className='absolute right-8 lg:right-14 top-8 z-50 flex items-center space-x-4 lg:space-x-6'>
-            <ShareChat />
-            <ThemeToggler>Switch Theme </ThemeToggler>
-          </div>
-
-          {children}
-        </div>
+        {children}
       </div>
     </main>
   );

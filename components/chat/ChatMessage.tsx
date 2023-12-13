@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import { Message } from "ai";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -10,6 +10,7 @@ import { ChatMessageActions } from "./ChatMessageActions";
 import { Avatar } from "@mantine/core";
 import { getUser } from "@/lib/actions";
 import useUser from "@/lib/hooks/useUser";
+import UserAvatar from "../ui/UserAvatar";
 // import { IconOpenAI, IconUser } from '@/components/ui/icons'
 // import { ChatMessageActions } from '@/components/chat-message-actions'
 
@@ -18,7 +19,6 @@ export interface ChatMessageProps {
 }
 
 export function ChatMessage({ message, ...props }: ChatMessageProps) {
-  const { user } = useUser();
   return (
     <div
       className={cn("group relative my-6 flex items-start md:-ml-12")}
@@ -28,13 +28,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
           "flex h-8 w-8 shrink-0 select-none items-center justify-center"
         )}>
         {message.role === "user" ? (
-          <Avatar
-            size={"sm"}
-            src={
-              user?.image ||
-              "https://avatars.githubusercontent.com/u/36913813?v=4"
-            }
-          />
+          <UserAvatar />
         ) : (
           <svg
             width='39'

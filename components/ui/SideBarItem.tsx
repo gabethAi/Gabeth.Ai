@@ -26,20 +26,19 @@ function SideBarItem({ chat, children }: SidebarItemProps) {
   if (!chat?.id) return null;
 
   return (
-    <div>
-      <div
-        className='relative flex-1 select-none overflow-hidden text-ellipsis break-all'
-        title={chat.title}>
-        <NavLink
-          className='relative flex-1 select-none overflow-hidden text-ellipsis break-all'
-          href={chat.path}
-          //   noWrap
-          label={chat.title.slice(0, 40) + ""}
-          active={isActive}
-        />
+    <div title={chat.title}>
+      <NavLink
+        href={chat.path}
+        //   noWrap
+        label={
+          <span className='flex-1 select-none overflow-hidden text-ellipsis break-normal'>
+            {chat.title}
+          </span>
+        }
+        active={isActive}
+      />
 
-        {isActive && <div className='absolute right-2 top-1'>{children}</div>}
-      </div>
+      {isActive && <div className='absolute right-2 top-1'>{children}</div>}
     </div>
   );
 }

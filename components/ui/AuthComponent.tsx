@@ -45,7 +45,7 @@ export function SignOut({
         await signOut();
       }}
       className='w-full'>
-      <Button variant='transparent' type='submit' fullWidth {...props}>
+      <Button variant='subtle' size='sm' type='submit' fullWidth {...props}>
         {children ?? "Sign Out"}
       </Button>
     </form>

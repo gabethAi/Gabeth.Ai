@@ -9,7 +9,7 @@ function MobileAppBar() {
   const [opened, { open, close }] = useDisclosure(false);
   return (
     <>
-      <header>
+      <header className=''>
         <div className='flex items-center justify-between p-4'>
           <ActionIcon onClick={open}>
             <BiMenu />

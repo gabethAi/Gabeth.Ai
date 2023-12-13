@@ -13,21 +13,18 @@ import { useEffect } from "react";
 
 function Chat({ id }: { readonly id: string }) {
   const router = useRouter();
-  const { messages, setInput } = useChatManager({
+  const { messages, input, setInput } = useChatManager({
     id: id,
   });
 
   return (
     <div className='relative h-full'>
-      {messages.length ? (
-        <ChatWrapper id={id} initialMessages={messages} />
-      ) : (
-        <div className='h-full p-3 flex flex-col justify-center'>
-          <EmptyScreen setInput={setInput} />
-        </div>
-      )}
+      {`Input: ${input}`}
 
-      <div className='z-10 absolute bottom-0 inset-x-0'>
+      {messages.length && <ChatWrapper id={id} initialMessages={messages} />}
+
+      <div className='absolute bottom-0 inset-x-0'>
+        <EmptyScreen setInput={setInput} />
         <ChatPanel
           id={id}
           initialMessages={messages}

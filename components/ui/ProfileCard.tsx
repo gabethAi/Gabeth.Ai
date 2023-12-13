@@ -10,7 +10,7 @@ interface ProfileCardProps {
 
 function ProfileCard({ user }: ProfileCardProps) {
   return (
-    <div className='flex items-center'>
+    <div className='flex items-center space-x-4'>
       <SignOut>
         <PiSignOut />
       </SignOut>
