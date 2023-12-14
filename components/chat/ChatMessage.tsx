@@ -1,4 +1,3 @@
-// "use client";
 import { Message } from "ai";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -7,12 +6,7 @@ import { cn } from "@/lib/utils";
 import { MemoizedReactMarkdown } from "../ui/MemoizedReactMarkdown";
 import CodeBlock from "../ui/CodeBlock";
 import { ChatMessageActions } from "./ChatMessageActions";
-import { Avatar } from "@mantine/core";
-import { getUser } from "@/lib/actions";
-import useUser from "@/lib/hooks/useUser";
 import UserAvatar from "../ui/UserAvatar";
-// import { IconOpenAI, IconUser } from '@/components/ui/icons'
-// import { ChatMessageActions } from '@/components/chat-message-actions'
 
 export interface ChatMessageProps {
   readonly message: Message;

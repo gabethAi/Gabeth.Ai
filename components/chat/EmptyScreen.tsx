@@ -1,6 +1,9 @@
+"use client";
 import { Button, Card, Stack } from "@mantine/core";
 import { UseChatHelpers } from "ai/react";
 import { MdArrowRight } from "react-icons/md";
+
+import { motion } from "framer-motion";
 
 const suggestions = [
   {
@@ -21,10 +24,13 @@ const suggestions = [
   },
 ];
 
-function EmptyScreen({ setInput }: Pick<UseChatHelpers, "setInput">) {
+function EmptyScreen({
+  handleSubmit,
+  setInput,
+}: Pick<UseChatHelpers, "handleSubmit" | "setInput">) {
   return (
-    <div className='flex flex-col pt-8 gap-y-28 lg:gap-y-36 px-4 md:px-10 lg:px-16 xl:px-20'>
-      <div className='flex flex-col md:max-w-md mx-auto items-center justify-center text-center gap-y-2'>
+    <div className='max-w-3xl mx-auto flex flex-col pt-8 gap-y-28 lg:gap-y-36 px-4 md:px-10 lg:px-16 xl:px-20'>
+      <div className='flex flex-col md:max-w-md mx-auto items-center justify-center text-center gap-y-4'>
         <svg
           className='animate-pulse w-20 h-20 lg:w-32 lg:h-32'
           viewBox='0 0 129 128'
@@ -259,7 +265,7 @@ function EmptyScreen({ setInput }: Pick<UseChatHelpers, "setInput">) {
         </svg>
 
         <div>
-          <h2 className='text-xl lg:text-2xl font-semibold mb-2'>
+          <h2 className='text-xl lg:text-2xl xl:text-3xl font-semibold mb-2'>
             Hello there
           </h2>
           <p className='text-sm font-medium leading-loose'>
@@ -273,21 +279,35 @@ function EmptyScreen({ setInput }: Pick<UseChatHelpers, "setInput">) {
         <h6 className='text-center text-sm md:text-base mb-4'>
           You can ask me to...
         </h6>
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-          {suggestions.map((suggestion) => (
-            <Button
-              variant='default'
-              type='button'
-              onClick={() => setInput(suggestion.message)}
-              key={suggestion.heading}
-              // rightSection={
-              //   <MdArrowRight className='mr-2 text-muted-foreground' />
-              // }
-            >
-              <p className='text-sm font-medium'>{suggestion.heading}</p>
-            </Button>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+
+            handleSubmit(e);
+          }}
+          className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+          {suggestions.map((suggestion, index) => (
+            <motion.div
+              className='w-full '
+              key={suggestion.message}
+              initial={{ opacity: 0, x: 100 }} // Initial state is fully transparent and shifted 100px to the right
+              animate={{ opacity: 1, x: 0 }} // Animate to fully opaque and original position
+              transition={{
+                // Control the speed and delay of the animation
+                delay: index * 0.2, // Delay each button's animation by 0.2 seconds times its index
+                duration: 0.5, // Animation duration is 0.5 seconds
+                ease: "easeOut", // Use 'easeOut' easing function
+              }}>
+              <Button
+                fullWidth
+                variant='default'
+                type='submit'
+                onClick={() => setInput(suggestion.message)}>
+                {suggestion.heading}
+              </Button>
+            </motion.div>
           ))}
-        </div>
+        </form>
       </div>
     </div>
   );
