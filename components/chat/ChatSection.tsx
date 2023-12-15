@@ -1,17 +1,16 @@
 "use client";
-import { useRouter } from "next/navigation";
 import ChatWrapper from "./ChatWrapper";
 import ChatPanel from "./ChatPanel";
-import EmptyScreen from "./EmptyScreen";
+import { Message } from "ai";
 import useChatManager from "@/lib/hooks/useChatManager";
 
-/**
- * Component for rendering a chat.
- * @param id - The ID of the chat.
- */
-
-function Chat({ id }: { readonly id: string }) {
-  const router = useRouter();
+function ChatSection({
+  id,
+  initialMessages,
+}: {
+  readonly id: string;
+  initialMessages: Message[];
+}) {
   const {
     messages,
     input,
@@ -21,23 +20,16 @@ function Chat({ id }: { readonly id: string }) {
     handleInputChange,
     handleSubmit,
   } = useChatManager({
+    id,
     body: {
       id,
     },
-    onFinish(message) {
-      router.push(`/chat/${id}`);
-    },
+    initialMessages,
   });
+
   return (
     <div className='relative  h-full'>
-      {messages.length > 0 ? (
-        <ChatWrapper id={id} messages={messages} isLoading={isLoading} />
-      ) : (
-        <div className='pt-24 lg:pt-32 xl:pt-36'>
-          <EmptyScreen setInput={setInput} handleSubmit={handleSubmit} />
-        </div>
-      )}
-
+      <ChatWrapper messages={messages} isLoading={isLoading} />
       <div className='absolute bottom-0 inset-x-0'>
         <ChatPanel
           reload={reload}
@@ -52,4 +44,4 @@ function Chat({ id }: { readonly id: string }) {
   );
 }
 
-export default Chat;
+export default ChatSection;

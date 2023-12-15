@@ -1,27 +1,45 @@
 "use client";
 
+import { getChatById } from "@/lib/actions";
+import useChat from "@/lib/hooks/useChat";
 import { ActionIcon, Divider, Drawer } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useParams } from "next/navigation";
 import { BiMenu, BiPlus } from "react-icons/bi";
-// import { MobileSideBar } from "./SideBar";
+import MobileSideBar from "./MobileSideBar";
+import Link from "next/link";
 
 function MobileAppBar() {
+  const params = useParams();
+  const { chat, isLoading } = useChat({
+    chatId: params.id as string,
+  });
+
   const [opened, { open, close }] = useDisclosure(false);
   return (
     <>
       <header className=''>
         <div className='flex items-center justify-between p-4'>
-          <ActionIcon onClick={open}>
+          <ActionIcon onClick={open} variant='subtle'>
             <BiMenu />
           </ActionIcon>
-          <h6>Fix CSS Parsing Error</h6>
-          <BiPlus />
+
+          {isLoading ? (
+            <span className='h-6 w-48 bg-slate-700 rounded-sm animate-pulse' />
+          ) : (
+            <h6>{chat?.title}</h6>
+          )}
+          <Link href={"/chat"}>
+            <ActionIcon variant='subtle'>
+              <BiPlus />
+            </ActionIcon>
+          </Link>
         </div>
 
         <Divider />
       </header>
 
-      {/* <MobileSideBar open={opened} onClose={close} /> */}
+      <MobileSideBar open={opened} onClose={close} />
     </>
   );
 }

@@ -40,7 +40,13 @@ function PromptForm({
   }, []);
 
   return (
-    <form onSubmit={handleSubmit} ref={formRef}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+
+        handleSubmit(e);
+      }}
+      ref={formRef}>
       <TextInput
         ref={inputRef}
         size='lg'

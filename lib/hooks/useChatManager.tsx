@@ -1,9 +1,11 @@
 "use client";
+import { notifications } from "@mantine/notifications";
 import { Message } from "ai";
 import { useChat } from "ai/react";
 
 interface UseChatManagerProps {
-  id: string;
+  id?: string;
+  body?: object;
   initialMessages?: Message[];
   onResponse?: (response: any) => void;
   onFinish?: (message: Message) => void;
@@ -18,6 +20,7 @@ interface UseChatManagerProps {
  */
 function useChatManager({
   id,
+  body,
   initialMessages,
   onResponse,
   onFinish,
@@ -36,9 +39,7 @@ function useChatManager({
   } = useChat({
     api: "/api/chat",
     id,
-    body: {
-      id,
-    },
+    body: body,
     initialMessages: initialMessages,
     onResponse(response) {
       if (onResponse) {
@@ -55,6 +56,12 @@ function useChatManager({
       if (onError) {
         onError(error);
       }
+
+      notifications.show({
+        title: "Error",
+        message: "Something went wrong. Please try again.",
+        color: "red",
+      });
     },
   });
 

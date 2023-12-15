@@ -1,6 +1,13 @@
 // "use server";
 
-import { ActionIcon, Button, Divider, Loader, Stack } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Divider,
+  Drawer,
+  Loader,
+  Stack,
+} from "@mantine/core";
 import Link from "next/link";
 
 import { Suspense } from "react";
@@ -13,43 +20,12 @@ import { User } from "@/lib/types";
 import { MdOutlineLiveHelp } from "react-icons/md";
 import ConversationList from "../chat/ConversationList";
 import { cn } from "@/lib/utils";
+import Logo from "../shared/Logo";
 
 const variants = {
   open: { opacity: 1, x: 0 },
   collapsed: { opacity: 0, x: "-100%" },
 };
-
-interface MobileSideBar {
-  open: boolean;
-  onClose: () => void;
-}
-
-// export function MobileSideBar({ open, onClose }: MobileSideBar) {
-//   return (
-//     <Drawer opened={open} onClose={onClose}>
-//       <div className='grid grid-rows-6 h-full'>
-//         <div className='row-span-1'>
-//           <div className=''>
-//             <h1 className='font-semibold text-2xl'>Gabeth.AI</h1>
-//           </div>
-//           <Divider my={"md"} />
-//           <Button fullWidth>New Chat</Button>
-//         </div>
-
-//         <div className='row-span-4'>{/* <ChatList /> */}</div>
-
-//         <div className='row-span-1'>
-//           <Divider my={"md"} />
-//           <div>
-//             <UpgradeButton />
-
-//             {/* <ProfileCard /> */}
-//           </div>
-//         </div>
-//       </div>
-//     </Drawer>
-//   );
-// }
 
 export async function DesktopSideBar({ className }: { className?: string }) {
   const user = await getUser();
@@ -173,9 +149,10 @@ export async function DesktopSideBar({ className }: { className?: string }) {
       <div className='col-span-5 flex flex-col p-5 relative'>
         <div className='flex flex-col gap-y-6'>
           <div className=''>
-            <div className=''>
+            <Link href={"/chat"} className='flex items-center'>
+              <Logo size={70} />
               <h1 className='font-semibold text-2xl'>Gabeth.AI</h1>
-            </div>
+            </Link>
             <Divider my={"md"} />
             <Link href={"/chat"}>
               {" "}

@@ -5,7 +5,7 @@ import { User } from "@/lib/types";
 import { PiSignOut } from "react-icons/pi";
 
 interface ProfileCardProps {
-  readonly user: User;
+  readonly user: User | undefined;
 }
 
 function ProfileCard({ user }: ProfileCardProps) {

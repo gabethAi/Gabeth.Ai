@@ -1,4 +1,5 @@
 "use server";
+import "server-only";
 import { User, chats, messages, users } from "./db/schema";
 import { db } from "./db/drizzle";
 import { eq, desc, asc } from "drizzle-orm";
@@ -135,7 +136,6 @@ export async function getChatById(id: string) {
     const chat = await db.query.chats.findFirst({
       where: eq(chats.id, id),
     });
-
     return chat;
   } catch (error) {
     console.error("Error getting chat:", error);

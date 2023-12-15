@@ -4,8 +4,8 @@ import { Chat } from "@/lib/db/schema";
 import DeleteChat from "./DeleteChat";
 
 interface SidebarActionsProps {
-  chat: Chat;
-  removeChat: (args: { id: string; path: string }) => Promise<void | {
+  readonly chat: Chat;
+  readonly removeChat: (args: { id: string; path: string }) => Promise<void | {
     error: string;
   }>;
 }
@@ -14,7 +14,7 @@ function SideBarActions({ chat, removeChat }: SidebarActionsProps) {
   return (
     <Popover width={130} position='right' withArrow shadow='md'>
       <Popover.Target>
-        <ActionIcon>
+        <ActionIcon variant='subtle'>
           <svg
             className='fill-[#0A0A0A] dark:fill-white'
             width='16'

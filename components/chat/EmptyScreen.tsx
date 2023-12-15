@@ -29,7 +29,7 @@ function EmptyScreen({
   setInput,
 }: Pick<UseChatHelpers, "handleSubmit" | "setInput">) {
   return (
-    <div className='max-w-3xl mx-auto flex flex-col pt-8 gap-y-28 lg:gap-y-36 px-4 md:px-10 lg:px-16 xl:px-20'>
+    <div className='max-w-3xl mx-auto flex flex-col gap-y-28 lg:gap-y-36 px-4 md:px-10 lg:px-16 xl:px-20'>
       <div className='flex flex-col md:max-w-md mx-auto items-center justify-center text-center gap-y-4'>
         <svg
           className='animate-pulse w-20 h-20 lg:w-32 lg:h-32'

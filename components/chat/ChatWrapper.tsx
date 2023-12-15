@@ -27,7 +27,7 @@ function ChatWrapper({ messages, isLoading, className }: ChatProps) {
 
   return (
     <ScrollArea h={"80dvh"} className={cn("pt-4 md:pt-10 pb-10", className)}>
-      <ChatList messages={messages} />
+      <ChatList messages={messages} isLoading={isLoading} />
       <ChatScrollAnchor trackVisibility={isLoading} />
     </ScrollArea>
   );

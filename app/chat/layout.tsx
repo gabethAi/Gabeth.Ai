@@ -28,7 +28,7 @@ export default async function Layout({
         <DesktopSideBar className='' />
       </div>
 
-      <div className='lg:col-span-5 grow relative'>
+      <div className='grow relative'>
         <div className='hidden fixed right-8 lg:right-14 top-20 lg:top-8 z-50 md:flex items-center space-x-4 lg:space-x-6'>
           <ShareChat />
           <ThemeToggler>Switch Theme </ThemeToggler>

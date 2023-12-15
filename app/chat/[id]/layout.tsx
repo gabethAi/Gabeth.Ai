@@ -36,21 +36,12 @@ async function Layout({
   }
 
   const chat = await getChatById(params.id);
-  const chatMessages = await getMessagesByChatId(params.id);
 
-  // if (chat?.userId !== user.email) {
-  //   notFound();
-  // }
+  if (!chat) {
+    redirect("/chat");
+  }
 
-  return (
-    <main className='relative h-full'>
-      {children}
-
-      <div className='z-10 absolute bottom-0 inset-x-0'>
-        <ChatPanel id={chat?.id} initialMessages={chatMessages as Message[]} />
-      </div>
-    </main>
-  );
+  return <main className='h-full'>{children}</main>;
 }
 
 export default Layout;

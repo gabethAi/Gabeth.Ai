@@ -1,32 +1,33 @@
-"use client";
-
 import PromptForm from "../ui/PromptForm";
 import BottomBar from "../ui/BottomBar";
 import { Button } from "@mantine/core";
 import { BiRefresh, BiStop } from "react-icons/bi";
 import useChatManager from "@/lib/hooks/useChatManager";
 import { Message } from "ai";
+import { UseChatHelpers } from "ai/react";
 
-export interface ChatPanelProps {
-  id?: string;
-  initialMessages?: Message[];
-  onFinish?: (message: Message) => void;
+export interface ChatPanelProps
+  extends Pick<
+    UseChatHelpers,
+    | "input"
+    | "messages"
+    | "handleInputChange"
+    | "handleSubmit"
+    | "reload"
+    | "handleInputChange"
+    | "handleSubmit"
+  > {
+  readonly isLoading: boolean;
 }
 
-function ChatPanel({ id, initialMessages, onFinish }: ChatPanelProps) {
-  const {
-    isLoading,
-    messages,
-    reload,
-    stop,
-    handleSubmit,
-    input,
-    handleInputChange,
-  } = useChatManager({
-    id: id || "",
-    initialMessages: initialMessages,
-    onFinish: onFinish,
-  });
+function ChatPanel({
+  reload,
+  messages,
+  isLoading,
+  input,
+  handleInputChange,
+  handleSubmit,
+}: ChatPanelProps) {
   return (
     <div className='p-2'>
       <div className='mx-auto sm:max-w-2xl sm:px-4'>
