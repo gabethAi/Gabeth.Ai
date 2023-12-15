@@ -4,9 +4,10 @@ import React from "react";
 
 interface Props {
   readonly redirectTo?: string;
+  readonly children?: React.ReactNode;
 }
 
-function GoogleSignInButton({ redirectTo = "/chat" }: Props) {
+function GoogleSignInButton({ redirectTo = "/chat", children = "Sign in with Google" }: Props) {
   return (
     <form
       action={async () => {
@@ -50,7 +51,7 @@ function GoogleSignInButton({ redirectTo = "/chat" }: Props) {
             </defs>
           </svg>
         }>
-        Sign in with Google
+        {children}
       </Button>
     </form>
   );

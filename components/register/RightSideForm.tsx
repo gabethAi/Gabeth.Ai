@@ -110,7 +110,7 @@ async function RightSideForm() {
         <Divider label='or' labelPosition='center' my={"lg"} />
 
         <div className='flex flex-col space-y-4'>
-          <GoogleSignInButton />
+          <GoogleSignInButton> Sign up with Google</GoogleSignInButton>
           <Button
             rightSection={
               <svg

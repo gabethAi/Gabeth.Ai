@@ -33,7 +33,7 @@ function Chat({ id }: { readonly id: string }) {
       {messages.length > 0 ? (
         <ChatWrapper id={id} messages={messages} isLoading={isLoading} />
       ) : (
-        <div className='pt-24 lg:pt-32 xl:pt-36'>
+        <div className='pt-16 lg:pt-32 xl:pt-36'>
           <EmptyScreen setInput={setInput} handleSubmit={handleSubmit} />
         </div>
       )}

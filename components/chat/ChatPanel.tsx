@@ -31,7 +31,7 @@ function ChatPanel({
   return (
     <div className='p-2'>
       <div className='mx-auto sm:max-w-2xl sm:px-4'>
-        <div className='flex h-10 items-center justify-end'>
+        <div className='flex items-center justify-end'>
           {isLoading ? (
             <Button
               variant='light'

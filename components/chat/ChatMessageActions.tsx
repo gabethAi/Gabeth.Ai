@@ -3,6 +3,7 @@
 import { useCopyToClipboard } from "@/lib/hooks/UseCopytoClipboard";
 import { cn } from "@/lib/utils";
 import { Button, CheckIcon } from "@mantine/core";
+import { motion } from "framer-motion";
 import { type Message } from "ai";
 import { BiCopy, BiDislike, BiLike } from "react-icons/bi";
 
@@ -29,14 +30,20 @@ export function ChatMessageActions({
   const dislikeMessage = () => {};
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        duration: 0.5, // Animation duration is 0.5 seconds
+        ease: "easeOut", // Use 'easeOut' easing function
+      }}
       className={cn(
-        "flex items-center justify-end transition-opacity group-hover:opacity-100 md:absolute md:-right-10 md:-top-2 md:opacity-0",
+        "flex items-center justify-end transition-opacity",
         className
       )}>
       <div className='flex items-center gap-x-4 '>
         <Button
-          variant='ghost'
+          variant='subtle'
           leftSection={isCopied ? <CheckIcon /> : <BiCopy />}
           size='icon'
           onClick={onCopy}>
@@ -46,7 +53,7 @@ export function ChatMessageActions({
         {message.role !== "user" && (
           <div className='flex items-center gap-x-4'>
             <Button
-              variant='ghost'
+              variant='subtle'
               leftSection={<BiLike />}
               size='icon'
               onClick={likeMessage}>
@@ -54,7 +61,7 @@ export function ChatMessageActions({
             </Button>
 
             <Button
-              variant='ghost'
+              variant='subtle'
               leftSection={<BiDislike />}
               size='icon'
               onClick={dislikeMessage}>
@@ -63,6 +70,6 @@ export function ChatMessageActions({
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -8,7 +8,7 @@ function useChat({ chatId }: { chatId: string }) {
     queryFn: async () => {
       const result = await getChatById(chatId);
 
-      console.log(result, "result from useChats");
+      // console.log(result, "result from useChats");
 
       return result;
     },

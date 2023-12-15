@@ -9,9 +9,8 @@ export const metadata: Metadata = {
 
 // export const runtime = "edge";
 
-const id = nanoid();
-
 function Chat() {
+  const id = nanoid();
   return <ChatSection id={id} />;
 }
 

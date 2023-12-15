@@ -81,7 +81,7 @@ export async function POST(req: Request) {
         }
       } catch (error) {
         console.error("Error saving chat:", error);
-        // throw error;
+        throw error;
       }
     },
   });

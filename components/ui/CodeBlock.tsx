@@ -11,6 +11,7 @@ interface Props {
 function CodeBlock({ language, code }: Props) {
   return (
     <CodeHighlight
+      className='w-72 sm:w-full'
       code={code}
       withCopyButton
       copyLabel='Copy button code'

@@ -24,7 +24,7 @@ function MobileAppBar() {
             <BiMenu />
           </ActionIcon>
 
-          {isLoading ? (
+          {params.id && isLoading ? (
             <span className='h-6 w-48 bg-slate-700 rounded-sm animate-pulse' />
           ) : (
             <h6>{chat?.title}</h6>

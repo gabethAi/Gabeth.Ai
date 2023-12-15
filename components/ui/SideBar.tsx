@@ -63,7 +63,7 @@ export async function DesktopSideBar({ className }: { className?: string }) {
     <div
       // animate={opened ? "open" : "collapsed"}
       className={cn(
-        "relative dark:bg-black h-full grid grid-cols-7",
+        "relative bg-white dark:bg-black h-full grid grid-cols-7",
         className
       )}>
       <div className='col-span-2 border-r dark:border-[#373a40] flex flex-col justify-between py-8'>
