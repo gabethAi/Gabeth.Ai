@@ -9,7 +9,7 @@ export interface ChatList {
 }
 
 function ChatList({ messages, isLoading }: ChatList) {
-  console.log(isLoading, "isLoading");
+  // console.log(isLoading, "isLoading");
   return (
     <div className='max-w-2xl mx-auto px-4 py-4'>
       {messages.map((message, index) => (

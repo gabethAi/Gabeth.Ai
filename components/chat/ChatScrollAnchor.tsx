@@ -18,9 +18,6 @@ function ChatScrollAnchor({ trackVisibility }: ChatScrollAnchorProps) {
   });
 
   React.useEffect(() => {
-    entry?.target.scrollIntoView({
-      block: "start",
-    });
     if (isAtBottom && trackVisibility) {
       entry?.target.scrollIntoView({
         block: "start",
