@@ -5,7 +5,7 @@ import { useIntersection } from "@mantine/hooks";
 import { useAtBottom } from "@/lib/hooks/UseAtBottom";
 
 interface ChatScrollAnchorProps {
-  trackVisibility?: boolean;
+  readonly trackVisibility?: boolean;
 }
 
 function ChatScrollAnchor({ trackVisibility }: ChatScrollAnchorProps) {
