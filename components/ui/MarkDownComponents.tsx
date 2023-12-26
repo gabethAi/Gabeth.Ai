@@ -74,7 +74,12 @@ const MarkdownComponents: Components = {
   },
   table({ children }) {
     return (
-      <Table withTableBorder withColumnBorders verticalSpacing={"md"}>
+      <Table
+        stickyHeader
+        highlightOnHover
+        withTableBorder
+        withColumnBorders
+        verticalSpacing={"md"}>
         {children}
       </Table>
     );
