@@ -17,7 +17,6 @@ interface Props {
 function useScrollToBottom({ trackVisibility, containerRef }: Readonly<Props>) {
   const { ref, entry } = useIntersection({
     root: containerRef.current,
-    threshold: 1,
   });
 
   React.useEffect(() => {

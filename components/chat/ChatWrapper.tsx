@@ -39,7 +39,7 @@ function ChatWrapper({ messages, isLoading, className }: Readonly<ChatProps>) {
       <Paper
         ref={containerRef}
         style={{ overflowY: "scroll" }}
-        className={cn("pt-4 md:pt-10 pb-10 h-[70svh] md:h-[80svh]", className)}>
+        className={cn("pt-4 md:pt-10 pb-10 h-[70dvh] md:h-[75dvh]", className)}>
         <ChatList messages={messages} isLoading={isLoading} />
         <div ref={ref} className='h-px w-full' />
       </Paper>
