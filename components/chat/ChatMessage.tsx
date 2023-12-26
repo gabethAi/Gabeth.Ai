@@ -4,9 +4,9 @@ import remarkMath from "remark-math";
 
 import { cn } from "@/lib/utils";
 import { MemoizedReactMarkdown } from "../ui/MemoizedReactMarkdown";
-import CodeBlock from "../ui/CodeBlock";
-import { ChatMessageActions } from "./ChatMessageActions";
 import UserAvatar from "../ui/UserAvatar";
+import MarkdownComponents from "../ui/MarkDownComponents";
+import { Components } from "react-markdown";
 
 export interface ChatMessageProps {
   readonly message: Message;
@@ -263,62 +263,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
         <MemoizedReactMarkdown
           className='prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 leading-relaxed space-y-4'
           remarkPlugins={[remarkGfm, remarkMath]}
-          components={{
-            p({ children }) {
-              return <p className='mb-2 last:mb-0 leading-loose'>{children}</p>;
-            },
-            code({ node, inline, className, children, ...props }: any) {
-              if (typeof children === "string") {
-                if (children.startsWith("▍")) {
-                  return (
-                    <span className='mt-1 cursor-default animate-pulse'>▍</span>
-                  );
-                }
-
-                children = children.replace("`▍`", "▍");
-              }
-
-              const match = /language-(\w+)/.exec(className || "");
-
-              if (inline) {
-                return (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                );
-              }
-
-              return (
-                <div className='py-3'>
-                  <CodeBlock
-                    key={message.id}
-                    language={(match && match[1]) || ""}
-                    code={String(children).replace(/\n$/, "")}
-                    {...props}
-                  />
-                </div>
-              );
-            },
-            ol({ children }) {
-              return <ol className='mb-3'>{children}</ol>;
-            },
-            li({ children }) {
-              return (
-                <li className='mb-2 last:mb-0 list-decimal'>{children}</li>
-              );
-            },
-            link({ children, href }) {
-              return (
-                <a
-                  href={href}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='text-blue-500 hover:underline'>
-                  {children}
-                </a>
-              );
-            },
-          }}>
+          components={MarkdownComponents as Partial<Components>}>
           {message.content}
         </MemoizedReactMarkdown>
       </div>

@@ -4,20 +4,19 @@ import { ChatMessage } from "./ChatMessage";
 import { ChatMessageActions } from "./ChatMessageActions";
 
 export interface ChatList {
-  readonly messages: Message[];
-  readonly isLoading?: boolean;
+  messages: Message[];
+  isLoading?: boolean;
 }
 
-function ChatList({ messages, isLoading }: ChatList) {
+function ChatList({ messages, isLoading }: Readonly<ChatList>) {
   // console.log(isLoading, "isLoading");
   return (
     <div className='max-w-2xl mx-auto px-4 py-4'>
       {messages.map((message, index) => (
         <div key={message.id}>
           <ChatMessage message={message} />
-
-          {index < messages.length - 1 && <Divider my={"md"} />}
           {!isLoading && <ChatMessageActions message={message} />}
+          {index < messages.length - 1 && <Divider my={"md"} />}
         </div>
       ))}
     </div>
