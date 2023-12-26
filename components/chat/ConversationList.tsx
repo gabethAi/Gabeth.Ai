@@ -1,7 +1,7 @@
 import { Divider } from "@mantine/core";
 import { SidebarList } from "../ui/SideBarList";
 import { getUser } from "@/lib/actions";
-import ClearChats from "../ui/ClearChats";
+import ClearChats from "./ClearChats";
 import { User } from "@/lib/db/schema";
 import { Suspense } from "react";
 

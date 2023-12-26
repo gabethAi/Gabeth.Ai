@@ -35,7 +35,7 @@ function ChatWrapper({ messages, isLoading, className }: Readonly<ChatProps>) {
   }
 
   return (
-    <div className='relative'>
+    <div className='relative '>
       <Paper
         ref={containerRef}
         style={{ overflowY: "scroll" }}
@@ -44,7 +44,7 @@ function ChatWrapper({ messages, isLoading, className }: Readonly<ChatProps>) {
         <div ref={ref} className='h-px w-full' />
       </Paper>
 
-      <div className='absolute bottom-0 z-20 inset-x-0 flex items-center justify-center w-full'>
+      <div className='absolute bottom-[-30px] z-20 inset-x-0 flex items-center justify-center w-full'>
         <ActionIcon
           size={"lg"}
           variant='outline'

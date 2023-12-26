@@ -6,6 +6,7 @@ import {
   TextInput,
   PasswordInput,
   ActionIcon,
+  Modal,
 } from "@mantine/core";
 
 export const theme = createTheme({
@@ -30,6 +31,14 @@ export const theme = createTheme({
     ActionIcon: ActionIcon.extend({
       defaultProps: {
         variant: "transparent",
+      },
+    }),
+    Modal: Modal.extend({
+      defaultProps: {
+        overlayProps: {
+          backgroundOpacity: 0.75,
+          blur: 2,
+        },
       },
     }),
   },

@@ -47,7 +47,7 @@ export function ChatMessageActions({
           leftSection={isCopied ? <CheckIcon /> : <BiCopy />}
           size='icon'
           onClick={onCopy}>
-          <span className='sr-only'>Copy message</span>
+          {isCopied ? "Copied" : "Copy"}
         </Button>
 
         {message.role !== "user" && (

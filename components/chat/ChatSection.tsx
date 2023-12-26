@@ -4,17 +4,17 @@ import ChatPanel from "./ChatPanel";
 import { Message } from "ai";
 import useChatManager from "@/lib/hooks/useChatManager";
 
-function ChatSection({
-  id,
-  initialMessages,
-}: {
-  readonly id: string;
+interface ChatSectionProps {
+  id: string;
   initialMessages: Message[];
-}) {
+}
+
+function ChatSection({ id, initialMessages }: Readonly<ChatSectionProps>) {
   const {
     messages,
     input,
     isLoading,
+    error,
     setInput,
     reload,
     handleInputChange,
@@ -26,6 +26,8 @@ function ChatSection({
     },
     initialMessages,
   });
+
+  console.log(error, "error");
 
   return (
     <div className='relative  h-full'>
