@@ -25,14 +25,14 @@ export default function RootLayout({
   readonly children: React.ReactNode;
 }) {
   return (
-    <html lang='en' className={GeistSans.className}>
+    <html lang='en'>
       <head>
         <ColorSchemeScript
           nonce='8IBTHwOdqNKAWeKl7plt8g=='
           defaultColorScheme='auto'
         />
       </head>
-      <body>
+      <body className={GeistSans.className}>
         <MantineProvider theme={theme} defaultColorScheme='auto'>
           <Notifications />
           <ReactQueryProvider>
