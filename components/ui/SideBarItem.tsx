@@ -48,7 +48,7 @@ function SideBarItem({ index, chat, children }: SidebarItemProps) {
         ease: "easeIn",
       }}>
       <NavLink
-        className='max-w-[15rem] xl:max-w-[19rem]'
+        className='max-w-60 xl:max-w-80'
         href={chat.path}
         active={isActive}
         label={

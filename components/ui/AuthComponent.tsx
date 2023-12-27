@@ -1,8 +1,9 @@
-import { signIn, signOut } from "@/auth";
+"use client";
+import { logOut, loginUserWithProvider } from "@/lib/actions";
 import { Button } from "@mantine/core";
 
 interface Props {
-  readonly provider?: string;
+  readonly provider: string;
   readonly children?: React.ReactNode;
   readonly props?: React.ComponentPropsWithRef<typeof Button>;
   readonly rightSection?: React.ReactNode;
@@ -18,12 +19,7 @@ export function SignIn({
 }: Props) {
   return (
     <form
-      action={async () => {
-        "use server";
-        await signIn(provider, {
-          redirectTo: redirectTo,
-        });
-      }}>
+      action={async () => await loginUserWithProvider(provider, redirectTo)}>
       <Button type='submit' fullWidth rightSection={rightSection} {...props}>
         {children ?? "Sign In"}
       </Button>
@@ -39,12 +35,7 @@ export function SignOut({
   readonly props?: React.ComponentPropsWithRef<typeof Button>;
 }) {
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signOut();
-      }}
-      className='w-full'>
+    <form action={logOut} className='w-full'>
       <Button variant='subtle' size='sm' type='submit' fullWidth {...props}>
         {children ?? "Sign Out"}
       </Button>

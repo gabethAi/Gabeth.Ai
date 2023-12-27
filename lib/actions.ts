@@ -3,12 +3,12 @@ import "server-only";
 import { Chat, User, chats, messages, users } from "./db/schema";
 import { db } from "./db/drizzle";
 import { eq, desc, asc } from "drizzle-orm";
-import { auth, signOut } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import { Message } from "ai";
 
 import { v4 as uuidv4 } from "uuid";
 import { QueryResultKind } from "drizzle-orm/mysql-core";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 const id = uuidv4();
@@ -119,6 +119,8 @@ export async function saveChatToDb({
       path: path,
       sharePath: path,
     });
+
+    revalidateTag("chats");
 
     return newChat;
   } catch (error) {
@@ -403,4 +405,17 @@ export async function fetchChatById(id: string): Promise<ChatWithMessages> {
     console.error("Error fetching chat:", error);
     throw error;
   }
+}
+
+export async function logOut() {
+  return await signOut();
+}
+
+export async function loginUserWithProvider(
+  provider: string,
+  redirectTo: string
+) {
+  return await signIn(provider, {
+    redirectTo: redirectTo,
+  });
 }

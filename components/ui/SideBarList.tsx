@@ -2,9 +2,10 @@ import SideBarItem from "./SideBarItem";
 import SideBarActions from "./SideBarActions";
 import { fetchChats, removeChat } from "@/lib/actions";
 import ScrollAreaAutoSize from "./ScrollAreaAutoSize";
+import { Chat } from "@/lib/db/schema";
 
-export async function SidebarList() {
-  const chats = await fetchChats();
+export function SidebarList({ chats }: { readonly chats: Chat[] }) {
+  // const chats = await fetchChats();
 
   if (!chats || chats.length === 0) {
     return (

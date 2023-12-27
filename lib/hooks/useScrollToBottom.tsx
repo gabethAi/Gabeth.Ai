@@ -19,11 +19,13 @@ function useScrollToBottom({ trackVisibility, containerRef }: Readonly<Props>) {
     root: containerRef.current,
   });
 
+  const isBottom = entry?.isIntersecting;
+
   React.useEffect(() => {
-    if (trackVisibility && !entry?.isIntersecting) {
+    if (trackVisibility && !isBottom) {
       entry?.target?.scrollIntoView();
     }
-  }, [entry?.isIntersecting, entry?.target, trackVisibility]);
+  }, [entry?.isIntersecting, entry?.target, isBottom, trackVisibility]);
 
   const scrollToBottom = () =>
     entry?.target?.scrollIntoView({
@@ -31,7 +33,7 @@ function useScrollToBottom({ trackVisibility, containerRef }: Readonly<Props>) {
       block: "end",
     });
 
-  return { ref, observedRef: ref, scrollToBottom };
+  return { ref, isBottom, observedRef: ref, scrollToBottom };
 }
 
 export default useScrollToBottom;

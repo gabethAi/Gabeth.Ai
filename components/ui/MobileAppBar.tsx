@@ -11,7 +11,7 @@ import Link from "next/link";
 
 function MobileAppBar() {
   const params = useParams();
-  const { chat, isLoading } = useChat({
+  const { data, isLoading } = useChat({
     chatId: params.id as string,
   });
 
@@ -27,7 +27,7 @@ function MobileAppBar() {
           {params.id && isLoading ? (
             <span className='h-6 w-48 bg-slate-700 rounded-sm animate-pulse' />
           ) : (
-            <h6>{chat?.title}</h6>
+            <h6>{data?.chat?.title.slice(0, 40)}</h6>
           )}
           <Link href={"/chat"}>
             <ActionIcon variant='subtle'>

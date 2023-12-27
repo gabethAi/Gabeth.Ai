@@ -1,19 +1,17 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { getChatById, getChats, getUser } from "../actions";
+import { fetchChatById } from "../actions";
 
 function useChat({ chatId }: { chatId: string }) {
-  const { data: chat, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["chat", chatId],
     queryFn: async () => {
-      const result = await getChatById(chatId);
-
-      // console.log(result, "result from useChats");
+      const result = await fetchChatById(chatId);
 
       return result;
     },
   });
-  return { chat, isLoading };
+  return { data, isLoading };
 }
 
 export default useChat;

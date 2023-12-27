@@ -46,7 +46,7 @@ async function RightSideForm() {
   }
 
   return (
-    <div className='px-4 flex flex-col items-center justify-center h-full mx-auto max-w-md xl:max-w-lg'>
+    <div className='p-4 flex flex-col items-center justify-center h-full mx-auto max-w-md xl:max-w-lg'>
       <Card shadow='lg' radius={"md"} p={"xl"}>
         <div className='flex flex-col justify-center items-center gap-y-2 py-4'>
           <Link href={"/"} className='pl-28'>

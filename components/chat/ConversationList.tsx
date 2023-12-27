@@ -1,12 +1,13 @@
 import { Divider } from "@mantine/core";
 import { SidebarList } from "../ui/SideBarList";
-import { getUser } from "@/lib/actions";
+import { fetchChats, getUser } from "@/lib/actions";
 import ClearChats from "./ClearChats";
 import { User } from "@/lib/db/schema";
 import { Suspense } from "react";
 
 async function ConversationList() {
   const user = await getUser();
+  const chats = await fetchChats();
 
   return (
     <div>
@@ -27,7 +28,7 @@ async function ConversationList() {
             ))}
           </div>
         }>
-        <SidebarList />
+        <SidebarList chats={chats} />
       </Suspense>
     </div>
   );

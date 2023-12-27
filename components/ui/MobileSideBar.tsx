@@ -1,23 +1,31 @@
+"use client";
 import { Button, Divider, Drawer, Stack } from "@mantine/core";
 import UpgradeButton from "./UpgradeButton";
-import ConversationList from "../chat/ConversationList";
 import ProfileCard from "./ProfileCard";
-import { User } from "@/lib/db/schema";
+import { User } from "@/lib/types";
 import useUser from "@/lib/hooks/useUser";
 import Link from "next/link";
+import { SidebarList } from "./SideBarList";
+import useChats from "@/lib/hooks/useChats";
+import Logo from "../shared/Logo";
 
 interface MobileSideBar {
   open: boolean;
   onClose: () => void;
 }
-function MobileSideBar({ open, onClose }: MobileSideBar) {
-  // const { user } = useUser();
+function MobileSideBar({ open, onClose }: Readonly<MobileSideBar>) {
+  const { user } = useUser();
+  const { chats } = useChats();
+
   return (
-    <Drawer opened={open} onClose={onClose}>
+    <Drawer opened={open} size={"xs"} onClose={onClose}>
       <div className='flex flex-col gap-y-6'>
         <div className=''>
           <div className=''>
-            <h1 className='font-semibold text-2xl'>Gabeth.AI</h1>
+            <Link href={"/chat"} className='flex items-center'>
+              <Logo size={70} />
+              <h1 className='font-semibold text-2xl'>Gabeth.AI</h1>
+            </Link>
           </div>
           <Divider my={"md"} />
           <Link href={"/chat"}>
@@ -27,14 +35,16 @@ function MobileSideBar({ open, onClose }: MobileSideBar) {
           </Link>
         </div>
 
-        <div className=''>{/* <ConversationList /> */}</div>
+        <div className=''>
+          <SidebarList chats={chats || []} />
+        </div>
 
         <div className='absolute bottom-4 inset-x-5'>
           <Divider my={"md"} />
           <Stack gap={"lg"} align='flex-start'>
             <UpgradeButton />
 
-            {/* <ProfileCard user={user} /> */}
+            <ProfileCard user={user as User} />
           </Stack>
         </div>
       </div>

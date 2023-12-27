@@ -3,7 +3,7 @@ import { Message } from "ai";
 import React, { useRef } from "react";
 import ChatList from "./ChatList";
 
-import { ActionIcon, Paper } from "@mantine/core";
+import { ActionIcon, Box, Paper } from "@mantine/core";
 import { cn } from "@/lib/utils";
 import useScrollToBottom from "@/lib/hooks/useScrollToBottom";
 
@@ -25,10 +25,12 @@ export interface ChatProps extends React.ComponentProps<"div"> {
 function ChatWrapper({ messages, isLoading, className }: Readonly<ChatProps>) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { ref, scrollToBottom } = useScrollToBottom({
+  const { ref, isBottom, scrollToBottom } = useScrollToBottom({
     trackVisibility: isLoading,
     containerRef: containerRef,
   });
+
+  const showScrollToBottom = !isBottom && !isLoading;
 
   if (!messages) {
     return null;
@@ -36,22 +38,24 @@ function ChatWrapper({ messages, isLoading, className }: Readonly<ChatProps>) {
 
   return (
     <div className='relative '>
-      <Paper
+      <Box
         ref={containerRef}
         style={{ overflowY: "scroll" }}
-        className={cn("pt-4 md:pt-10 pb-10 h-[70dvh] md:h-[75dvh]", className)}>
+        className={cn("md:pt-10 h-[70dvh] ", className)}>
         <ChatList messages={messages} isLoading={isLoading} />
-        <div ref={ref} className='h-px w-full' />
-      </Paper>
+        <div ref={ref} />
+      </Box>
 
-      <div className='absolute bottom-[-30px] z-20 inset-x-0 flex items-center justify-center w-full'>
-        <ActionIcon
-          size={"lg"}
-          variant='outline'
-          onClick={() => scrollToBottom()}>
-          <FaArrowDown />
-        </ActionIcon>
-      </div>
+      {showScrollToBottom && (
+        <div className='absolute bottom-[-40px] lg:bottom-[-60px] z-20 inset-x-0 flex items-center justify-center w-full'>
+          <ActionIcon
+            size={"lg"}
+            variant='outline'
+            onClick={() => scrollToBottom()}>
+            <FaArrowDown />
+          </ActionIcon>
+        </div>
+      )}
     </div>
   );
 }

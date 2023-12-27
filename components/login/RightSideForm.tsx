@@ -37,7 +37,7 @@ async function RightSideForm({ path }: Props): Promise<JSX.Element> {
     }
   }
   return (
-    <div className='flex flex-col items-center justify-center h-full mx-auto px-4'>
+    <div className='flex flex-col items-center justify-center h-full mx-auto p-4'>
       <Card shadow='lg' radius={"md"} p={"xl"}>
         <div className='sm:min-w-[420px]'>
           <div className='flex flex-col justify-center items-center gap-y-2 py-4'>
