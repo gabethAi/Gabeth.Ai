@@ -24,9 +24,9 @@ function Chat({ id }: { readonly id: string }) {
     body: {
       id,
     },
-    onFinish(message) {
-      router.push(`/chat/${id}`);
-    },
+    // onFinish(message) {
+    //   router.push(`/chat/${id}`);
+    // },
   });
   return (
     <div className='relative  h-full'>

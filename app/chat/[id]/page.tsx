@@ -1,18 +1,13 @@
-import { getChatById, getMessagesByChatId } from "@/lib/actions";
+import { fetchChatById } from "@/lib/actions";
 import { ChatPageProps } from "./layout";
 import ChatSection from "@/components/chat/ChatSection";
-import { Message } from "ai";
 
-// export const runtime = "edge";
+export default async function ChatPage({ params }: Readonly<ChatPageProps>) {
+  const result = await fetchChatById(params.id);
 
-export default async function ChatPage({ params }: ChatPageProps) {
-  const chat = await getChatById(params.id);
-  const chatMessages = await getMessagesByChatId(params.id);
+  // console.log(result, "result");
 
   return (
-    <ChatSection
-      id={chat?.id as string}
-      initialMessages={chatMessages as Message[]}
-    />
+    <ChatSection id={result.chat?.id} initialMessages={result.chatMessages} />
   );
 }

@@ -5,7 +5,10 @@ import {
   getUser,
   addMessageToDb,
   saveChatToDb,
+  getMessagesByChatId,
 } from "@/lib/actions";
+import { NextRequest, NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 
 export const runtime = "edge";
 
@@ -88,4 +91,44 @@ export async function POST(req: Request) {
 
   // Respond with the stream
   return new StreamingTextResponse(stream);
+}
+
+export async function GET(request: NextRequest) {
+  const chatId = request.nextUrl.searchParams.get("chatId");
+
+  if (!chatId) {
+    return NextResponse.json(
+      {
+        error: "Missing chat ID",
+      },
+      {
+        status: 400,
+      }
+    );
+  }
+
+  try {
+    const chat = await getChatById(chatId);
+    const chatMessages = await getMessagesByChatId(chatId);
+
+    return NextResponse.json(
+      {
+        chat,
+        chatMessages,
+      },
+      {
+        status: 200,
+      }
+    );
+  } catch (error: any) {
+    console.error("Error getting chats:", error);
+    return NextResponse.json(
+      {
+        error: error.message || "Something went wrong.",
+      },
+      {
+        status: 500,
+      }
+    );
+  }
 }

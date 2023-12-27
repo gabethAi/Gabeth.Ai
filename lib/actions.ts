@@ -1,6 +1,6 @@
 "use server";
 import "server-only";
-import { User, chats, messages, users } from "./db/schema";
+import { Chat, User, chats, messages, users } from "./db/schema";
 import { db } from "./db/drizzle";
 import { eq, desc, asc } from "drizzle-orm";
 import { auth, signOut } from "@/auth";
@@ -12,6 +12,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 const id = uuidv4();
+
+const apiUrl = process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000";
 
 /**
  * Retrieves the user information.
@@ -139,22 +141,6 @@ export async function getChatById(id: string) {
     return chat;
   } catch (error) {
     console.error("Error getting chat:", error);
-    throw error;
-  }
-}
-
-/**
- * Retrieves the chats from the database.
- * @returns {Promise<Array<any>>} The array of chats.
- * @throws {Error} If there is an error retrieving the chats.
- */
-export async function getChats() {
-  try {
-    const result = await db.query.chats.findMany();
-
-    return result;
-  } catch (error) {
-    console.error("Error getting chats:", error);
     throw error;
   }
 }
@@ -378,6 +364,43 @@ export async function removeChat({ id, path }: { id: string; path: string }) {
     return redirect("/chat");
   } catch (error) {
     console.error("Error deleting chat:", error);
+    throw error;
+  }
+}
+
+export async function fetchChats(): Promise<Chat[]> {
+  try {
+    const user = await getUser();
+
+    const response = await fetch(`${apiUrl}/api/chats?userId=${user?.email}`, {
+      next: { tags: ["chats"] },
+    });
+
+    const chats = await response.json();
+
+    return chats;
+  } catch (error) {
+    console.error("Error fetching chats:", error);
+    throw error;
+  }
+}
+
+interface ChatWithMessages {
+  chat: Chat;
+  chatMessages: Message[];
+}
+
+export async function fetchChatById(id: string): Promise<ChatWithMessages> {
+  try {
+    const response = await fetch(`${apiUrl}/api/chat?chatId=${id}`, {
+      next: { tags: ["chat"] },
+    });
+
+    const chat = await response.json();
+
+    return chat;
+  } catch (error) {
+    console.error("Error fetching chat:", error);
     throw error;
   }
 }

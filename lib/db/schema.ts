@@ -5,7 +5,6 @@ import {
   primaryKey,
   varchar,
   longtext,
-
 } from "drizzle-orm/mysql-core";
 
 import type { AdapterAccount } from "@auth/core/adapters";
@@ -50,6 +49,8 @@ export const messages = mysqlTable("message", {
   content: longtext("content").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
+
+export type Message = typeof messages.$inferSelect; // return type when queried
 
 export const reactions = mysqlTable("reaction", {
   id: int("id").autoincrement().primaryKey(),
