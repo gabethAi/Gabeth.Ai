@@ -2,9 +2,13 @@
 import { ScrollArea } from "@mantine/core";
 import React from "react";
 
-function ScrollAreaAutoSize({ children }: { children: React.ReactNode }) {
+function ScrollAreaAutoSize({
+  children,
+}: {
+  readonly children: React.ReactNode;
+}) {
   return (
-    <ScrollArea.Autosize className='h-[400px] md:max-h-[400px] xl:max-h-[450px] 2xl:max-h-[620px]'>
+    <ScrollArea.Autosize className='h-[400px] lg:h-[450px] 2xl:h-[550px]'>
       {children}
     </ScrollArea.Autosize>
   );

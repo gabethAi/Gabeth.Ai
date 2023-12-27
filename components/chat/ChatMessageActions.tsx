@@ -41,7 +41,7 @@ export function ChatMessageActions({
         "flex items-center justify-end transition-opacity",
         className
       )}>
-      <div className='flex items-center gap-x-4 '>
+      <div className='flex items-center gap-x-2 md:gap-x-4 '>
         <Button
           variant='subtle'
           leftSection={isCopied ? <CheckIcon /> : <BiCopy />}
@@ -51,7 +51,7 @@ export function ChatMessageActions({
         </Button>
 
         {message.role !== "user" && (
-          <div className='flex items-center gap-x-4'>
+          <div className='flex items-center gap-x-2 md:gap-x-4'>
             <Button
               variant='subtle'
               leftSection={<BiLike />}

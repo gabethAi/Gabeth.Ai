@@ -151,7 +151,7 @@ export async function DesktopSideBar({ className }: { className?: string }) {
         <div className='flex flex-col gap-y-6'>
           <div className=''>
             <Link href={"/chat"} className='flex items-center'>
-              <Logo size={70} />
+              <Logo />
               <h1 className='font-semibold text-2xl'>Gabeth.AI</h1>
             </Link>
             <Divider my={"md"} />

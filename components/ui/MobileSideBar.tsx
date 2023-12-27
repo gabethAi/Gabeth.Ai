@@ -23,7 +23,7 @@ function MobileSideBar({ open, onClose }: Readonly<MobileSideBar>) {
         <div className=''>
           <div className=''>
             <Link href={"/chat"} className='flex items-center'>
-              <Logo size={70} />
+              <Logo />
               <h1 className='font-semibold text-2xl'>Gabeth.AI</h1>
             </Link>
           </div>

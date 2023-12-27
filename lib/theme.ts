@@ -35,6 +35,7 @@ export const theme = createTheme({
     }),
     Modal: Modal.extend({
       defaultProps: {
+        centered: true,
         overlayProps: {
           backgroundOpacity: 0.75,
           blur: 2,

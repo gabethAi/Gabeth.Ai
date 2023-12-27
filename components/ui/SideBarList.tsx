@@ -1,12 +1,10 @@
 import SideBarItem from "./SideBarItem";
 import SideBarActions from "./SideBarActions";
-import { fetchChats, removeChat } from "@/lib/actions";
+import { removeChat } from "@/lib/actions";
 import ScrollAreaAutoSize from "./ScrollAreaAutoSize";
 import { Chat } from "@/lib/db/schema";
 
 export function SidebarList({ chats }: { readonly chats: Chat[] }) {
-  // const chats = await fetchChats();
-
   if (!chats || chats.length === 0) {
     return (
       <div className='p-8 text-center'>
