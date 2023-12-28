@@ -2,10 +2,10 @@ interface Props {
   size?: number | `${number}`;
 }
 
-function Logo({ size = 32 }: Readonly<Props>) {
+function Logo({ size = 24 }: Readonly<Props>) {
   return (
     <svg
-      className={`fill-black dark:fill-white size-24`}
+      className={`fill-black dark:fill-white size-${size}`}
       viewBox='0 0 148 67'
       xmlns='http://www.w3.org/2000/svg'>
       <path

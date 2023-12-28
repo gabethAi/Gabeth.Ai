@@ -21,7 +21,7 @@ function MobileHeader() {
 function DesktopHeader() {
   return (
     <div className='bg-white dark:bg-black'>
-      <div className='flex justify-between items-center container mx-auto p-4'>
+      <div className='flex justify-between items-center container mx-auto px-4'>
         <Logo />
         <div className='flex items-center gap-x-4'>
           <ThemeToggler />

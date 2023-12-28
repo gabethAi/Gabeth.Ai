@@ -12,10 +12,6 @@ interface Props {
 }
 
 async function RightSideForm({ path }: Props): Promise<JSX.Element> {
-  console.log(path, "path");
-  // const session = await auth();
-  // if (!session?.user) return <SignIn provider="google" />;
-
   async function signInUser(formData: FormData) {
     "use server";
 
@@ -38,11 +34,11 @@ async function RightSideForm({ path }: Props): Promise<JSX.Element> {
   }
   return (
     <div className='flex flex-col items-center justify-center h-full mx-auto p-4'>
-      <Card shadow='lg' radius={"md"} p={"xl"}>
+      <Card miw={400} maw={500} shadow='lg' radius={"md"} p={"xl"}>
         <div className='sm:min-w-[420px]'>
           <div className='flex flex-col justify-center items-center gap-y-2 py-4'>
-            <Link href={"/"} className='pl-28'>
-              <Logo size={200} />
+            <Link href={"/"}>
+              <Logo />
             </Link>
             <h2 className='text-xl md:text-2xl lg:text-3xl  font-semibold'>
               Welcome back
