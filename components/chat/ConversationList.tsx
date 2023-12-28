@@ -7,7 +7,7 @@ import { Suspense } from "react";
 
 async function ConversationList() {
   const user = await getUser();
-  const chats = await fetchChats();
+  const chats = await fetchChats(user as User);
 
   return (
     <div>
