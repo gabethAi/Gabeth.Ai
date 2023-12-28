@@ -370,9 +370,9 @@ export async function removeChat({ id, path }: { id: string; path: string }) {
   }
 }
 
-export async function fetchChats(user: User): Promise<Chat[]> {
+export async function fetchChats(): Promise<Chat[]> {
   try {
-    // const user = await getUser();
+    const user = await getUser();
 
     const response = await fetch(`${apiUrl}/api/chats?userId=${user?.email}`, {
       next: { tags: ["chats"] },
