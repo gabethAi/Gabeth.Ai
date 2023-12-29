@@ -1,4 +1,8 @@
-import { useComputedColorScheme, useMantineColorScheme } from "@mantine/core";
+import {
+  MantineColorScheme,
+  useComputedColorScheme,
+  useMantineColorScheme,
+} from "@mantine/core";
 import { useCallback, useEffect } from "react";
 
 function useThemeToggler() {
@@ -6,6 +10,12 @@ function useThemeToggler() {
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
   });
+
+  const preferredTheme =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
 
   useEffect(() => {
     if (
@@ -32,7 +42,31 @@ function useThemeToggler() {
     }
   }, [setColorScheme]);
 
-  return { theme: computedColorScheme, toggleTheme };
+  // function to update the theme
+  const updateTheme = useCallback(
+    (theme: MantineColorScheme) => {
+      // If the theme is auto, then set the theme to the preferred theme
+      if (theme == "auto") {
+        theme = preferredTheme;
+      }
+
+      localStorage.theme = theme;
+      setColorScheme(theme);
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    },
+    [setColorScheme, preferredTheme]
+  );
+
+  return {
+    theme: computedColorScheme,
+    preferredTheme,
+    updateTheme,
+    toggleTheme,
+  };
 }
 
 export default useThemeToggler;

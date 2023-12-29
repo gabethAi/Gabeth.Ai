@@ -9,7 +9,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-function ThemeToggler({ children, variant = "subtle" }: Props) {
+function ThemeToggler({ children, variant = "subtle" }: Readonly<Props>) {
   const { theme, toggleTheme } = useThemeToggler();
 
   return (

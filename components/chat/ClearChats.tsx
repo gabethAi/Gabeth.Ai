@@ -1,7 +1,7 @@
 "use client";
 import { deleteChatsByUserId } from "@/lib/actions";
 import { User } from "@/lib/db/schema";
-import { openConfirmationModal } from "@/lib/utils";
+import { openModal } from "@/lib/utils";
 import { Button } from "@mantine/core";
 
 function ClearChats({ user }: { readonly user: User }) {
@@ -12,7 +12,7 @@ function ClearChats({ user }: { readonly user: User }) {
       onClick={async (e) => {
         e.preventDefault();
 
-        openConfirmationModal({
+        openModal({
           title: (
             <div className='flex space-x-2 items-center'>
               <svg

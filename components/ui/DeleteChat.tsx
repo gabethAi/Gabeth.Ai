@@ -1,6 +1,6 @@
 "use client";
 import { removeChat } from "@/lib/actions";
-import { openConfirmationModal } from "@/lib/utils";
+import { openModal } from "@/lib/utils";
 import { Button } from "@mantine/core";
 import React from "react";
 
@@ -13,7 +13,7 @@ function DeleteChat({ chat }: { readonly chat: Chat }) {
       onClick={async (e) => {
         e.preventDefault();
 
-        openConfirmationModal({
+        openModal({
           title: (
             <div className='flex space-x-2 items-center'>
               <svg

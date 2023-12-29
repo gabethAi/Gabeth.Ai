@@ -58,7 +58,7 @@ export interface ConfirmModalProps {
   };
 }
 
-export function openConfirmationModal({
+export function openModal({
   title,
   children,
   onCancel,
