@@ -1,5 +1,8 @@
 "use client";
+import logoutUser from "@/lib/actions";
+import { apiUrl } from "@/lib/consts";
 import useThemeToggler from "@/lib/hooks/useThemeToggler";
+import useUser from "@/lib/hooks/useUser";
 import {
   ActionIcon,
   Button,
@@ -10,6 +13,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { MdSettings } from "react-icons/md";
@@ -24,7 +28,31 @@ interface SettingsItemProps {
 
 function Settings() {
   const router = useRouter();
+  const { user } = useUser();
   const { theme, preferredTheme, updateTheme } = useThemeToggler();
+
+  const {
+    mutate: deactivateAccount,
+    isPending,
+    isSuccess,
+  } = useMutation({
+    mutationKey: ["deactivateAccount"],
+    mutationFn: async () => {
+      return await fetch(`${apiUrl}/api/user/deactivate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user?.email }),
+      });
+    },
+    onSuccess(data, variables, context) {
+      logoutUser();
+    },
+    onError(error, variables, context) {
+      console.error("Error deactivating account:", error);
+    },
+  });
 
   const items: SettingsItemProps[] = [
     {
@@ -123,8 +151,8 @@ function Settings() {
                 children: (
                   <div>
                     <p className='text-sm'>
-                      Your chat data has been sent to your registered email
-                      toodoos@gmail.com and can be downloaded there.
+                      Your chat data has been sent to your registered email{" "}
+                      {user?.email} and can be downloaded there.
                     </p>
 
                     <Button
@@ -197,7 +225,13 @@ function Settings() {
                   confirm: "Deactivate account",
                   cancel: "Cancel",
                 },
-                confirmProps: { color: "red" },
+                confirmProps: { color: "red", loading: isPending },
+                onConfirm() {
+                  console.log("Confirm");
+                  deactivateAccount();
+                },
+                closeOnConfirm: isSuccess,
+
                 children: (
                   <p className='text-sm'>
                     Are you sure you want to deactivate your account? You will
