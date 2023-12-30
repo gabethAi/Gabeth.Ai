@@ -1,6 +1,14 @@
 "use server";
 import "server-only";
-import { Chat, User, chats, messages, reactions, users } from "./db/schema";
+import {
+  Chat,
+  Reaction,
+  User,
+  chats,
+  messages,
+  reactions,
+  users,
+} from "./db/schema";
 import { db } from "./db/drizzle";
 import { eq, desc, asc, and } from "drizzle-orm";
 import { auth, signIn, signOut } from "@/auth";
@@ -11,9 +19,6 @@ import { QueryResultKind } from "drizzle-orm/mysql-core";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { apiUrl } from "./consts";
-import { ReactionProps } from "./types";
-
-const id = uuidv4();
 
 /**
  * Retrieves the user information.
@@ -40,6 +45,8 @@ export async function registerUser({
   email: string;
   password: string;
 }) {
+  const id = uuidv4();
+
   const result = db.insert(users).values({
     id: id,
     email: email,
@@ -205,7 +212,7 @@ export async function getChatsByUserId(userId: string) {
 export async function getMessagesByChatId(chatId: string) {
   try {
     const result = await db.query.messages.findMany({
-      where: eq(messages.chatId, chatId),
+      // where: eq(messages.chatId, chatId),
       orderBy(fields, operators) {
         return [asc(fields.createdAt)];
       },
@@ -469,7 +476,7 @@ export async function loginUserWithProvider(
 
 /**
  * Adds a reaction to a message.
- * @param {ReactionProps} reaction - The reaction object containing messageId, userId, type, and feedback.
+ * @param {Reaction} reaction - The reaction object containing messageId, userId, type, and feedback.
  * @returns {Promise<any>} - A promise that resolves with the result of the insertion.
  * @throws {Error} - If there is an error liking the message.
  */
@@ -478,7 +485,7 @@ export async function addReaction({
   userId,
   type,
   feedback,
-}: ReactionProps) {
+}: Reaction) {
   try {
     const result = await db.insert(reactions).values({
       messageId: messageId,
@@ -504,7 +511,7 @@ export async function addReaction({
 export async function isMessageLikedByUser({
   messageId,
   userId,
-}: Pick<ReactionProps, "feedback" | "messageId" | "userId">) {
+}: Pick<Reaction, "feedback" | "messageId" | "userId">) {
   const reaction = await db.query.reactions.findFirst({
     where: and(
       eq(reactions.messageId, messageId),
@@ -526,7 +533,7 @@ export async function isMessageLikedByUser({
 export async function isMessageDislikedByUser({
   messageId,
   userId,
-}: Pick<ReactionProps, "feedback" | "messageId" | "userId">) {
+}: Pick<Reaction, "feedback" | "messageId" | "userId">) {
   const reaction = await db.query.reactions.findFirst({
     where: and(
       eq(reactions.messageId, messageId),

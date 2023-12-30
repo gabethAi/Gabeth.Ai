@@ -54,17 +54,6 @@ export const messages = mysqlTable("message", {
 
 export type Message = typeof messages.$inferSelect; // return type when queried
 
-// export const reactions = mysqlTable("reaction", {
-//   id: int("id").autoincrement().primaryKey(),
-//   messageId: varchar("messageId", { length: 255 })
-//     .references(() => messages.id)
-//     .notNull(),
-//   type: varchar("type", {
-//     length: 50,
-//   }).notNull(),
-//   feedback: longtext("feedback"),
-// });
-
 export const reactions = mysqlTable("reaction", {
   id: int("id").autoincrement().primaryKey(),
   messageId: varchar("messageId", { length: 255 })
@@ -75,9 +64,13 @@ export const reactions = mysqlTable("reaction", {
     .notNull(),
   type: varchar("type", {
     length: 50,
-  }).notNull(),
+  })
+    .notNull()
+    .$type<"like" | "dislike">(),
   feedback: longtext("feedback"),
 });
+
+export type Reaction = typeof reactions.$inferSelect; // return type when queried
 
 export const accounts = mysqlTable(
   "account",
