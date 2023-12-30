@@ -1,8 +1,8 @@
 "use server";
 import "server-only";
-import { Chat, User, chats, messages, users } from "./db/schema";
+import { Chat, User, chats, messages, reactions, users } from "./db/schema";
 import { db } from "./db/drizzle";
-import { eq, desc, asc } from "drizzle-orm";
+import { eq, desc, asc, and } from "drizzle-orm";
 import { auth, signIn, signOut } from "@/auth";
 import { Message } from "ai";
 
@@ -11,6 +11,7 @@ import { QueryResultKind } from "drizzle-orm/mysql-core";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { apiUrl } from "./consts";
+import { ReactionProps } from "./types";
 
 const id = uuidv4();
 
@@ -417,6 +418,12 @@ interface ChatWithMessages {
   chatMessages: Message[];
 }
 
+/**
+ * Fetches a chat by its ID.
+ * @param id The ID of the chat to fetch.
+ * @returns A promise that resolves to the fetched chat with messages.
+ * @throws If there is an error fetching the chat.
+ */
 export async function fetchChatById(id: string): Promise<ChatWithMessages> {
   try {
     const response = await fetch(`${apiUrl}/api/chat?chatId=${id}`, {
@@ -436,6 +443,12 @@ export async function logOut() {
   return await signOut();
 }
 
+/**
+ * Logs in a user with the specified provider and redirects them to the specified URL.
+ * @param provider The provider to use for authentication.
+ * @param redirectTo The URL to redirect the user to after successful authentication.
+ * @returns A promise that resolves when the user is logged in.
+ */
 export async function loginUserWithProvider(
   provider: string,
   redirectTo: string
@@ -443,4 +456,36 @@ export async function loginUserWithProvider(
   return await signIn(provider, {
     redirectTo: redirectTo,
   });
+}
+
+export async function addReaction({
+  messageId,
+  userId,
+  type,
+  feedback,
+}: ReactionProps) {
+  try {
+    const result = await db.insert(reactions).values({
+      messageId: messageId,
+      userId: userId,
+      type: type,
+      feedback: feedback,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error liking message:", error);
+    throw error;
+  }
+}
+
+export async function isMessageLikedByUser(messageId: string, userId: string) {
+  const reaction = await db.query.reactions.findFirst({
+    where: and(
+      eq(reactions.messageId, messageId),
+      eq(reactions.userId, userId)
+    ),
+  });
+
+  return !!reaction;
 }

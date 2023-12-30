@@ -6,6 +6,8 @@ import { Button, CheckIcon } from "@mantine/core";
 import { motion } from "framer-motion";
 import { type Message } from "ai";
 import { BiCopy, BiDislike, BiLike } from "react-icons/bi";
+import LikeMessage from "./LikeMessage";
+import useUser from "@/lib/hooks/useUser";
 
 interface ChatMessageActionsProps extends React.ComponentProps<"div"> {
   readonly message: Message;
@@ -17,6 +19,7 @@ export function ChatMessageActions({
   ...props
 }: ChatMessageActionsProps) {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
+  const { user } = useUser();
   const isLike = false;
   const isDislike = false;
 
@@ -52,13 +55,11 @@ export function ChatMessageActions({
 
         {message.role !== "user" && (
           <div className='flex items-center gap-x-2 md:gap-x-4'>
-            <Button
-              variant='subtle'
-              leftSection={<BiLike />}
-              size='icon'
-              onClick={likeMessage}>
-              Like
-            </Button>
+            <LikeMessage
+              messageId={message.id}
+              userId={user?.email as string}
+              type='like'
+            />
 
             <Button
               variant='subtle'
