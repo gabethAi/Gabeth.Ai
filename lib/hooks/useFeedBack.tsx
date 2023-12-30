@@ -1,14 +1,15 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
-import { ReactionProps } from "../types";
 import { addReaction } from "../actions";
 import { queryClient } from "@/context/QueryClientProvider";
+import { Reaction } from "../db/schema";
 
 function useFeedBack({
   messageId,
   userId,
   type = "like",
-}: Pick<ReactionProps, "type" | "feedback" | "messageId" | "userId">) {
+  feedback,
+}: Pick<Reaction, "type" | "feedback" | "messageId" | "userId">) {
   const {
     mutate: addFeedback,
     isIdle,
@@ -16,7 +17,7 @@ function useFeedBack({
     isSuccess,
   } = useMutation({
     mutationKey: ["addFeedback", messageId],
-    mutationFn: async (feedback?: string) => {
+    mutationFn: async () => {
       const result = await addReaction({
         messageId,
         userId,
