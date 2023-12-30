@@ -1,6 +1,7 @@
 "use client";
 import { queryClient } from "@/context/QueryClientProvider";
 import { addReaction, isMessageLikedByUser } from "@/lib/actions";
+import useFeedBack from "@/lib/hooks/useFeedBack";
 import { ReactionProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Button, Textarea } from "@mantine/core";
@@ -16,35 +17,27 @@ function LikeMessage({
 }: Pick<ReactionProps, "type" | "feedback" | "messageId" | "userId">) {
   const feedbackRef = React.useRef<HTMLTextAreaElement>(null);
 
-  const { mutate: addFeedback, isPending } = useMutation({
-    mutationKey: ["addFeedback", messageId],
-    mutationFn: async (feedback?: string) => {
-      const result = await addReaction({
-        messageId,
-        userId,
-        type,
-        feedback,
-      });
-
-      return result;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["isLikedMessage", messageId],
-      });
-    },
+  const { addFeedback, isPending, isSuccess } = useFeedBack({
+    messageId,
+    userId,
+    type,
   });
 
-  const { isError, data: isLikedMessage } = useQuery({
+  const {
+    isError,
+    data: isLikedMessage,
+    isLoading,
+  } = useQuery({
     queryKey: ["isLikedMessage", messageId],
     queryFn: async () => {
-      return await isMessageLikedByUser(messageId, userId);
+      return await isMessageLikedByUser({ messageId, userId });
     },
   });
 
   return (
     <Button
       variant='subtle'
+      loading={isLoading}
       leftSection={
         <BiLike
           className={cn("fill-current transition-all", {
@@ -89,7 +82,7 @@ function LikeMessage({
           ),
           children: (
             <div>
-              <p className='mb-4'>
+              <p className='mb-4 text-sm'>
                 We’re glad to know you’re enjoying Gabeth! Can you please
                 provide feedback on what you like about the response?
               </p>
@@ -102,10 +95,8 @@ function LikeMessage({
               />
             </div>
           ),
-          onClose: async () => {
-            addFeedback(undefined);
-          },
-          onConfirm: async () => {
+          onCancel: () => addFeedback(undefined),
+          onConfirm: () => {
             const feedback = feedbackRef.current?.value as string;
 
             addFeedback(feedback);
@@ -115,8 +106,6 @@ function LikeMessage({
             confirm: "Send feedback",
             cancel: "Close",
           },
-          cancelProps: { hidden: true },
-          confirmProps: { hidden: true },
         });
       }}>
       Like

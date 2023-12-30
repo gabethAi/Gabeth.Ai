@@ -396,6 +396,11 @@ export async function removeChat({ id, path }: { id: string; path: string }) {
   }
 }
 
+/**
+ * Fetches the chats for the current user.
+ * @returns A promise that resolves to an array of Chat objects.
+ * @throws If there is an error fetching the chats.
+ */
 export async function fetchChats(): Promise<Chat[]> {
   try {
     const user = await getUser();
@@ -439,6 +444,10 @@ export async function fetchChatById(id: string): Promise<ChatWithMessages> {
   }
 }
 
+/**
+ * Logs out the user.
+ * @returns {Promise<void>} A promise that resolves when the user is logged out.
+ */
 export async function logOut() {
   return await signOut();
 }
@@ -458,6 +467,12 @@ export async function loginUserWithProvider(
   });
 }
 
+/**
+ * Adds a reaction to a message.
+ * @param {ReactionProps} reaction - The reaction object containing messageId, userId, type, and feedback.
+ * @returns {Promise<any>} - A promise that resolves with the result of the insertion.
+ * @throws {Error} - If there is an error liking the message.
+ */
 export async function addReaction({
   messageId,
   userId,
@@ -479,11 +494,44 @@ export async function addReaction({
   }
 }
 
-export async function isMessageLikedByUser(messageId: string, userId: string) {
+/**
+ * Checks if a message is liked by a specific user.
+ * @param {Object} params - The parameters for the function.
+ * @param {string} params.messageId - The ID of the message.
+ * @param {string} params.userId - The ID of the user.
+ * @returns {Promise<boolean>} - A promise that resolves to a boolean indicating whether the message is liked by the user.
+ */
+export async function isMessageLikedByUser({
+  messageId,
+  userId,
+}: Pick<ReactionProps, "feedback" | "messageId" | "userId">) {
   const reaction = await db.query.reactions.findFirst({
     where: and(
       eq(reactions.messageId, messageId),
-      eq(reactions.userId, userId)
+      eq(reactions.userId, userId),
+      eq(reactions.type, "like")
+    ),
+  });
+
+  return !!reaction;
+}
+
+/**
+ * Checks if a message is disliked by a user.
+ * @param {Object} params - The parameters for the function.
+ * @param {string} params.messageId - The ID of the message.
+ * @param {string} params.userId - The ID of the user.
+ * @returns {Promise<boolean>} - A promise that resolves to a boolean indicating whether the message is disliked by the user.
+ */
+export async function isMessageDislikedByUser({
+  messageId,
+  userId,
+}: Pick<ReactionProps, "feedback" | "messageId" | "userId">) {
+  const reaction = await db.query.reactions.findFirst({
+    where: and(
+      eq(reactions.messageId, messageId),
+      eq(reactions.userId, userId),
+      eq(reactions.type, "dislike")
     ),
   });
 
