@@ -36,6 +36,13 @@
       "when": 1703876657478,
       "tag": "0004_clear_tigra",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1703947284649,
+      "tag": "0005_tan_black_bolt",
+      "breakpoints": true
     }
   ]
 }

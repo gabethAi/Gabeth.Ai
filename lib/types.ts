@@ -27,3 +27,10 @@ export type ServerActionResult<Result> = Promise<
       error: string;
     }
 >;
+
+export interface ReactionProps {
+  messageId: string;
+  userId: string;
+  type: "like" | "dislike";
+  feedback?: string;
+}
