@@ -47,7 +47,7 @@ export async function POST(req: Request) {
         headers: {
           "Content-Type": "application/json",
           Accept: "text/event-stream",
-          Authorization: `Bearer ynA9bLGj6sN4UFvnczS0M69Pj0huGXzqmHyOziK7ZGsrfep7`,
+          Authorization: `Bearer ${process.env.FIREWORKS_API_KEY}`,
         },
         body: JSON.stringify({
           model: "accounts/fireworks/models/llama-v2-70b-chat",
