@@ -82,6 +82,8 @@ export async function POST(req: Request) {
           for (const message of messagesToInsert) {
             // save each message to the database
             await addMessageToDb(message);
+
+            revalidateTag("chat");
           }
         } catch (error) {
           console.error("Error saving chat:", error);

@@ -15,7 +15,6 @@ import { auth, signIn, signOut } from "@/auth";
 import { Message } from "ai";
 
 import { v4 as uuidv4 } from "uuid";
-import { QueryResultKind } from "drizzle-orm/mysql-core";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { apiUrl } from "./consts";
@@ -212,7 +211,7 @@ export async function getChatsByUserId(userId: string) {
 export async function getMessagesByChatId(chatId: string) {
   try {
     const result = await db.query.messages.findMany({
-      // where: eq(messages.chatId, chatId),
+      where: eq(messages.chatId, chatId),
       orderBy(fields, operators) {
         return [asc(fields.createdAt)];
       },
