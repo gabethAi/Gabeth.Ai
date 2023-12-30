@@ -29,6 +29,13 @@
       "when": 1701832955689,
       "tag": "0003_bored_stick",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1703876657478,
+      "tag": "0004_clear_tigra",
+      "breakpoints": true
     }
   ]
 }

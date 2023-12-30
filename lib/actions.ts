@@ -10,10 +10,9 @@ import { v4 as uuidv4 } from "uuid";
 import { QueryResultKind } from "drizzle-orm/mysql-core";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
+import { apiUrl } from "./consts";
 
 const id = uuidv4();
-
-const apiUrl = process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000";
 
 /**
  * Retrieves the user information.
@@ -52,16 +51,26 @@ export async function registerUser({
 export async function loginUser({
   email,
   password,
+  provider,
 }: {
   email: string;
   password: string;
+  provider: "credentials" | "google" | "github";
 }) {
   const user = await db.query.users.findFirst({
     where: eq(users.email, email),
   });
 
   if (user) {
-    // Add your own password checking logic here
+    console.log("User found:", user);
+    if (!user.isActive) {
+      throw new Error("User is not active");
+    }
+
+    if (provider !== "credentials") {
+      return user;
+    }
+
     if (user.hashedpassword === password) {
       return user;
     }
@@ -72,6 +81,22 @@ export async function loginUser({
 
   // Return null if user credentials are not valid
   throw new Error("User not found");
+}
+
+export async function deactivateAccount(userId: string) {
+  try {
+    const result = await db
+      .update(users)
+      .set({
+        isActive: false,
+      })
+      .where(eq(users.id, userId));
+
+    return result;
+  } catch (error) {
+    console.error("Error deactivating account:", error);
+    throw error;
+  }
 }
 
 /**

@@ -5,6 +5,7 @@ import {
   primaryKey,
   varchar,
   longtext,
+  boolean,
 } from "drizzle-orm/mysql-core";
 
 import type { AdapterAccount } from "@auth/core/adapters";
@@ -23,6 +24,7 @@ export const users = mysqlTable("user", {
     .notNull(),
   username: varchar("username", { length: 255 }),
   hashedpassword: varchar("hashedpassword", { length: 255 }),
+  isActive: boolean("isActive").default(true), // new field
 });
 
 export type User = typeof users.$inferSelect; // return type when queried

@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD `isActive` boolean DEFAULT true;

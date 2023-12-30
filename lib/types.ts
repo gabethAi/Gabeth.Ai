@@ -10,16 +10,16 @@ export interface Chat extends Record<string, any> {
   sharePath?: string;
 }
 
-export interface User extends Record<string, any> {
-  id: string;
-  name: string;
-  email: string;
-  emailVerified: Date;
-  image: string;
-  createdAt: Date;
-  username: string;
-  hashedPassword: string;
-}
+// export interface User extends Record<string, any> {
+//   id: string;
+//   name: string;
+//   email: string;
+//   emailVerified: Date;
+//   image: string;
+//   createdAt: Date;
+//   username: string;
+//   hashedPassword: string;
+// }
 
 export type ServerActionResult<Result> = Promise<
   | Result

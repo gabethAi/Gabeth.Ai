@@ -26,19 +26,28 @@ export const config = {
       async authorize(credentials, req) {
         console.log(credentials, "credentials");
         // Add logic here to look up the user from the credentials supplied
-        const user = await loginUser({
-          email: credentials.email as string,
-          password: credentials.password as string,
-        });
+        try {
+          const user = await loginUser({
+            email: credentials.email as string,
+            password: credentials.password as string,
+            provider: "credentials",
+          });
 
-        if (user) {
-          // Any object returned will be saved in `user` property of the JWT
-          return Promise.resolve(user);
-        } else {
-          // If you return null then an error will be displayed advising the user to check their details.
-          return Promise.resolve(null);
+          console.log(user, "user");
 
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
+          if (user) {
+            // Any object returned will be saved in `user` property of the JWT
+            return Promise.resolve(user);
+          } else {
+            // If you return null then an error will be displayed advising the user to check their details.
+            return Promise.resolve(null);
+
+            // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
+          }
+        } catch (error: any) {
+          console.log(error, "error");
+
+          return Promise.reject(new Error(error.message));
         }
       },
     }),
@@ -59,10 +68,26 @@ export const config = {
     },
 
     signIn({ user, account, profile, email, credentials }) {
-      // console.log("signIn", { user, account, profile, email, credentials });
+      console.log("signIn", { user, account, profile, email, credentials });
 
+      return true;
       if (user) {
+        const { id, name, email, image } = user;
         return true;
+
+        const result = async () => {
+          const response = await loginUser({
+            email: email as string,
+            password: account?.access_token as string,
+            provider: "google",
+          });
+
+          console.log(response, "response");
+
+          return true;
+        };
+
+        result();
       }
       return false;
     },

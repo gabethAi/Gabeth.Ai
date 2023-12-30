@@ -4,13 +4,15 @@ import ThemeToggler from "../../components/ui/ThemeToggler";
 import ShareChat from "../../components/ui/ShareChat";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { getUser } from "@/lib/actions";
+import { User } from "@/lib/db/schema";
 
 export default async function Layout({
   children,
 }: {
   readonly children: React.ReactNode;
 }) {
-  const user = await auth();
+  const user = await getUser();
 
   if (!user) {
     redirect(`/auth/login?next=/chat`);
@@ -25,7 +27,7 @@ export default async function Layout({
 
       {/* SideBar For Desktop */}
       <div className='hidden lg:block basis-1/3 2xl:basis-1/4'>
-        <DesktopSideBar className='' />
+        <DesktopSideBar user={user as User} className='' />
       </div>
 
       <div className='grow relative'>

@@ -2,12 +2,12 @@
 import { Button, Divider, Drawer, Stack } from "@mantine/core";
 import UpgradeButton from "./UpgradeButton";
 import ProfileCard from "./ProfileCard";
-import { User } from "@/lib/types";
 import useUser from "@/lib/hooks/useUser";
 import Link from "next/link";
 import { SidebarList } from "./SideBarList";
 import useChats from "@/lib/hooks/useChats";
 import Logo from "../shared/Logo";
+import { User } from "@/lib/db/schema";
 
 interface MobileSideBar {
   open: boolean;

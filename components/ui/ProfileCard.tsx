@@ -1,8 +1,8 @@
 import { Avatar } from "@mantine/core";
 import { SignOut } from "./AuthComponent";
-import { User } from "@/lib/types";
 
 import { PiSignOut } from "react-icons/pi";
+import { User } from "@/lib/db/schema";
 
 interface ProfileCardProps {
   readonly user: User | undefined;

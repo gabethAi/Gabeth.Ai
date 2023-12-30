@@ -15,21 +15,26 @@ import UpgradeButton from "./UpgradeButton";
 import ProfileCard from "./ProfileCard";
 import { getUser } from "@/lib/actions";
 
-import { User } from "@/lib/types";
-
 import { MdOutlineLiveHelp } from "react-icons/md";
 import ConversationList from "../chat/ConversationList";
 import { cn } from "@/lib/utils";
 import Logo from "../shared/Logo";
 import Settings from "../settings/Settings";
+import { User } from "@/lib/db/schema";
 
 const variants = {
   open: { opacity: 1, x: 0 },
   collapsed: { opacity: 0, x: "-100%" },
 };
 
-export async function DesktopSideBar({ className }: { className?: string }) {
-  const user = await getUser();
+export function DesktopSideBar({
+  className,
+  user,
+}: {
+  className?: string;
+  user: User;
+}) {
+  // const user = await getUser();
 
   // console.log(user, "user");
 
@@ -64,10 +69,10 @@ export async function DesktopSideBar({ className }: { className?: string }) {
     <div
       // animate={opened ? "open" : "collapsed"}
       className={cn(
-        "relative bg-slate-50 dark:bg-black h-full grid grid-cols-7",
+        "relative border border-[#ced4da] dark:border-[#424242]  h-full grid grid-cols-7",
         className
       )}>
-      <div className='col-span-2 border-r dark:border-[#373a40] flex flex-col justify-between py-8'>
+      <div className='col-span-2 border-r border-[#ced4da] dark:border-[#424242] flex flex-col justify-between py-8'>
         <Stack gap={"xl"} align='center'>
           <ActionIcon variant='default'>
             <svg
@@ -153,7 +158,7 @@ export async function DesktopSideBar({ className }: { className?: string }) {
             <Stack gap={"lg"} align='flex-start'>
               <UpgradeButton />
 
-              <ProfileCard user={user as User} />
+              <ProfileCard user={user} />
             </Stack>
           </div>
         </div>
