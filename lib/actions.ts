@@ -484,7 +484,7 @@ export async function addReaction({
   userId,
   type,
   feedback,
-}: Reaction) {
+}: Pick<Reaction, "feedback" | "messageId" | "userId" | "type">) {
   try {
     const result = await db.insert(reactions).values({
       messageId: messageId,
@@ -510,7 +510,7 @@ export async function addReaction({
 export async function isMessageLikedByUser({
   messageId,
   userId,
-}: Pick<Reaction, "feedback" | "messageId" | "userId">) {
+}: Pick<Reaction, "messageId" | "userId">) {
   const reaction = await db.query.reactions.findFirst({
     where: and(
       eq(reactions.messageId, messageId),
@@ -532,7 +532,7 @@ export async function isMessageLikedByUser({
 export async function isMessageDislikedByUser({
   messageId,
   userId,
-}: Pick<Reaction, "feedback" | "messageId" | "userId">) {
+}: Pick<Reaction, "messageId" | "userId">) {
   const reaction = await db.query.reactions.findFirst({
     where: and(
       eq(reactions.messageId, messageId),

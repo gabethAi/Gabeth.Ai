@@ -1,10 +1,9 @@
 "use client";
 import { isMessageDislikedByUser } from "@/lib/actions";
+import { Reaction } from "@/lib/db/schema";
 import useFeedBack from "@/lib/hooks/useFeedBack";
-import { ReactionProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { Button, Checkbox, Radio, Textarea } from "@mantine/core";
-import { useDebouncedState } from "@mantine/hooks";
+import { Button, Radio, Textarea } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -20,12 +19,13 @@ function DisLikeMessage({
   messageId,
   userId,
   type = "dislike",
-}: Pick<ReactionProps, "type" | "feedback" | "messageId" | "userId">) {
+}: Pick<Reaction, "type" | "messageId" | "userId">) {
   const feedbackRef = React.useRef<HTMLTextAreaElement | null>(null);
   const { addFeedback, isPending, isSuccess } = useFeedBack({
     messageId,
     userId,
     type,
+    feedback: feedbackRef.current?.value ?? null,
   });
 
   const {
@@ -123,8 +123,8 @@ function DisLikeMessage({
               />
             </div>
           ),
-          onCancel: () => addFeedback(undefined),
-          onConfirm: () => addFeedback(feedbackRef.current?.value),
+          onCancel: () => addFeedback(),
+          onConfirm: () => addFeedback(),
           closeOnConfirm: !isPending,
           labels: {
             confirm: "Send feedback",

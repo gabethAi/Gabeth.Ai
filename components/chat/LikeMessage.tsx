@@ -1,12 +1,11 @@
 "use client";
-import { queryClient } from "@/context/QueryClientProvider";
-import { addReaction, isMessageLikedByUser } from "@/lib/actions";
+import { isMessageLikedByUser } from "@/lib/actions";
+import { Reaction } from "@/lib/db/schema";
 import useFeedBack from "@/lib/hooks/useFeedBack";
-import { ReactionProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Button, Textarea } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { BiLike } from "react-icons/bi";
 
@@ -14,13 +13,14 @@ function LikeMessage({
   messageId,
   userId,
   type = "like",
-}: Pick<ReactionProps, "type" | "feedback" | "messageId" | "userId">) {
+}: Pick<Reaction, "type" | "messageId" | "userId">) {
   const feedbackRef = React.useRef<HTMLTextAreaElement>(null);
 
   const { addFeedback, isPending, isSuccess } = useFeedBack({
     messageId,
     userId,
     type,
+    feedback: feedbackRef.current?.value ?? null,
   });
 
   const {
@@ -95,12 +95,8 @@ function LikeMessage({
               />
             </div>
           ),
-          onCancel: () => addFeedback(undefined),
-          onConfirm: () => {
-            const feedback = feedbackRef.current?.value as string;
-
-            addFeedback(feedback);
-          },
+          onCancel: () => addFeedback(),
+          onConfirm: () => addFeedback(),
           closeOnConfirm: !isPending,
           labels: {
             confirm: "Send feedback",
