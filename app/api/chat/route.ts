@@ -12,9 +12,14 @@ import { revalidateTag } from "next/cache";
 
 export const runtime = "edge";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
-});
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY!,
+// });
+
+// const fireworks = new OpenAI({
+//   baseURL: "https://api.fireworks.ai/inference/v1",
+//   apiKey: process.env.FIREWORKS_API_KEY!,
+// });
 
 export async function POST(req: Request) {
   const json = await req.json();
@@ -23,17 +28,48 @@ export async function POST(req: Request) {
   const title = json.messages[0].content.substring(0, 100);
 
   try {
-    // Request the OpenAI API for the response based on the prompt
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      stream: true,
-      messages: messages,
-      temperature: 0.7,
-      max_tokens: 500,
-      top_p: 1,
-      frequency_penalty: 1,
-      presence_penalty: 1,
-    });
+    // // Request the OpenAI API for the response based on the prompt
+    // const response = await openai.chat.completions.create({
+    //   model: "gpt-3.5-turbo",
+    //   stream: true,
+    //   messages: messages,
+    //   temperature: 0.7,
+    //   max_tokens: 500,
+    //   top_p: 1,
+    //   frequency_penalty: 1,
+    //   presence_penalty: 1,
+    // });
+
+    const response = await fetch(
+      `https://api.fireworks.ai/inference/v1/chat/completions`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "text/event-stream",
+          Authorization: `Bearer ynA9bLGj6sN4UFvnczS0M69Pj0huGXzqmHyOziK7ZGsrfep7`,
+        },
+        body: JSON.stringify({
+          model: "accounts/fireworks/models/llama-v2-70b-chat",
+          messages: messages,
+          stream: true,
+          n: 1,
+          max_tokens: 1000,
+          temperature: 0.2,
+        }),
+      }
+    );
+
+    // // Request the Fireworks API for the response based on the prompt
+    // const response = await fireworks.chat.completions.create({
+    //   model: "accounts/fireworks/models/llama70b-v2-chat",
+    //   stream: true,
+    //   messages: messages,
+    //   max_tokens: 1000,
+    //   temperature: 0.75,
+    //   top_p: 1,
+    //   frequency_penalty: 1,
+    // });
 
     // Convert the response into a friendly text-stream
     const stream = OpenAIStream(response, {
