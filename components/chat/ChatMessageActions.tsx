@@ -5,9 +5,10 @@ import { cn } from "@/lib/utils";
 import { Button, CheckIcon } from "@mantine/core";
 import { motion } from "framer-motion";
 import { type Message } from "ai";
-import { BiCopy, BiDislike, BiLike } from "react-icons/bi";
+import { BiCopy } from "react-icons/bi";
 import LikeMessage from "./LikeMessage";
 import useUser from "@/lib/hooks/useUser";
+import DisLikeMessage from "./DisLikeMessage";
 
 interface ChatMessageActionsProps extends React.ComponentProps<"div"> {
   readonly message: Message;
@@ -27,10 +28,6 @@ export function ChatMessageActions({
     if (isCopied) return;
     copyToClipboard(message.content);
   };
-
-  const likeMessage = () => {};
-
-  const dislikeMessage = () => {};
 
   return (
     <motion.div
@@ -61,13 +58,11 @@ export function ChatMessageActions({
               type='like'
             />
 
-            <Button
-              variant='subtle'
-              leftSection={<BiDislike />}
-              size='icon'
-              onClick={dislikeMessage}>
-              Dislike
-            </Button>
+            <DisLikeMessage
+              messageId={message.id}
+              userId={user?.email as string}
+              type='dislike'
+            />
           </div>
         )}
       </div>
