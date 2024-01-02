@@ -14,6 +14,8 @@ import ReactQueryProvider from "@/context/QueryClientProvider";
 import { GeistSans } from "geist/font";
 import ModalProvider from "@/context/ModalProvider";
 
+import "@mantine/carousel/styles.css";
+
 export const metadata: Metadata = {
   title: `Gabeth.Ai | Home`,
   description: "Your personal AI assistant.",

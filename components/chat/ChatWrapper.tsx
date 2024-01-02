@@ -1,15 +1,16 @@
 "use client";
-import { Message } from "ai";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import ChatList from "./ChatList";
 
-import { ActionIcon, Box, Paper } from "@mantine/core";
+import { ActionIcon, Box } from "@mantine/core";
 import { cn } from "@/lib/utils";
 import useScrollToBottom from "@/lib/hooks/useScrollToBottom";
 
 import { FaArrowDown } from "react-icons/fa";
+import { Message } from "@/lib/db/schema";
+import { UseChatHelpers } from "ai/react";
 
-export interface ChatProps extends React.ComponentProps<"div"> {
+export interface ChatProps extends Pick<UseChatHelpers, "reload" | "append"> {
   messages: Message[];
   isLoading?: boolean;
 }
@@ -22,7 +23,12 @@ export interface ChatProps extends React.ComponentProps<"div"> {
  * @param className - Additional CSS class names for the component.
  * @returns The rendered chat wrapper component.
  */
-function ChatWrapper({ messages, isLoading, className }: Readonly<ChatProps>) {
+function ChatWrapper({
+  messages,
+  isLoading,
+  reload,
+  append,
+}: Readonly<ChatProps>) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { ref, isBottom, scrollToBottom } = useScrollToBottom({
@@ -37,12 +43,12 @@ function ChatWrapper({ messages, isLoading, className }: Readonly<ChatProps>) {
   }
 
   return (
-    <div className='relative '>
+    <div className='relative'>
       <Box
         ref={containerRef}
         style={{ overflowY: "scroll" }}
-        className={cn("md:pt-10 h-[70dvh] ", className)}>
-        <ChatList messages={messages} isLoading={isLoading} />
+        className={cn("md:pt-10 h-[70dvh]")}>
+        <ChatList messages={messages} isLoading={isLoading} reload={reload} />
         <div ref={ref} />
       </Box>
 

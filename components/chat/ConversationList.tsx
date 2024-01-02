@@ -1,19 +1,20 @@
 import { Divider } from "@mantine/core";
 import { SidebarList } from "../ui/SideBarList";
-import { fetchChats, getUser } from "@/lib/actions";
 import ClearChats from "./ClearChats";
-import { User } from "@/lib/db/schema";
+import { Chat, User } from "@/lib/db/schema";
 import { Suspense } from "react";
 
-async function ConversationList() {
-  const user = await getUser();
-  const chats = await fetchChats();
+interface ConversationList {
+  user: User;
+  chats: Chat[];
+}
 
+function ConversationList({ user, chats }: Readonly<ConversationList>) {
   return (
     <div>
       <div className='flex items-center justify-between'>
         <h6 className='font-semibold'>Conversations</h6>
-        <ClearChats user={user as User} />
+        <ClearChats user={user} />
       </div>
       <Divider my={"md"} />
 

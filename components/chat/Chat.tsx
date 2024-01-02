@@ -4,6 +4,7 @@ import ChatWrapper from "./ChatWrapper";
 import ChatPanel from "./ChatPanel";
 import EmptyScreen from "./EmptyScreen";
 import useChatManager from "@/lib/hooks/useChatManager";
+import { Message } from "@/lib/db/schema";
 
 /**
  * Component for rendering a chat.
@@ -16,6 +17,7 @@ function Chat({ id }: { readonly id: string }) {
     messages,
     input,
     isLoading,
+    append,
     setInput,
     reload,
     handleInputChange,
@@ -31,7 +33,12 @@ function Chat({ id }: { readonly id: string }) {
   return (
     <div className='relative  h-full'>
       {messages.length > 0 ? (
-        <ChatWrapper id={id} messages={messages} isLoading={isLoading} />
+        <ChatWrapper
+          append={append}
+          messages={messages as Message[]}
+          isLoading={isLoading}
+          reload={reload}
+        />
       ) : (
         <div className='pt-16 lg:pt-32 xl:pt-36'>
           <EmptyScreen setInput={setInput} handleSubmit={handleSubmit} />

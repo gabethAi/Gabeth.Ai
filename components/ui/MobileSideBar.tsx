@@ -1,13 +1,15 @@
 "use client";
-import { Button, Divider, Drawer, Stack } from "@mantine/core";
+import { Button, Divider, Drawer, Flex, Group, Stack } from "@mantine/core";
 import UpgradeButton from "./UpgradeButton";
 import ProfileCard from "./ProfileCard";
 import useUser from "@/lib/hooks/useUser";
 import Link from "next/link";
-import { SidebarList } from "./SideBarList";
 import useChats from "@/lib/hooks/useChats";
 import Logo from "../shared/Logo";
 import { User } from "@/lib/db/schema";
+import ConversationList from "../chat/ConversationList";
+import LeaveFeedback from "./LeaveFeedback";
+import Settings from "./Settings";
 
 interface MobileSideBar {
   open: boolean;
@@ -26,7 +28,7 @@ function MobileSideBar({ open, onClose }: Readonly<MobileSideBar>) {
         </Link>
       }
       opened={open}
-      size={"xs"}
+      size={"sm"}
       onClose={onClose}>
       <div className='flex flex-col gap-y-6'>
         <Link href={"/chat"}>
@@ -35,15 +37,23 @@ function MobileSideBar({ open, onClose }: Readonly<MobileSideBar>) {
           </Button>
         </Link>
 
-        <SidebarList chats={chats || []} />
+        <ConversationList user={user as User} chats={chats} />
 
         <div className='absolute bottom-4 inset-x-0'>
           <Divider my={"md"} />
-          <Stack gap={"lg"} px={"md"} align='flex-start'>
-            <UpgradeButton />
+          <Flex gap={"xl"} px={"sm"}>
+            <Stack justify='space-evenly'>
+              <LeaveFeedback />
+              <Settings />
+            </Stack>
 
-            <ProfileCard user={user as User} />
-          </Stack>
+            <Divider orientation={"vertical"} />
+
+            <Stack>
+              <UpgradeButton />
+              <ProfileCard user={user as User} />
+            </Stack>
+          </Flex>
         </div>
       </div>
     </Drawer>

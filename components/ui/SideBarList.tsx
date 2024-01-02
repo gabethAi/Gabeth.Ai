@@ -1,8 +1,8 @@
 import SideBarItem from "./SideBarItem";
 import SideBarActions from "./SideBarActions";
 import { removeChat } from "@/lib/actions";
-import ScrollAreaAutoSize from "./ScrollAreaAutoSize";
 import { Chat } from "@/lib/db/schema";
+import { ScrollArea } from "@mantine/core";
 
 export function SidebarList({ chats }: { readonly chats: Chat[] }) {
   if (!chats || chats.length === 0) {
@@ -14,8 +14,8 @@ export function SidebarList({ chats }: { readonly chats: Chat[] }) {
   }
 
   return (
-    <ScrollAreaAutoSize>
-      <div className='flex flex-col space-y-2'>
+    <ScrollArea className='h-[60vh]'>
+      <div className='flex flex-col space-y-2 '>
         {chats.map(
           (chat, index) =>
             chat && (
@@ -29,6 +29,6 @@ export function SidebarList({ chats }: { readonly chats: Chat[] }) {
             )
         )}
       </div>
-    </ScrollAreaAutoSize>
+    </ScrollArea>
   );
 }
