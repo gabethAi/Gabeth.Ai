@@ -18,30 +18,28 @@ function MobileSideBar({ open, onClose }: Readonly<MobileSideBar>) {
   const { chats } = useChats();
 
   return (
-    <Drawer opened={open} size={"xs"} onClose={onClose}>
+    <Drawer
+      title={
+        <Link href={"/chat"} className='flex items-center space-x-4'>
+          <Logo />
+          <h1 className='font-semibold text-2xl'>Gabeth.AI</h1>
+        </Link>
+      }
+      opened={open}
+      size={"xs"}
+      onClose={onClose}>
       <div className='flex flex-col gap-y-6'>
-        <div className=''>
-          <div className=''>
-            <Link href={"/chat"} className='flex items-center'>
-              <Logo />
-              <h1 className='font-semibold text-2xl'>Gabeth.AI</h1>
-            </Link>
-          </div>
-          <Divider my={"md"} />
-          <Link href={"/chat"}>
-            <Button fullWidth onClick={onClose}>
-              New Chat
-            </Button>
-          </Link>
-        </div>
+        <Link href={"/chat"}>
+          <Button fullWidth onClick={onClose}>
+            New Chat
+          </Button>
+        </Link>
 
-        <div className=''>
-          <SidebarList chats={chats || []} />
-        </div>
+        <SidebarList chats={chats || []} />
 
-        <div className='absolute bottom-4 inset-x-5'>
+        <div className='absolute bottom-4 inset-x-0'>
           <Divider my={"md"} />
-          <Stack gap={"lg"} align='flex-start'>
+          <Stack gap={"lg"} px={"md"} align='flex-start'>
             <UpgradeButton />
 
             <ProfileCard user={user as User} />

@@ -8,7 +8,7 @@ function ScrollAreaAutoSize({
   readonly children: React.ReactNode;
 }) {
   return (
-    <ScrollArea.Autosize className='h-80 lg:h-96 2xl:h-[550px]'>
+    <ScrollArea.Autosize className='h-[550px] 2xl:h-[600px]'>
       {children}
     </ScrollArea.Autosize>
   );
