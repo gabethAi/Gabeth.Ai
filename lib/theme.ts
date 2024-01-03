@@ -7,6 +7,7 @@ import {
   PasswordInput,
   ActionIcon,
   Modal,
+  Drawer,
 } from "@mantine/core";
 
 export const theme = createTheme({
@@ -41,6 +42,32 @@ export const theme = createTheme({
           backgroundOpacity: 0.75,
           blur: 2,
         },
+      },
+      styles(theme, props, ctx) {
+        return {
+          title: {
+            fontWeight: 600,
+            fontSize: 18,
+            lineHeight: "22px",
+          },
+          header: {
+            borderBottom: `1px solid ${theme.colors.dark[3]}`,
+            paddingBottom: theme.spacing.xs,
+            marginBottom: theme.spacing.md,
+          },
+        };
+      },
+    }),
+
+    Drawer: Drawer.extend({
+      styles(theme, props, ctx) {
+        return {
+          header: {
+            borderBottom: `1px solid ${theme.colors.dark[3]}`,
+            paddingBottom: theme.spacing.xs,
+            marginBottom: theme.spacing.md,
+          },
+        };
       },
     }),
   },

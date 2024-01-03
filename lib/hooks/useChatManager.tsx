@@ -1,16 +1,13 @@
 "use client";
 import { notifications } from "@mantine/notifications";
-import { Message } from "ai";
+import { UseChatOptions } from "ai";
 import { useChat } from "ai/react";
 
-interface UseChatManagerProps {
-  id?: string;
-  body?: object;
-  initialMessages?: Message[];
-  onResponse?: (response: any) => void;
-  onFinish?: (message: Message) => void;
-  onError?: (error: any) => void;
-}
+interface UseChatManagerProps
+  extends Pick<
+    UseChatOptions,
+    "body" | "id" | "initialMessages" | "onResponse" | "onFinish" | "onError"
+  > {}
 
 /**
  * Custom hook for managing chat functionality.

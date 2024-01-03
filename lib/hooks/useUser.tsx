@@ -12,7 +12,12 @@ function useUser() {
       return user;
     },
   });
-  return { user, isLoading };
+
+  if (user) {
+    return { user, isLoading };
+  }
+
+  return { user: null, isLoading };
 }
 
 export default useUser;

@@ -11,7 +11,12 @@ function useChats() {
       return result;
     },
   });
-  return { chats, isLoading };
+
+  if (chats) {
+    return { chats, isLoading };
+  }
+
+  return { chats: [], isLoading };
 }
 
 export default useChats;
