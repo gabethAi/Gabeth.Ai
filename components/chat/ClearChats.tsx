@@ -3,8 +3,13 @@ import { deleteChatsByUserId } from "@/lib/actions";
 import { User } from "@/lib/db/schema";
 import { openModal } from "@/lib/utils";
 import { Button } from "@mantine/core";
+import { useMutation } from "@tanstack/react-query";
 
 function ClearChats({ user }: { readonly user: User }) {
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["ClearChats", user.id],
+    mutationFn: async () => await deleteChatsByUserId(user.email),
+  });
   return (
     <Button
       color='red'
@@ -57,10 +62,9 @@ function ClearChats({ user }: { readonly user: User }) {
               not be able to access them anymore once they are all deleted
             </p>
           ),
-          onConfirm: async () => {
-            await deleteChatsByUserId(user.email);
-          },
+          onConfirm: () => mutate(),
 
+          closeOnConfirm: !isPending,
           onCancel: () => console.log("Cancel"),
         });
       }}>

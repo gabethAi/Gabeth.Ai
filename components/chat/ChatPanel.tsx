@@ -20,7 +20,6 @@ function ChatPanel({
   handleInputChange,
   handleSubmit,
 }: ChatPanelProps) {
-  // console.log(messages, "messages");
   return (
     <div className='p-2'>
       <div className='mx-auto sm:max-w-2xl sm:px-4'>

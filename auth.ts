@@ -3,6 +3,7 @@ import NextAuth from "next-auth";
 // import Apple from "next-auth/providers/apple"
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
+import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import type { NextAuthConfig } from "next-auth";
@@ -20,6 +21,10 @@ export const config = {
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
+    // AppleProvider({
+    //   clientId: process.env.APPLE_ID,
+    //   clientSecret: process.env.APPLE_SECRET,
+    // }),
     CredentialsProvider({
       id: "credentials",
       name: "Credentials",
@@ -68,9 +73,14 @@ export const config = {
     },
 
     signIn({ user, account, profile, email, credentials }) {
-      console.log("signIn", { user, account, profile, email, credentials });
+      // console.log("signIn", { user, account, profile, email, credentials });
+      if (user) {
+        return true;
+      }
 
-      return true;
+      return false;
+
+      // return true;
       if (user) {
         const { id, name, email, image } = user;
         return true;
@@ -89,7 +99,6 @@ export const config = {
 
         result();
       }
-      return false;
     },
   },
 } satisfies NextAuthConfig;

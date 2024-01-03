@@ -57,7 +57,7 @@ export function DesktopSideBar({
       animate={opened ? "open" : "collapsed"}
       variants={variants}
       className={cn(
-        "bg-slate-50 dark:bg-black relative border border-[#ced4da] dark:border-[#424242]  h-full grid grid-cols-7",
+        "bg-slate-50 dark:bg-black relative border border-[#ced4da] dark:border-[#424242]  h-full grid grid-cols-7 min-w-[450px]",
         className
       )}>
       <div className='col-span-2 border-r border-[#ced4da] dark:border-[#424242] flex flex-col justify-between py-8'>

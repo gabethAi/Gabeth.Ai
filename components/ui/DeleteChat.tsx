@@ -5,8 +5,17 @@ import { Button } from "@mantine/core";
 import React from "react";
 
 import { Chat } from "@/lib/db/schema";
+import { useMutation } from "@tanstack/react-query";
 
 function DeleteChat({ chat }: { readonly chat: Chat }) {
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["ClearChat", chat.id],
+    mutationFn: async () =>
+      await removeChat({
+        id: chat.id,
+        path: chat.path,
+      }),
+  });
   return (
     <Button
       variant='subtle'
@@ -58,14 +67,8 @@ function DeleteChat({ chat }: { readonly chat: Chat }) {
               able to access it anymore once it is deleted
             </p>
           ),
-          onConfirm: async () => {
-            await removeChat({
-              id: chat.id,
-              path: chat.path,
-            });
-          },
-          closeOnConfirm: true,
-
+          onConfirm: async () => mutate(),
+          closeOnConfirm: !isPending,
           onCancel: () => console.log("Cancel"),
         });
       }}>

@@ -15,8 +15,6 @@ function ChatSection({ id, initialMessages }: Readonly<ChatSectionProps>) {
     messages,
     input,
     isLoading,
-    error,
-    setInput,
     append,
     reload,
     handleInputChange,
@@ -29,8 +27,6 @@ function ChatSection({ id, initialMessages }: Readonly<ChatSectionProps>) {
     initialMessages,
     onFinish(message) {},
   });
-
-  // console.log(messages, "messages");
 
   return (
     <div className='relative  h-full'>

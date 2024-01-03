@@ -9,7 +9,7 @@ import Link from "next/link";
 function Hero() {
   return (
     <section>
-      <div className='md:max-w-lg xl:max-w-2xl mx-auto py-8 md:py-10 lg:py-14'>
+      <div className='md:max-w-lg xl:max-w-2xl mx-auto py-8 sm:py-14 lg:py-18'>
         <div className='text-center space-y-4 xl:space-y-5'>
           <div className='text-2xl md:text-3xl xl:text-4xl font-semibold space-y-3'>
             <h1>Unlock Conversations with the Future:</h1>

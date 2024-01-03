@@ -395,6 +395,8 @@ export async function deleteChatsByUserId(userId: string) {
       await tx.delete(messages).where(eq(messages.chatId, userId));
     });
 
+    console.log(deletedChats, "deletedChats");
+
     revalidatePath("/chat");
 
     return deletedChats;
