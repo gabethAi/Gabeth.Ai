@@ -2,6 +2,7 @@
 import "server-only";
 import {
   Chat,
+  Message,
   Reaction,
   User,
   chats,
@@ -12,7 +13,7 @@ import {
 import { db } from "./db/drizzle";
 import { eq, desc, asc, and } from "drizzle-orm";
 import { auth, signIn, signOut } from "@/auth";
-import { Message } from "ai";
+import { Message as ChatMessage } from "ai";
 
 import { v4 as uuidv4 } from "uuid";
 import { revalidatePath, revalidateTag } from "next/cache";
@@ -217,7 +218,20 @@ export async function getMessagesByChatId(chatId: string) {
       },
     });
 
-    return result;
+    const groupedMessages = result.map((message) => {
+      const children = result.filter((m) => m.parentId === message.id);
+
+      if (children.length) {
+        return {
+          ...message,
+          children: children,
+        };
+      }
+
+      return message;
+    });
+
+    return groupedMessages;
   } catch (error) {
     console.error("Error getting chats:", error);
     throw error;
@@ -286,25 +300,66 @@ export async function addMessageToDb({
   role,
   content,
   createdAt,
-}: {
-  id: string;
-  chatId: string;
-  role: string;
-  content: string;
-  createdAt: Date;
-}) {
+  parentId,
+  childMessages,
+}: Message) {
   try {
-    const newMessage = await db.insert(messages).values({
-      id: id,
-      chatId: chatId,
-      role: role,
-      content: content,
-      createdAt: createdAt,
-    });
+    const newMessage = await db
+      .insert(messages)
+      .values({
+        id: id,
+        chatId: chatId,
+        role: role,
+        content: content,
+        createdAt: createdAt,
+        // parentId: parentId,
+      })
+      .onDuplicateKeyUpdate({
+        set: {
+          chatId: chatId,
+          role: role,
+          content: content,
+          createdAt: createdAt,
+          parentId: parentId,
+          childMessages: childMessages,
+        },
+      });
+
+    console.log(newMessage, "new message");
+    revalidateTag("chat");
 
     return newMessage;
   } catch (error) {
     console.error("Error saving message:", error);
+    throw error;
+  }
+}
+
+export async function updateMessageById({
+  id,
+  chatId,
+  role,
+  content,
+  parentId,
+  childMessages,
+}: Message) {
+  try {
+    const result = await db
+      .update(messages)
+      .set({
+        chatId: chatId,
+        role: role,
+        content: content,
+        parentId: parentId,
+        childMessages: childMessages,
+      })
+      .where(eq(messages.id, id));
+
+    console.log(result, "result from update ");
+
+    return result;
+  } catch (error) {
+    console.error("Error updating message:", error);
     throw error;
   }
 }
@@ -426,7 +481,7 @@ export async function fetchChats(): Promise<Chat[]> {
 
 interface ChatWithMessages {
   chat: Chat;
-  chatMessages: Message[];
+  chatMessages: ChatMessage[];
 }
 
 /**
@@ -438,7 +493,7 @@ interface ChatWithMessages {
 export async function fetchChatById(id: string): Promise<ChatWithMessages> {
   try {
     const response = await fetch(`${apiUrl}/api/chat?chatId=${id}`, {
-      next: { tags: ["chat"] },
+      next: { tags: ["chat"], revalidate: 1 },
     });
 
     const chat = await response.json();
