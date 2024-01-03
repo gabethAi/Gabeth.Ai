@@ -6,6 +6,7 @@ import {
   varchar,
   longtext,
   boolean,
+  json,
 } from "drizzle-orm/mysql-core";
 
 import type { AdapterAccount } from "@auth/core/adapters";
@@ -47,12 +48,16 @@ export const messages = mysqlTable("message", {
   chatId: varchar("chatId", { length: 255 })
     .references(() => chats.id)
     .notNull(),
-  role: varchar("role", { length: 120 }).notNull(), // 'user' or 'assistant'
+  parentId: varchar("parentId", { length: 255 }).$type<string | null>(),
+  role: varchar("role", { length: 120 })
+    .notNull()
+    .$type<"function" | "user" | "system" | "assistant">(),
   content: longtext("content").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
+  childMessages: json("childMessages").$type<any[] | null>().default(null),
 });
 
-export type Message = typeof messages.$inferSelect; // return type when queried
+export type Message = typeof messages.$inferSelect;
 
 export const reactions = mysqlTable("reaction", {
   id: int("id").autoincrement().primaryKey(),

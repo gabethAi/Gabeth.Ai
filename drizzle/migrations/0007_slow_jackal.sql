@@ -1,0 +1,1 @@
+ALTER TABLE `message` ADD `childMessages` json DEFAULT ('null');
