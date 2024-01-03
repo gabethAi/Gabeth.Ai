@@ -1,12 +1,13 @@
 "use client";
 import ChatWrapper from "./ChatWrapper";
 import ChatPanel from "./ChatPanel";
-import { Message } from "ai";
+import { Message as MessageType } from "ai";
 import useChatManager from "@/lib/hooks/useChatManager";
+import { Message } from "@/lib/db/schema";
 
 interface ChatSectionProps {
   id: string;
-  initialMessages: Message[];
+  initialMessages: MessageType[];
 }
 
 function ChatSection({ id, initialMessages }: Readonly<ChatSectionProps>) {
@@ -16,6 +17,7 @@ function ChatSection({ id, initialMessages }: Readonly<ChatSectionProps>) {
     isLoading,
     error,
     setInput,
+    append,
     reload,
     handleInputChange,
     handleSubmit,
@@ -25,13 +27,19 @@ function ChatSection({ id, initialMessages }: Readonly<ChatSectionProps>) {
       id,
     },
     initialMessages,
+    onFinish(message) {},
   });
 
-  console.log(error, "error");
+  // console.log(messages, "messages");
 
   return (
     <div className='relative  h-full'>
-      <ChatWrapper messages={messages} isLoading={isLoading} />
+      <ChatWrapper
+        append={append}
+        messages={messages as Message[]}
+        isLoading={isLoading}
+        reload={reload}
+      />
       <div className='absolute bottom-0 inset-x-0'>
         <ChatPanel
           reload={reload}

@@ -2,27 +2,28 @@
 
 import { useCopyToClipboard } from "@/lib/hooks/UseCopytoClipboard";
 import { cn } from "@/lib/utils";
-import { Button, CheckIcon } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { motion } from "framer-motion";
-import { type Message } from "ai";
-import { BiCopy } from "react-icons/bi";
+import { BiCheck, BiCopy } from "react-icons/bi";
 import LikeMessage from "./LikeMessage";
 import useUser from "@/lib/hooks/useUser";
 import DisLikeMessage from "./DisLikeMessage";
+import { Message } from "@/lib/db/schema";
+import ReloadMessage from "./ReloadMessage";
+import { UseChatHelpers } from "ai/react";
 
-interface ChatMessageActionsProps extends React.ComponentProps<"div"> {
-  readonly message: Message;
+interface ChatMessageActionsProps extends Pick<UseChatHelpers, "reload"> {
+  message: Message;
+  className?: string;
 }
 
 export function ChatMessageActions({
   message,
   className,
-  ...props
-}: ChatMessageActionsProps) {
+  reload,
+}: Readonly<ChatMessageActionsProps>) {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
   const { user } = useUser();
-  const isLike = false;
-  const isDislike = false;
 
   const onCopy = () => {
     if (isCopied) return;
@@ -41,11 +42,11 @@ export function ChatMessageActions({
         "flex items-center justify-end transition-opacity",
         className
       )}>
-      <div className='flex items-center gap-x-2 md:gap-x-4 '>
+      <div className='flex items-center justify-end gap-x-2 md:gap-x-4 '>
         <Button
           variant='subtle'
-          leftSection={isCopied ? <CheckIcon /> : <BiCopy />}
-          size='icon'
+          leftSection={isCopied ? <BiCheck /> : <BiCopy />}
+          size='xs'
           onClick={onCopy}>
           {isCopied ? "Copied" : "Copy"}
         </Button>
@@ -63,6 +64,8 @@ export function ChatMessageActions({
               userId={user?.email as string}
               type='dislike'
             />
+
+            <ReloadMessage reload={reload} message={message} />
           </div>
         )}
       </div>

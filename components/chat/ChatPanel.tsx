@@ -2,20 +2,12 @@ import PromptForm from "../ui/PromptForm";
 import BottomBar from "../ui/BottomBar";
 import { Button } from "@mantine/core";
 import { BiRefresh, BiStop } from "react-icons/bi";
-import useChatManager from "@/lib/hooks/useChatManager";
-import { Message } from "ai";
 import { UseChatHelpers } from "ai/react";
 
 export interface ChatPanelProps
   extends Pick<
     UseChatHelpers,
-    | "input"
-    | "messages"
-    | "handleInputChange"
-    | "handleSubmit"
-    | "reload"
-    | "handleInputChange"
-    | "handleSubmit"
+    "input" | "messages" | "handleInputChange" | "handleSubmit" | "reload"
   > {
   readonly isLoading: boolean;
 }
@@ -28,6 +20,7 @@ function ChatPanel({
   handleInputChange,
   handleSubmit,
 }: ChatPanelProps) {
+  // console.log(messages, "messages");
   return (
     <div className='p-2'>
       <div className='mx-auto sm:max-w-2xl sm:px-4'>
@@ -35,6 +28,7 @@ function ChatPanel({
           {isLoading ? (
             <Button
               variant='light'
+              // visibleFrom='sm'
               onClick={() => stop()}
               className='bg-background'>
               <BiStop className='mr-2' />
@@ -44,7 +38,17 @@ function ChatPanel({
             messages?.length > 0 && (
               <Button
                 variant='light'
-                onClick={() => reload()}
+                visibleFrom='sm'
+                onClick={() =>
+                  reload({
+                    options: {
+                      body: {
+                        regenerate: true,
+                        messageId: messages[0]?.id,
+                      },
+                    },
+                  })
+                }
                 className='bg-background'>
                 <BiRefresh className='mr-2' />
                 Regenerate response

@@ -1,4 +1,3 @@
-import { Message } from "ai";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
@@ -7,16 +6,21 @@ import { MemoizedReactMarkdown } from "../ui/MemoizedReactMarkdown";
 import UserAvatar from "../ui/UserAvatar";
 import MarkdownComponents from "../ui/MarkDownComponents";
 import { Components } from "react-markdown";
+import { Message } from "@/lib/db/schema";
+import { Carousel } from "@mantine/carousel";
 
 export interface ChatMessageProps {
-  readonly message: Message;
+  message: Message;
+  childMessages?: Message[];
 }
 
-export function ChatMessage({ message, ...props }: ChatMessageProps) {
+export function ChatMessage({
+  message,
+  childMessages,
+}: Readonly<ChatMessageProps>) {
+  // console.log({ childMessages, message });
   return (
-    <div
-      className={cn("group relative my-6 flex items-start md:-ml-12")}
-      {...props}>
+    <div className={cn("group relative my-6 flex items-start md:-ml-12")}>
       <div
         className={cn(
           "flex h-8 w-8 shrink-0 select-none items-center justify-center"
