@@ -325,7 +325,6 @@ export async function addMessageToDb({
         },
       });
 
-    console.log(newMessage, "new message");
     revalidateTag("chat");
 
     return newMessage;
