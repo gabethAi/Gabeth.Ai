@@ -6,9 +6,12 @@ import {
   addMessageToDb,
   saveChatToDb,
   getMessagesByChatId,
+  getMessageById,
+  updateMessageById,
 } from "@/lib/actions";
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
+import { Message } from "@/lib/db/schema";
 
 export const runtime = "edge";
 
@@ -22,10 +25,12 @@ export const runtime = "edge";
 // });
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const { messages, previewToken } = json;
-  const chatId = json.id || nanoid(10);
-  const title = json.messages[0].content.substring(0, 100);
+  const body = await req.json();
+  const { messages, previewToken } = body;
+  const chatId = body.id || nanoid(10);
+  const title = body.messages[0].content.substring(0, 100);
+
+  console.log(body, "body");
 
   try {
     // // Request the OpenAI API for the response based on the prompt
@@ -98,13 +103,29 @@ export async function POST(req: Request) {
           // get the last message from the messages array
           const lastMessage = messages[messages.length - 1];
 
-          const messagesToInsert = [
+          if (body.regenerate) {
+            const message = await getMessageById(body.messageId);
+
+            if (message) {
+              message.childMessages = message.childMessages
+                ? [message.content, ...message.childMessages, completion]
+                : [completion];
+              console.log(message, "message");
+              await addMessageToDb(message);
+            }
+
+            return;
+          }
+
+          const messagesToInsert: Message[] = [
             {
               id: nanoid(10),
               chatId: chatId,
               role: lastMessage.role,
               content: lastMessage.content,
               createdAt: new Date(),
+              parentId: null,
+              childMessages: null,
             },
             {
               id: nanoid(10),
@@ -112,14 +133,16 @@ export async function POST(req: Request) {
               role: "assistant",
               content: completion,
               createdAt: new Date(Date.now() + 1000),
+              parentId: body.regenerate ? body.messageId : null,
+              childMessages: null,
             },
           ];
+
+          // console.log(messagesToInsert, "messagesToInsert");
 
           for (const message of messagesToInsert) {
             // save each message to the database
             await addMessageToDb(message);
-
-            revalidateTag("chat");
           }
         } catch (error) {
           console.error("Error saving chat:", error);
