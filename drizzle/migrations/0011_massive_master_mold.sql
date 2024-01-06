@@ -1,0 +1,1 @@
+ALTER TABLE `user` MODIFY COLUMN `hashedpassword` varchar(255) NOT NULL;

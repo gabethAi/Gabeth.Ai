@@ -1,0 +1,1 @@
+ALTER TABLE `user` RENAME COLUMN `hashedpassword` TO `password`;

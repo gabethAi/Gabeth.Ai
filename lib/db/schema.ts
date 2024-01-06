@@ -24,8 +24,8 @@ export const users = mysqlTable("user", {
     .defaultNow()
     .notNull(),
   username: varchar("username", { length: 255 }),
-  hashedpassword: varchar("hashedpassword", { length: 255 }),
-  isActive: boolean("isActive").default(true), // new field
+  password: varchar("password", { length: 255 }),
+  isActive: boolean("isActive").default(true),
 });
 
 export type User = typeof users.$inferSelect; // return type when queried
