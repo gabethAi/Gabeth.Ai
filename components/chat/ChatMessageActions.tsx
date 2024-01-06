@@ -55,13 +55,13 @@ export function ChatMessageActions({
           <div className='flex items-center gap-x-2 md:gap-x-4'>
             <LikeMessage
               messageId={message.id}
-              userId={user?.email as string}
+              userId={user?.id as string}
               type='like'
             />
 
             <DisLikeMessage
               messageId={message.id}
-              userId={user?.email as string}
+              userId={user?.id as string}
               type='dislike'
             />
 

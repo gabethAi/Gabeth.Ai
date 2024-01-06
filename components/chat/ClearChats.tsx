@@ -4,12 +4,16 @@ import { User } from "@/lib/db/schema";
 import { openModal } from "@/lib/utils";
 import { Button } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
+import { useTransition } from "react";
 
 function ClearChats({ user }: { readonly user: User }) {
-  const { mutate, isPending } = useMutation({
+  const [isPending, startTransition] = useTransition();
+
+  const { mutate } = useMutation({
     mutationKey: ["ClearChats", user.id],
-    mutationFn: async () => await deleteChatsByUserId(user.email),
+    mutationFn: async () => await deleteChatsByUserId(user.id),
   });
+
   return (
     <Button
       color='red'
@@ -55,15 +59,18 @@ function ClearChats({ user }: { readonly user: User }) {
             confirm: "Delete",
             cancel: "Cancel",
           },
-          confirmProps: { color: "red" },
+          confirmProps: {
+            color: "red",
+            loading: isPending,
+            disabled: isPending,
+          },
           children: (
             <p className='text-sm font-medium leading-relaxed'>
               Are you sure you want to delete all of your chat history? You will
               not be able to access them anymore once they are all deleted
             </p>
           ),
-          onConfirm: () => mutate(),
-
+          onConfirm: () => startTransition(() => mutate()),
           closeOnConfirm: !isPending,
           onCancel: () => console.log("Cancel"),
         });

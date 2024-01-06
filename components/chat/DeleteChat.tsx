@@ -2,13 +2,15 @@
 import { removeChat } from "@/lib/actions";
 import { openModal } from "@/lib/utils";
 import { Button } from "@mantine/core";
-import React from "react";
+import React, { useTransition } from "react";
 
 import { Chat } from "@/lib/db/schema";
 import { useMutation } from "@tanstack/react-query";
 
 function DeleteChat({ chat }: { readonly chat: Chat }) {
-  const { mutate, isPending } = useMutation({
+  const [isPending, startTransition] = useTransition();
+
+  const { mutate } = useMutation({
     mutationKey: ["ClearChat", chat.id],
     mutationFn: async () =>
       await removeChat({
@@ -16,6 +18,7 @@ function DeleteChat({ chat }: { readonly chat: Chat }) {
         path: chat.path,
       }),
   });
+
   return (
     <Button
       variant='subtle'
@@ -60,14 +63,18 @@ function DeleteChat({ chat }: { readonly chat: Chat }) {
             confirm: "Delete",
             cancel: "Cancel",
           },
-          confirmProps: { color: "red" },
+          confirmProps: {
+            color: "red",
+            loading: isPending,
+            disabled: isPending,
+          },
           children: (
             <p className='text-sm font-medium leading-relaxed'>
               Are you sure you want to delete this chat history? You will not be
               able to access it anymore once it is deleted
             </p>
           ),
-          onConfirm: async () => mutate(),
+          onConfirm: () => startTransition(() => mutate()),
           closeOnConfirm: !isPending,
           onCancel: () => console.log("Cancel"),
         });
