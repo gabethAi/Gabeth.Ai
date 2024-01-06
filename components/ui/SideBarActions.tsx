@@ -1,7 +1,7 @@
 "use client";
 import { Popover, Button, ActionIcon } from "@mantine/core";
 import { Chat } from "@/lib/db/schema";
-import DeleteChat from "./DeleteChat";
+import DeleteChat from "../chat/DeleteChat";
 
 interface SidebarActionsProps {
   readonly chat: Chat;

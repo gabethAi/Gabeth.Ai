@@ -1,7 +1,7 @@
 "use client";
 
 import useThemeToggler from "@/lib/hooks/useThemeToggler";
-import { ActionIcon, Button, ButtonProps, Tooltip } from "@mantine/core";
+import { ActionIcon, Button, ButtonProps } from "@mantine/core";
 import { BiMoon, BiSun } from "react-icons/bi";
 
 interface Props {
@@ -13,8 +13,7 @@ function ThemeToggler({ children, variant = "subtle" }: Readonly<Props>) {
   const { theme, toggleTheme } = useThemeToggler();
 
   return (
-    <Tooltip label={"Switch Mode"}>
-      <Button
+    <Button
         variant={variant}
         onClick={toggleTheme}
         rightSection={
@@ -24,7 +23,6 @@ function ThemeToggler({ children, variant = "subtle" }: Readonly<Props>) {
         }>
         {children}
       </Button>
-    </Tooltip>
   );
 }
 

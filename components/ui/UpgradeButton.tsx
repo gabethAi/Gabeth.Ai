@@ -4,6 +4,7 @@ import React from "react";
 function UpgradeButton() {
   return (
     <Button
+      // disabled
       variant='outline'
       fullWidth
       rightSection={

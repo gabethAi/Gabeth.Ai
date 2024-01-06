@@ -17,7 +17,7 @@ interface MobileSideBar {
 }
 function MobileSideBar({ open, onClose }: Readonly<MobileSideBar>) {
   const { user } = useUser();
-  const { chats } = useChats();
+  const { chats } = useChats(user as User);
 
   return (
     <Drawer
@@ -28,7 +28,7 @@ function MobileSideBar({ open, onClose }: Readonly<MobileSideBar>) {
         </Link>
       }
       opened={open}
-      size={"sm"}
+      size={"xs"}
       onClose={onClose}>
       <div className='flex flex-col gap-y-6'>
         <Link href={"/chat"}>
@@ -41,7 +41,7 @@ function MobileSideBar({ open, onClose }: Readonly<MobileSideBar>) {
 
         <div className='absolute bottom-4 inset-x-0'>
           <Divider my={"md"} />
-          <Flex gap={"xl"} px={"sm"}>
+          <Flex gap={"sm"} px={"sm"}>
             <Stack justify='space-evenly'>
               <LeaveFeedback />
               <Settings />
