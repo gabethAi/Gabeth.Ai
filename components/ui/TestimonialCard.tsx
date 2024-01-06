@@ -12,7 +12,7 @@ function TestimonialCard({ title, comment, rating, avatar }: Readonly<Props>) {
     <div className='relative flex h-60'>
       <Avatar
         size={"lg"}
-        className='absolute left-8 lg:left-12 top-14'
+        className='absolute left-8 lg:left-4 top-14'
         src={avatar}
       />
       <div className='testimonial-card bg-slate-600 dark:bg-black text-white'>
