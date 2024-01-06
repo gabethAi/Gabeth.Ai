@@ -1,5 +1,6 @@
 "use server";
 import "server-only";
+import bcrypt from "bcryptjs";
 import {
   Chat,
   Message,
@@ -18,7 +19,8 @@ import { Message as ChatMessage } from "ai";
 import { v4 as uuidv4 } from "uuid";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
-import { apiUrl } from "./consts";
+import { DEFAULT_LOGIN_REDIRECT_URL, apiUrl } from "./consts";
+import { AuthError } from "next-auth";
 
 /**
  * Retrieves the user information.
@@ -41,16 +43,16 @@ export async function getUser() {
 export async function registerUser({
   email,
   password,
-}: {
-  email: string;
-  password: string;
-}) {
+  name,
+}: Pick<User, "email" | "password" | "name">) {
   const id = uuidv4();
+  const hashedPassword = bcrypt.hashSync(password as string, 10);
 
   const result = db.insert(users).values({
     id: id,
     email: email,
-    hashedpassword: password,
+    name: name,
+    password: hashedPassword,
   });
 
   return result;
@@ -59,36 +61,44 @@ export async function registerUser({
 export async function loginUser({
   email,
   password,
-  provider,
+  provider = "credentials",
 }: {
   email: string;
   password: string;
-  provider: "credentials" | "google" | "github";
+  provider?: "credentials" | "google" | "github";
 }) {
-  const user = await db.query.users.findFirst({
-    where: eq(users.email, email),
-  });
-
-  if (user) {
-    console.log("User found:", user);
-    if (!user.isActive) {
-      throw new Error("User is not active");
+  try {
+    await signIn(provider as string, {
+      email: email,
+      password: password,
+    });
+  } catch (error: any) {
+    // console.log(error, "error");
+    if (error instanceof AuthError) {
+      if (error.type === "CredentialsSignin" || "CallbackRouteError") {
+        throw new Error(error.cause?.err?.message);
+      } else {
+        throw new Error("An error occurred while logging in.");
+      }
     }
 
-    if (provider !== "credentials") {
-      return user;
-    }
+    console.error("Error logging in user:", error);
 
-    if (user.hashedpassword === password) {
-      return user;
-    }
-
-    // Return null if user credentials are not valid
-    throw new Error("Invalid credentials");
+    // throw new Error("An error occurred while logging in.");
   }
+}
 
-  // Return null if user credentials are not valid
-  throw new Error("User not found");
+export async function getUserByEmail(email: string) {
+  try {
+    const user = await db.query.users.findFirst({
+      where: eq(users.email, email),
+    });
+
+    return user;
+  } catch (error) {
+    console.error("Error getting user:", error);
+    throw error;
+  }
 }
 
 export async function deactivateAccount(userId: string) {
@@ -135,22 +145,17 @@ export async function saveChatToDb({
   title,
   createdAt,
   path,
-}: {
-  id: string;
-  title: string;
-  createdAt: Date;
-  path: string;
-}) {
+  sharePath,
+  userId,
+}: Chat) {
   try {
-    const user = await getUser();
-
     const newChat = await db.insert(chats).values({
       id: id,
       title: title,
-      userId: user?.email as string,
+      userId: userId,
       createdAt: createdAt,
       path: path,
-      sharePath: path,
+      sharePath: sharePath,
     });
 
     revalidateTag("chats");
@@ -326,6 +331,7 @@ export async function addMessageToDb({
       });
 
     revalidateTag("chat");
+    revalidateTag("chats");
 
     return newMessage;
   } catch (error) {
@@ -463,11 +469,9 @@ export async function removeChat({ id, path }: { id: string; path: string }) {
  * @returns A promise that resolves to an array of Chat objects.
  * @throws If there is an error fetching the chats.
  */
-export async function fetchChats(): Promise<Chat[]> {
+export async function fetchChats(user: User): Promise<Chat[]> {
   try {
-    const user = await getUser();
-
-    const response = await fetch(`${apiUrl}/api/chats?userId=${user?.email}`, {
+    const response = await fetch(`${apiUrl}/api/chats?userId=${user?.id}`, {
       next: { tags: ["chats"] },
     });
 

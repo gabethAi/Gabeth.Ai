@@ -1,5 +1,6 @@
+"use client";
 import {
-  Badge,
+  Alert,
   Button,
   Card,
   Divider,
@@ -9,28 +10,72 @@ import {
 import Logo from "../shared/Logo";
 import Link from "next/link";
 import { SignIn } from "../ui/AuthComponent";
-import { signIn } from "@/auth";
+
+import { z } from "zod";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginUser } from "@/lib/actions";
+import { FaGithub } from "react-icons/fa";
+import { useMutation } from "@tanstack/react-query";
+import { BiError } from "react-icons/bi";
+import { useRouter } from "next/navigation";
+import { DEFAULT_LOGIN_REDIRECT_URL } from "@/lib/consts";
+import { useTransition } from "react";
+
+export const LoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
 
 interface Props {
   readonly path?: string;
 }
 
-async function RightSideForm({ path }: Props): Promise<JSX.Element> {
-  async function signInUser(formData: FormData) {
-    "use server";
-    const email = formData.get("email");
-    const password = formData.get("password");
+function RightSideForm({ path }: Props) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
-    await signIn("credentials", {
-      redirect: true,
-      redirectTo: "/chat",
-      email: email,
-      password: password,
-    });
-  }
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    getValues,
+  } = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
+  });
+
+  const email = getValues("email");
+
+  const {
+    mutate,
+    isPending: isMutating,
+    isError,
+    error,
+  } = useMutation({
+    mutationKey: ["loginUser", email],
+    mutationFn: async (data: z.infer<typeof LoginSchema>) => {
+      return await loginUser({
+        email: data.email,
+        password: data.password,
+        provider: "credentials",
+      });
+    },
+    onError: (error) => {
+      console.log(error, "error");
+    },
+    onSuccess: (data) => {
+      console.log(data, "data");
+      startTransition(() => {
+        router.replace(path ?? DEFAULT_LOGIN_REDIRECT_URL);
+      });
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof LoginSchema>) => mutate(data);
+
   return (
     <div className='flex flex-col items-center justify-center h-full mx-auto p-4'>
-      <Card miw={350} maw={500} shadow='lg' radius={"md"} p={"xl"}>
+      <Card miw={380} maw={500} shadow='lg' radius={"md"} p={"xl"}>
         <div className='sm:min-w-[420px]'>
           <div className='flex flex-col justify-center items-center gap-y-2 py-4'>
             <Link href={"/"}>
@@ -44,21 +89,50 @@ async function RightSideForm({ path }: Props): Promise<JSX.Element> {
             </p>
           </div>
 
-          <form action={signInUser} className='flex flex-col space-y-5'>
-            <TextInput
-              label='Email'
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className='flex flex-col space-y-5'>
+            {isError && (
+              <Alert
+                variant='light'
+                color='red'
+                title={error.message}
+                icon={<BiError />}
+              />
+            )}
+            <Controller
               name='email'
-              placeholder='user@example.com'
+              disabled={isPending || isMutating}
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <TextInput
+                  label='Email'
+                  error={errors.email?.message}
+                  {...field}
+                  placeholder='user@example.com'
+                />
+              )}
             />
-
-            <PasswordInput
-              label='Password'
+            <Controller
               name='password'
-              placeholder='Enter your password'
+              control={control}
+              disabled={isPending || isMutating}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <PasswordInput
+                  label='Password'
+                  error={errors.password?.message}
+                  {...field}
+                  placeholder='********'
+                />
+              )}
             />
 
             <Button
               type='submit'
+              disabled={isPending || isMutating}
+              loading={isPending || isMutating}
               rightSection={
                 <svg
                   width='25'
@@ -96,8 +170,6 @@ async function RightSideForm({ path }: Props): Promise<JSX.Element> {
           <Divider label='or' labelPosition='center' my={"lg"} />
 
           <div className='flex flex-col space-y-4'>
-            {/* <GoogleSignInButton redirectTo={path} /> */}
-
             <SignIn
               provider='google'
               rightSection={
@@ -139,7 +211,11 @@ async function RightSideForm({ path }: Props): Promise<JSX.Element> {
               Sign in with Google
             </SignIn>
 
-            <Button disabled rightSection={<Badge color='red'>Beta</Badge>}>
+            <SignIn provider='github' rightSection={<FaGithub size={""} />}>
+              Sign in with Github
+            </SignIn>
+
+            {/* <Button disabled rightSection={<Badge color='red'>Beta</Badge>}>
               Sign in with Apple {""}
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -164,7 +240,7 @@ async function RightSideForm({ path }: Props): Promise<JSX.Element> {
                   </clipPath>
                 </defs>
               </svg>
-            </Button>
+            </Button> */}
 
             <div className='flex justify-center items-center space-x-2 text-sm pt-2'>
               <p>Don’t have an account?</p>

@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-
+import bcrypt from "bcryptjs";
 // import Apple from "next-auth/providers/apple"
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
@@ -10,7 +10,7 @@ import { getUserByEmail } from "./lib/actions";
 
 export const config = {
   // adapter: DrizzleAdapter(db),
-  debug: true,
+  // debug: true,
   // session: {
   //   strategy: "database",
   // },
@@ -39,7 +39,7 @@ export const config = {
         const user = await getUserByEmail(email as string);
 
         if (user) {
-          if (user.password === password) {
+          if (bcrypt.compareSync(password as string, user.password as string)) {
             return Promise.resolve({
               id: user.id,
               name: user.name,
