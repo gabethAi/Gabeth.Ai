@@ -1,10 +1,11 @@
 import MobileAppBar from "../../components/ui/MobileAppBar";
 import { DesktopSideBar } from "../../components/ui/SideBar";
 import ThemeToggler from "../../components/ui/ThemeToggler";
-import ShareChat from "../../components/ui/ShareChat";
-import { redirect } from "next/navigation";
+import ShareChat from "../../components/chat/ShareChat";
 import { fetchChats, getUser } from "@/lib/actions";
 import { User } from "@/lib/db/schema";
+import { redirect } from "next/navigation";
+import { DEFAULT_LOGIN_REDIRECT_URL } from "@/lib/consts";
 
 export default async function Layout({
   children,
@@ -12,11 +13,12 @@ export default async function Layout({
   readonly children: React.ReactNode;
 }) {
   const user = await getUser();
-  const chats = await fetchChats();
 
   if (!user) {
-    redirect(`/auth/login?next=/chat`);
+    redirect("/auth/login?next=" + DEFAULT_LOGIN_REDIRECT_URL);
   }
+
+  const chats = await fetchChats(user as User);
 
   return (
     <main className='flex flex-col lg:flex-row relative h-[100dvh] '>

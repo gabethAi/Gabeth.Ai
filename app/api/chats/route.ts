@@ -1,4 +1,4 @@
-import { getChatsByUserId, getUser } from "@/lib/actions";
+import { getChatsByUserId } from "@/lib/actions";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {

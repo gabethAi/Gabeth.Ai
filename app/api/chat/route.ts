@@ -1,4 +1,3 @@
-import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse, nanoid } from "ai";
 import {
   getChatById,
@@ -6,11 +5,8 @@ import {
   addMessageToDb,
   saveChatToDb,
   getMessagesByChatId,
-  getMessageById,
-  updateMessageById,
 } from "@/lib/actions";
 import { NextRequest, NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
 import { Message } from "@/lib/db/schema";
 
 export const runtime = "edge";
@@ -31,6 +27,19 @@ export async function POST(req: Request) {
   const title = body.messages[0].content.substring(0, 100);
 
   console.log(body, "body");
+
+  const user = await getUser();
+
+  if (!user) {
+    return NextResponse.json(
+      {
+        error: "Missing user",
+      },
+      {
+        status: 400,
+      }
+    );
+  }
 
   try {
     // // Request the OpenAI API for the response based on the prompt
@@ -96,26 +105,14 @@ export async function POST(req: Request) {
               id: chatId,
               title,
               createdAt: new Date(),
+              userId: user.id,
+              sharePath: path,
               path: path,
             });
           }
 
           // get the last message from the messages array
           const lastMessage = messages[messages.length - 1];
-
-          if (body.regenerate) {
-            const message = await getMessageById(body.messageId);
-
-            if (message) {
-              message.childMessages = message.childMessages
-                ? [message.content, ...message.childMessages, completion]
-                : [completion];
-              console.log(message, "message");
-              await addMessageToDb(message);
-            }
-
-            return;
-          }
 
           const messagesToInsert: Message[] = [
             {
@@ -137,8 +134,6 @@ export async function POST(req: Request) {
               childMessages: null,
             },
           ];
-
-          // console.log(messagesToInsert, "messagesToInsert");
 
           for (const message of messagesToInsert) {
             // save each message to the database
