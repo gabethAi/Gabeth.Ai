@@ -1,5 +1,5 @@
 "use client";
-import { Button, Divider, Drawer, Flex, Group, Stack } from "@mantine/core";
+import { Button, Divider, Drawer, Flex, Stack } from "@mantine/core";
 import UpgradeButton from "./UpgradeButton";
 import ProfileCard from "./ProfileCard";
 import useUser from "@/lib/hooks/useUser";

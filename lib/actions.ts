@@ -19,7 +19,7 @@ import { Message as ChatMessage } from "ai";
 import { v4 as uuidv4 } from "uuid";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
-import { DEFAULT_LOGIN_REDIRECT_URL, apiUrl } from "./consts";
+import { apiUrl } from "./consts";
 import { AuthError } from "next-auth";
 
 /**
@@ -73,7 +73,6 @@ export async function loginUser({
       password: password,
     });
   } catch (error: any) {
-    // console.log(error, "error");
     if (error instanceof AuthError) {
       if (error.type === "CredentialsSignin" || "CallbackRouteError") {
         throw new Error(error.cause?.err?.message);
@@ -83,8 +82,6 @@ export async function loginUser({
     }
 
     console.error("Error logging in user:", error);
-
-    // throw new Error("An error occurred while logging in.");
   }
 }
 

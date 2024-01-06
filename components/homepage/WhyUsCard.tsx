@@ -8,7 +8,7 @@ interface Props {
   imageSrc: string;
 }
 
-function WhyUsCard({ title, description, imageSrc }: Props) {
+function WhyUsCard({ title, description, imageSrc }: Readonly<Props>) {
   return (
     <Card shadow='sm' radius={"md"} p={"lg"}>
       <div className='flex flex-col items-center justify-center gap-y-4 text-center  relative'>

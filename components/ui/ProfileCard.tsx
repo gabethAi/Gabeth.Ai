@@ -16,7 +16,11 @@ function ProfileCard({ user }: ProfileCardProps) {
       </SignOut>
 
       <div className='flex items-center space-x-3'>
-        <Avatar size={"sm"} src={user?.image} />
+        {user?.image ? (
+          <Avatar size={"sm"} src={user?.image} />
+        ) : (
+          <Avatar size={"sm"}>{user?.name?.charAt(0)}</Avatar>
+        )}
         <div>
           <h6 className='font-semibold text-sm'>{user?.name}</h6>
           <p className='text-xs'>{user?.email}</p>

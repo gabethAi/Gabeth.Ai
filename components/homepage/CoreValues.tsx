@@ -43,19 +43,19 @@ function CoreValues() {
   return (
     <div className='py-10 md:py-12 lg:py-14 px-4'>
       <div className='container mx-auto'>
-        <div className='py-2 md:py-4'>
+        <div className='py-4 md:py-8 xl:py-12'>
           <h1 className='text-center text-2xl lg:text-4xl font-semibold'>
             Why Gabeth.AI?
           </h1>
         </div>
 
         <div className='grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-12 lg:gap-16 items-center'>
-          <div className='col-span-1 md:col-span-2'>
+          <div className='col-span-1 md:col-span-2 flex flex-col items-center justify-center bg-orange-500'>
             <CoreValuesIllustration />
           </div>
 
-          <div className='col-span-1 md:col-span-3'>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8'>
+          <div className='col-span-1 md:col-span-3 '>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-x-10'>
               {data.map((item) => (
                 <WhyUsCard key={item.title} {...item} />
               ))}

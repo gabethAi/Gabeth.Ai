@@ -44,9 +44,9 @@ function Hero() {
         </div>
       </div>
 
-      <div className=''>
+      <div className='bg-[#D2D2D2] dark:bg-black'>
         <div
-          className='bg-black relative py-8'
+          className='relative py-8'
           style={{
             width: "100%",
             height: "100%",

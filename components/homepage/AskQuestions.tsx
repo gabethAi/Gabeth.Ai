@@ -6,6 +6,7 @@ import technicalIcon from "@/app/assets/icons/68.svg";
 import problemSolvingIcon from "@/app/assets/icons/90.svg";
 import assistanceIcon from "@/app/assets/icons/97.svg";
 import focusIcon from "@/app/assets/icons/102.svg";
+import Link from "next/link";
 
 const data: Props[] = [
   {
@@ -71,22 +72,24 @@ function AskQuestions() {
         </div>
 
         <div className='mt-14 lg:mt-20'>
-          <Button
-            rightSection={
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill='none'>
-                <path
-                  d='M12.7071 4.63574C12.1548 4.63574 11.7071 5.08346 11.7071 5.63574C11.7071 6.18803 12.1548 6.63574 12.7071 6.63574H15.9497L4.92888 17.6566C4.53836 18.0471 4.53836 18.6802 4.92888 19.0708C5.3194 19.4613 5.95257 19.4613 6.34309 19.0708L17.3639 8.04996V11.2926C17.3639 11.8449 17.8116 12.2926 18.3639 12.2926C18.9162 12.2926 19.3639 11.8449 19.3639 11.2926V5.63574C19.3639 5.08346 18.9162 4.63574 18.3639 4.63574H12.7071Z'
-                  fill='white'
-                />
-              </svg>
-            }>
-            Chat With Us Now
-          </Button>
+          <Link href='/contact-us'>
+            <Button
+              rightSection={
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  width='24'
+                  height='24'
+                  viewBox='0 0 24 24'
+                  fill='none'>
+                  <path
+                    d='M12.7071 4.63574C12.1548 4.63574 11.7071 5.08346 11.7071 5.63574C11.7071 6.18803 12.1548 6.63574 12.7071 6.63574H15.9497L4.92888 17.6566C4.53836 18.0471 4.53836 18.6802 4.92888 19.0708C5.3194 19.4613 5.95257 19.4613 6.34309 19.0708L17.3639 8.04996V11.2926C17.3639 11.8449 17.8116 12.2926 18.3639 12.2926C18.9162 12.2926 19.3639 11.8449 19.3639 11.2926V5.63574C19.3639 5.08346 18.9162 4.63574 18.3639 4.63574H12.7071Z'
+                    fill='white'
+                  />
+                </svg>
+              }>
+              Chat With Us Now
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
@@ -99,7 +102,7 @@ interface Props {
   imageSrc: string;
 }
 
-function QuestionCard({ title, description, imageSrc }: Props) {
+function QuestionCard({ title, description, imageSrc }: Readonly<Props>) {
   return (
     <div className='flex flex-col items-center justify-center'>
       <Image

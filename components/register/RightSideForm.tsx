@@ -1,7 +1,6 @@
 "use client";
 import {
   Alert,
-  Badge,
   Button,
   Card,
   Divider,
@@ -10,8 +9,7 @@ import {
 } from "@mantine/core";
 import Logo from "../shared/Logo";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
-import { auth } from "@/auth";
+import { useRouter } from "next/navigation";
 import { registerUser } from "@/lib/actions";
 import { SignIn } from "../ui/AuthComponent";
 import { FaGithub } from "react-icons/fa";
@@ -29,7 +27,7 @@ export const NewUserShema = z.object({
   fullName: z.string(),
 });
 
-/**
+/** it'
  * Renders the right side form for user registration.
  */
 
@@ -69,7 +67,6 @@ function RightSideForm() {
       throw new Error("Something went wrong");
     },
     onSuccess: (data) => {
-      console.log(data, "data");
       startTransition(() => {
         router.replace("/auth/login");
       });
