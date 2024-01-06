@@ -1,4 +1,3 @@
-"use client";
 import { logOut, loginUserWithProvider } from "@/lib/actions";
 import { Button } from "@mantine/core";
 
@@ -20,7 +19,12 @@ export function SignIn({
   return (
     <form
       action={async () => await loginUserWithProvider(provider, redirectTo)}>
-      <Button type='submit' fullWidth rightSection={rightSection} {...props}>
+      <Button
+        type='submit'
+        variant='outline'
+        fullWidth
+        rightSection={rightSection}
+        {...props}>
         {children ?? "Sign In"}
       </Button>
     </form>
@@ -36,7 +40,7 @@ export function SignOut({
 }) {
   return (
     <form action={logOut} className='w-full'>
-      <Button variant='subtle' size='sm' type='submit' fullWidth {...props}>
+      <Button variant='light' size='sm' type='submit'>
         {children ?? "Sign Out"}
       </Button>
     </form>

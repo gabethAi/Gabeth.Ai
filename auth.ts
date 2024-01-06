@@ -3,20 +3,23 @@ import NextAuth from "next-auth";
 // import Apple from "next-auth/providers/apple"
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import type { NextAuthConfig } from "next-auth";
-import { loginUser } from "./lib/actions";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { db } from "./lib/db/drizzle";
+import { getUserByEmail } from "./lib/actions";
 
 export const config = {
-  adapter: DrizzleAdapter(db),
-  // debug: true,
+  // adapter: DrizzleAdapter(db),
+  debug: true,
+  // session: {
+  //   strategy: "database",
+  // },
   providers: [
-    // Apple,
-    GitHub,
+    GitHub({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
+    }),
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
@@ -29,31 +32,26 @@ export const config = {
       id: "credentials",
       name: "Credentials",
       async authorize(credentials, req) {
-        console.log(credentials, "credentials");
-        // Add logic here to look up the user from the credentials supplied
-        try {
-          const user = await loginUser({
-            email: credentials.email as string,
-            password: credentials.password as string,
-            provider: "credentials",
-          });
+        const { email, password } = credentials;
 
-          console.log(user, "user");
+        // const data = LoginSchema.parse({ email, password });
 
-          if (user) {
-            // Any object returned will be saved in `user` property of the JWT
-            return Promise.resolve(user);
-          } else {
-            // If you return null then an error will be displayed advising the user to check their details.
-            return Promise.resolve(null);
+        const user = await getUserByEmail(email as string);
 
-            // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
+        if (user) {
+          if (user.password === password) {
+            return Promise.resolve({
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              image: user.image,
+            });
           }
-        } catch (error: any) {
-          console.log(error, "error");
 
-          return Promise.reject(new Error(error.message));
+          throw new Error("Invalid Credentials");
         }
+
+        throw new Error("There is no account associated, please sign up");
       },
     }),
   ],
@@ -61,44 +59,31 @@ export const config = {
   pages: {
     signIn: "/auth/login",
     signOut: "/auth/logout",
-    // error: "/auth/error",
+    error: "/auth/error",
     // verifyRequest: "/auth/verify-request",
     // newUser: "/auth/new-user",
   },
   callbacks: {
-    authorized({ request, auth }) {
-      const { pathname } = request.nextUrl;
-      if (pathname === "/middleware-example") return !!auth;
-      return true;
-    },
-
     signIn({ user, account, profile, email, credentials }) {
-      // console.log("signIn", { user, account, profile, email, credentials });
       if (user) {
         return true;
       }
 
       return false;
+    },
+    session: async ({ session, token, user }) => {
+      if (session.user) {
+        const { id, name, email, image } = session.user;
 
-      // return true;
-      if (user) {
-        const { id, name, email, image } = user;
-        return true;
-
-        const result = async () => {
-          const response = await loginUser({
-            email: email as string,
-            password: account?.access_token as string,
-            provider: "google",
-          });
-
-          console.log(response, "response");
-
-          return true;
+        session.user = {
+          id: token.sub ?? id,
+          name,
+          email,
+          image,
         };
-
-        result();
       }
+
+      return session;
     },
   },
 } satisfies NextAuthConfig;
